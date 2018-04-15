@@ -1,0 +1,79 @@
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+    .contact{
+        border-radius: 5px;
+        background-color: darkblue;
+        padding: 20px;
+    }
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 3px solid darkred;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: grey;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: gainsboro;
+    }
+
+    div {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+</style>
+</head>
+<link href="../View/assets/nav.css" rel="stylesheet" type="text/css">
+<body>
+<!--<a href="../Controller/indexController.php?page=main" class="or">НАЧАЛО</a>-->
+<!--<a href="../Controller/indexController.php?page=logout" class="or">ИЗХОД</a>-->
+<link href="../View/assets/nav.css" rel="stylesheet" type="text/css">
+
+<br><br><br>
+<p><i>Форма за справки и запитвания:<br>Относно препоръки, оплаквания и други, Ви молим
+    да попълните следната форма за обратна връзка. Ще Ви отговорим при първа възможност.</i></p>
+<p><i>Мнението Ви е важно за нас!</i></p>
+
+<div class="contact">
+    <form action="../Controller/indexController.php" method="post">
+        <label>Името Ви: </label>
+        <input type="text" name="name" placeholder="Името Ви..">
+
+        <label>Email: </label>
+        <input  type="text" name="email" placeholder="Вашият Email..">
+        <label>Относно: </label><br>
+        <input  type="text" name="subject" placeholder="Относно..">
+        <label>Съобщение: </label><br>
+        <textarea name="message" cols="150" rows="4" placeholder="Кратно съобщение..."></textarea>
+
+
+        <input type="submit" value="Send your message">
+    </form>
+</div>
+</body>
+</html>

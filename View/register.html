@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="../View/assets/nav.css">
+
+</head>
+<body>
+<div class="register">
+    <fieldset style="color: darkred" >
+        <legend><h2>Форма за регистрация</h2></legend>
+        <br><br>
+        <table border="2">
+            <form action="../Controller/registerController.php" method="post">
+                <link rel="stylesheet" href="../View/assets/style.css">
+                <TR>
+                    <TD style="color: darkred">Име : </TD>  <TD><input type="text" size="28" name="first_name"></TD>
+                </TR>
+                <TR>
+                    <TD style="color: darkred">Фамилно име : </TD>  <TD><input type="text" size="28" name="last_name"></TD>
+                </TR>
+                <TR>
+                    <TD style="color: darkred">E-mail :</TD> <TD> <input type="email" size="28" name="email"></TD>
+                </TR>
+                <TR>
+                    <TD style="color: darkred">Парола : </TD><TD><input type="password" size="28" name="password1"></TD>
+                </TR>
+                <TR>
+                    <TD style="color: darkred" >Повторете паролата :</TD> <TD><input type="password" size="28" name="password2"></TD>
+                </TR>
+                <TD COLSPAN="2"> <input type="submit" name="register" value="Регистрация"></TD>
+
+            </form>
+        </table>
+    </fieldset>
+    <br>
+    <br>
+
+</div>
+<br>
+<!--<div class="regyet">-->
+    <!--<a href="../Controller/indexController.php?page=login" class="or">Вече имам направена регистрация</a></div>-->
+
+
+</body>
+</html>

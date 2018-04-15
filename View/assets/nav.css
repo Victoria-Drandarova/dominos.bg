@@ -1,0 +1,58 @@
+html,body{
+    width:1254px;
+    height: auto;
+    background-color:whitesmoke;
+}
+.or{
+    color:darkblue;
+    text-decoration:none;
+    padding: .5em 2em;
+    outline: none;
+    border-width: 2px 0;
+    border-style: solid none;
+    border-color: red;
+    border-radius: 6px;
+    background: white;
+    transition: 0.2s;
+
+    margin-left: 2em;
+    text-align: -moz-center;
+    float: left;
+}
+
+.or:hover{
+    background: whitesmoke;
+}
+.or:active {
+    background: whitesmoke;
+    transform: translateY(4px);
+}
+.navbutton {
+    width: 9%;
+}
+#head{
+    margin-top: 1%;
+    width: 100%;
+
+}
+/*css login and register form*/
+.register{
+    width:50%;
+    background-color:grey;
+    border-radius: 5%;
+    margin-top: 6%;
+    border: 2px solid darkred;
+    padding: 10px;
+    margin-left: 25%;
+
+}
+.regyet{
+    width:50%;
+    margin-left: 25%;
+    display: inline-block;
+}
+.contact{
+    border-radius: 5px;
+    background-color: gray;
+    padding: 20px;
+}
