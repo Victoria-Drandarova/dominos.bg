@@ -3,9 +3,7 @@ session_start();
 require_once "../View/header.html";
 
 if (isset($_GET["page"]) && $_GET["page"] == "logout") { //ако е натиснат някой линк и линкът log out, унищожи сесията
-
-
-
+    
     session_destroy();
     header("location:../Controller/indexController.php?page=main"); //пренасочи потребителя към log in
     die();   // прекрати изпълнението на какъвто и да е следващ скрипт, защото няма смисъл да продължава след като се е логаутнал
