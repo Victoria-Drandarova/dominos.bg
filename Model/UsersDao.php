@@ -12,12 +12,6 @@ spl_autoload_register(function ($class) {
  */
 class UsersDao extends dbConnection {
     
-    private $connection;
-    
-    public function __construct() {
-        $this->connection = $this->getConnection();
-    }
-
     public function getUserData($password, $email) {
         
             $query = "SELECT u.id, u.first_name, u.last_name 
@@ -38,30 +32,36 @@ class UsersDao extends dbConnection {
     public function createNewUser($userData) {
             
         try {
-            $this->connection->beginTransaction();
+//            $this->getConnection()->beginTransaction();
             $query = "INSERT INTO users(first_name, last_name, email, password)
             VALUES(?,?,?,?)";
-            $stmt = $this->connection->prepare($query);
+            $stmt = $this->getConnection()->prepare($query);
             
             $params = [$userData["first_name"], $userData["last_name"],
             $userData["email"],$userData["password"]];
-            $stmt->execute($params);
+            $result = $stmt->execute($params);
             
-            $this->connection->commit();
-            return $stmt->execute($params) ? true : false;
+//            $this->getConnection()->commit();
+            return $result ? $result : false;
             
         } catch (PDOException $exp) {
-            $this->connection->rollBack();
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            echo  $exp->getLine();
+            echo "<br>";
+            echo  $exp->getFile();
+            echo "<br>";
+            echo  $exp->getMessage();
+//            $this->getConnection()->rollBack();
+//            $this->connection->rollBack();
+//            $path = dirname(__DIR__);
+//            $path .= "/log/PDOExeption.txt";
+//            $errFile = fopen($path, "a");
+//            if ($errFile) {
+//                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
+//                fclose($errFile);
+//            } else {
+//                fclose($errFile);
+//            }
+//            header("Location: ../index.php?page=errpage");
         }
     }
     
@@ -101,4 +101,4 @@ class UsersDao extends dbConnection {
 $usr = new UsersDao();
 //$userData = ["first_name" => "Stan", "last_name" => "Stanimirov", 
 //    "password" => "123456", "id" => 3];
-var_dump($usr->redactUserData($userData));
+//var_dump($usr->redactUserData($userData));

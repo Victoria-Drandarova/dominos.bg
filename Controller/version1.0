@@ -1,0 +1,128 @@
+<?php
+
+spl_autoload_register(function ($class) {
+    $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    require_once "../Model" . DIRECTORY_SEPARATOR . $class . ".php";
+});
+
+class UserController extends UsersDao{
+    
+    private $firstName;
+    private $lastName;
+    private $email;
+    private $password;
+    private $confirmPassword;
+    
+    public $registerErr = [];
+    private $userData = [];
+
+    public function login() {
+        
+    }
+    
+    public function register() {
+        
+        if (isset($_POST["register"])) {
+            
+            $this->firstName = $this->setFirstName($_POST["f_name"]);
+            $this->lastName = $this->setFirstName($_POST["l_name"]);
+            $this->email = $this->setEmail($_POST["email"]);
+            $this->password = $this->setPassword($_POST["password"]);
+            $this->confirmPassword = $this->setConfirmPassword($_POST["rpassword"]);
+            
+            if ($this->password != $this->confirmPassword) {
+                $this->registerErr[] = "Password Dismatch!";
+            }else{
+                if ($this->registerErr) {
+                    $_SESSION["regiserErr"] = $this->registerErr;
+                }else{
+                    $this->userData["first_name"] = $this->firstName;
+                    $this->userData["last_name"] = $this->lastName;
+                    $this->userData["email"] = $this->email;
+                    $this->userData["password"] = sha1($this->password);
+                    
+                    $result = $this->createNewUser($this->userData);
+                    
+                    if ($result) {
+                        header("Location: ../Controller/indexController.php?page=login");
+                    }else{
+                         header("Location: ../Controller/indexController.php?page=register");
+                    }
+                }
+            }
+        }
+    }
+    
+    function getFirstName() {
+        return $this->firstName;
+    }
+
+    function getLastName() {
+        return $this->lastName;
+    }
+
+    function getEmail() {
+        return $this->email;
+    }
+
+    function getPassword() {
+        return $this->password;
+    }
+
+    function getConfirmPassword() {
+        return $this->confirmPassword;
+    }
+    
+    
+    function setFirstName($firstName) {
+        if (mb_strlen($firstName) < 2 || empty($firstName)) {
+            $this->registerErr[] = "First name  min length is 2 chars";
+        }else{
+            $this->firstName = $firstName;
+        }
+    }
+
+    function setLastName($lastName) {
+        if (mb_strlen($lastName) < 2 || empty($lastName)) {
+            $this->registerErr[] = "Last name min length is 2 chars";
+        }else{
+            $this->lastName = $firstName;
+        }
+    }
+
+    function setEmail($email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->registerErr[] = "Invalid  email addres!";
+        }else{
+            $this->email = $email;
+        }
+    }
+
+    function setPassword($password) {
+        
+        if (mb_strlen($password) < 5 || empty($password)) {
+            $this->registerErr[] = "Password min length is 5 chars";
+        }else{
+            $this->password = $password;
+        }
+    }
+
+    function setConfirmPassword($confirmPassword) {
+        
+        if (mb_strlen($confirmPassword) < 5 || empty($confirmPassword)) {
+            $this->registerErr[] = "Password min length is 5 chars";
+        }else{
+            $this->confirmPassword = $confirmPassword;
+        }
+        
+    }
+}
+
+
+if (isset($_POST["register"])) {
+    
+    $reg =  new UserController();
+    $reg->register();
+}else{
+    echo "dhfj";
+}
