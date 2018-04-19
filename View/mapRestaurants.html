@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="../View/assets/map.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Изберете локация на ресторант. </button>
+    <div id="myDropdown" class="dropdown-content">
+        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+        <a onclick="initMap(42.6744602797609, 23.30944039173596)">София, ж.к Лозенец 25</a>
+        <a onclick="initMap(42.6745, 23.3095)">София, ж.к Дружба 2 улица 25</a>
+        <a onclick="initMap(42.6745, 23.3095)">София, ж.к Младост бл.345 </a>
+        <a onclick="initMap(42.6745, 23.3095)">Пловдив, ж.к Слатина номер 56</a>
+        <a onclick="initMap(42.6745, 23.3095)">Варна, бул. България 95</a>
+        <a onclick="initMap(42.6745, 23.3095)">Бургас, ж.к Лозенец 78</a>
+        <a onclick="initMap(42.6745, 23.3095)">Ямбол, Овча Купел до блок 25</a>
+        <a onclick="initMap(42.6745, 23.3095)">Пловдив-Тракия ул. Георги Данчов 16</a>
+        <a onclick="initMap(42.6745, 23.3095)">Пловдив-Център ул. Иван Андонов 5 </a>
+        <a onclick="initMap(42.6745, 23.3095)">Пловдив, ж.к Слатина номер 56</a>
+    </div>
+</div>
+<script src="../View/map.js"></script>
+<div id="map"></div>
+<script src="../View/map.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo-dooaX6Kx7UmFlTAEG2hUf05MhvrJ-s&callback=initMap">
+</script>
+</body>
+</html>

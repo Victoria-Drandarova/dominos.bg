@@ -65,7 +65,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="register.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/register.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="628">
@@ -73,6 +73,26 @@
               <folding>
                 <element signature="n#style#0;n#form#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mapRestaurants.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/mapRestaurants.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="628">
+              <caret line="34" column="7" lean-forward="false" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="map.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/View/map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="628">
+              <caret line="36" column="1" lean-forward="false" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -103,8 +123,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -137,9 +157,6 @@
         <option value="$PROJECT_DIR$/View/assets/header.css" />
         <option value="$PROJECT_DIR$/View/assets/logstyle.css" />
         <option value="$PROJECT_DIR$/View/navMenu.js" />
-        <option value="$PROJECT_DIR$/View/map.js" />
-        <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
-        <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
         <option value="$PROJECT_DIR$/View/assets/loginRegistration.css" />
         <option value="$PROJECT_DIR$/View/job.html" />
         <option value="$PROJECT_DIR$/View/assets/reset.css" />
@@ -165,6 +182,9 @@
         <option value="$PROJECT_DIR$/View/login.html" />
         <option value="$PROJECT_DIR$/View/register.html" />
         <option value="$PROJECT_DIR$/View/register.html" />
+        <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
+        <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
+        <option value="$PROJECT_DIR$/View/map.js" />
       </list>
     </option>
   </component>
@@ -268,12 +288,12 @@
       <workItem from="1523556233363" duration="59930000" />
       <workItem from="1523775323209" duration="5480000" />
       <workItem from="1523960574906" duration="981000" />
-      <workItem from="1524028219429" duration="31235000" />
+      <workItem from="1524028219429" duration="31387000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113054000" />
+    <option name="totallyTimeSpent" value="113206000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1618" height="868" extended-state="6" />
@@ -518,22 +538,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/mapRestaurants.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="15" column="91" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="34" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="19" column="1" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="36" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/nav_logged.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -633,6 +637,22 @@
           <folding>
             <element signature="n#style#0;n#form#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/mapRestaurants.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="34" column="7" lean-forward="false" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="36" column="1" lean-forward="false" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
