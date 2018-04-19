@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL ^ E_NOTICE);
 spl_autoload_register(function ($class) {
     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
     require_once "../Model" . DIRECTORY_SEPARATOR . $class . ".php";
@@ -16,7 +16,6 @@ class UserController extends UsersDao {
     private $userData = [];
 
     public function __construct() {
-        
         $this->firstName = $_POST["f_name"];
         $this->lastName = $_POST["l_name"];
         $this->email = $_POST["email"];
@@ -25,6 +24,27 @@ class UserController extends UsersDao {
     }
 
     public function login() {
+        $this->setEmail($this->email);
+        $this->setPassword($this->password);
+        
+        if ($this->registerErr) {
+            $_SESSION["regiserErr"] = $this->registerErr;
+        }else{
+           $loginResult = $this->getUserData($this->getPassword(), $this->getEmail());
+           
+           if ($loginResult) {
+               
+//               var_dump($loginResult);
+               $_SESSION["user_data"] = $loginResult;
+               $_SESSION["logged_user"] = true;
+               header("Location:  ../Controller/indexController.php?page=main");
+           }else{
+//               var_dump($loginResult);
+               $this->registerErr[] = "Invalid Email or Password";
+               $_SESSION["regiserErr"] = $this->registerErr;
+               header("Location:  ../Controller/indexController.php?page=login");
+           }
+        }
         
     }
 
@@ -34,7 +54,9 @@ class UserController extends UsersDao {
         $this->setEmail($this->email);
         $this->setPassword($this->password);
         $this->setConfirmPassword($this->confirmPassword);
-
+        
+        $this->registerErr = [];
+        
             if ($this->password != $this->confirmPassword) {
                 $this->registerErr[] = "Password Dismatch!";
             } else {
@@ -129,6 +151,10 @@ if (isset($_POST["register"])) {
     $reg = new UserController();
 
     $reg->register();
-} else {
-    echo "dhfj";
+} elseif(isset($_POST["login"])) {
+    $log = new UserController();
+    
+    $log->login();
+}else{
+    echo "Some err to handle";
 }
