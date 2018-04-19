@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../View/assets/loginRegistration.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<section id="login">
+    <form action="../Controller" style="max-width:500px;margin:auto">
+        <h2>Форма за регистрация</h2>
+        <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input class="input-field" type="text" placeholder="Име" name="f_name">
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-user icon"></i>
+            <input class="input-field" type="text" placeholder="Фамилия" name="l_name">
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input class="input-field" type="email" placeholder="email" name="email">
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-key icon"></i>
+            <input class="input-field" type="password" placeholder="Парола" name="password">
+        </div>
+        <div class="input-container">
+            <i class="fa fa-key icon"></i>
+            <input class="input-field" type="password" placeholder="Повторете паролата" name="rpassword">
+        </div>
+        <button type="submit" name="register" class="btn">Регистрация</button>
+    </form>
+</section>
+</body>
+</html>
