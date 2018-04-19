@@ -33,11 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="footer.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="footer.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/footer.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="483">
               <caret line="23" column="7" lean-forward="false" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="header.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/View/header.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -114,8 +124,6 @@
         <option value="$PROJECT_DIR$/View/login.html" />
         <option value="$PROJECT_DIR$/View/login.html" />
         <option value="$PROJECT_DIR$/View/jobs.html" />
-        <option value="$PROJECT_DIR$/View/header.html" />
-        <option value="$PROJECT_DIR$/View/header.html" />
         <option value="$PROJECT_DIR$/Controller/loginController.php" />
         <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
         <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
@@ -131,6 +139,8 @@
         <option value="$PROJECT_DIR$/View/contact.html" />
         <option value="$PROJECT_DIR$/View/footer.html" />
         <option value="$PROJECT_DIR$/View/footer.html" />
+        <option value="$PROJECT_DIR$/View/header.html" />
+        <option value="$PROJECT_DIR$/View/header.html" />
       </list>
     </option>
   </component>
@@ -234,12 +244,12 @@
       <workItem from="1523556233363" duration="59930000" />
       <workItem from="1523775323209" duration="5480000" />
       <workItem from="1523960574906" duration="981000" />
-      <workItem from="1524028219429" duration="30882000" />
+      <workItem from="1524028219429" duration="31047000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112701000" />
+    <option name="totallyTimeSpent" value="112866000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1618" height="868" extended-state="6" />
@@ -484,14 +494,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/header.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -594,6 +596,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="483">
           <caret line="23" column="7" lean-forward="false" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
