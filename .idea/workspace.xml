@@ -87,7 +87,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="map.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="map.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/map.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="628">
@@ -97,21 +97,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="indexController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Controller/indexController.php">
+      <file leaf-file-name="nav_logged.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/View/nav_logged.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="31" column="35" lean-forward="false" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+            <state relative-caret-position="628">
+              <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.php">
+      <file leaf-file-name="nav_not_logged.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/View/nav_not_logged.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+            <state relative-caret-position="525">
+              <caret line="25" column="7" lean-forward="false" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -123,8 +123,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -162,12 +162,8 @@
         <option value="$PROJECT_DIR$/View/assets/reset.css" />
         <option value="$PROJECT_DIR$/View/jobs.html" />
         <option value="$PROJECT_DIR$/Controller/loginController.php" />
-        <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
-        <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
         <option value="$PROJECT_DIR$/View/facebookLogin.js" />
         <option value="$PROJECT_DIR$/View/facebookLoginButton.html" />
-        <option value="$PROJECT_DIR$/View/nav_logged.html" />
-        <option value="$PROJECT_DIR$/View/nav_logged.html" />
         <option value="$PROJECT_DIR$/View/assets/map.css" />
         <option value="$PROJECT_DIR$/View/main.html" />
         <option value="$PROJECT_DIR$/View/main.html" />
@@ -185,6 +181,10 @@
         <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
         <option value="$PROJECT_DIR$/View/mapRestaurants.html" />
         <option value="$PROJECT_DIR$/View/map.js" />
+        <option value="$PROJECT_DIR$/View/nav_logged.html" />
+        <option value="$PROJECT_DIR$/View/nav_logged.html" />
+        <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
+        <option value="$PROJECT_DIR$/View/nav_not_logged.html" />
       </list>
     </option>
   </component>
@@ -288,12 +288,12 @@
       <workItem from="1523556233363" duration="59930000" />
       <workItem from="1523775323209" duration="5480000" />
       <workItem from="1523960574906" duration="981000" />
-      <workItem from="1524028219429" duration="31387000" />
+      <workItem from="1524028219429" duration="31579000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113206000" />
+    <option name="totallyTimeSpent" value="113398000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1618" height="868" extended-state="6" />
@@ -538,22 +538,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View/nav_logged.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="18" column="26" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/View/nav_not_logged.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" column="6" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="25" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/View/navMenu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
@@ -652,6 +636,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="628">
           <caret line="36" column="1" lean-forward="false" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/nav_logged.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="41" column="0" lean-forward="true" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View/nav_not_logged.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="25" column="7" lean-forward="false" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
           <folding />
         </state>
       </provider>
