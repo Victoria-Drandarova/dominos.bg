@@ -2,6 +2,7 @@
 session_start();
 require_once "../View/header.html";
 
+
 if (isset($_GET["page"]) && $_GET["page"] == "logout") { //ако е натиснат някой линк и линкът log out, унищожи сесията
     
     session_destroy();
@@ -32,3 +33,4 @@ if(isset($_GET["page"])){
     require_once "../View/main.html";
 }
 require_once "../View/footer.html";
+
