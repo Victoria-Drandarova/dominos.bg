@@ -212,3 +212,56 @@ input[type=submit]:hover {
         margin-top: 0;
     }
 }
+#pizza{
+    width: 20%;
+    /*float: left;*/
+    height: auto;
+    display: inline-block;
+    border: 1px solid blue;
+    margin: 10px;
+    padding: 5px;
+}
+
+#pizza-conainer{
+    width: 100%;
+    height: auto;
+}
+#pizza-wrap{
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
+    background-color: windowframe;
+}
+#pizza-info{
+    margin-left: 45%;
+    display: block;
+}
+
+#pizza-info-price{
+    margin-left: 45%;
+    display: block;
+}
+#pizza-info-name{
+    margin-left: 45%;
+    display: block;
+}
+#pizza-info-ing{
+    margin-left: 45%;
+    display: block;
+}
+#category-list{
+    width: 25%;
+    margin: 0 auto;
+    display: inline-block;
+    border: 1px solid black;
+}
+#cat-wrap{
+    width: 20%;
+    height: 250px;
+    margin: 0 auto;
+    margin-left: 10%;
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid activeborder;
+    text-align: center;
+}
