@@ -8,7 +8,7 @@
 </head>
 <body>
 <section id="login">
-    <form action="../Controller" style="max-width:500px;margin:auto">
+    <form action="../View/configContact.php" method="post" style="max-width:500px;margin:auto">
         <h2>Форма за обратна връзка</h2>
         <div class="input-container">
             <i class="fa fa-user icon"></i>
@@ -26,9 +26,9 @@
         </div>
         <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <textarea rows="6" placeholder="Вашето запитване..." name="email"></textarea>
+            <textarea rows="6" placeholder="Вашето запитване..." name="comments"></textarea>
         </div>
-        <button type="submit" name="send_cv" class="btn">Изпрати</button>
+        <button type="submit" name="send_email" class="btn">Изпрати</button>
     </form>
 </section>
 </body>

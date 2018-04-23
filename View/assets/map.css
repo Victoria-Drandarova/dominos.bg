@@ -6,6 +6,7 @@
     border: none;
     cursor: pointer;
 
+
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -15,7 +16,7 @@
 
 #myInput {
     border-box: box-sizing;
-    background-image: url('../View/assets/images/search.png');
+    background-image: image("../assets/images/search.png");
     background-position: 14px 12px;
     background-repeat: no-repeat;
     font-size: 16px;
@@ -54,13 +55,14 @@
 
 .show {display:block;}
 #map {
-    height: 90%;
-    background-color: white;
+    height: 100%;
+    /*background-color: white;*/
     /*margin-top: 10%;*/
     width: 60%;
     margin-left: 22%;
     margin-right: auto;
-    margin-top: 0%;
+
+
 
 }
 
@@ -74,6 +76,6 @@ html, body {
     left:0;
     top:0;
     height:100%;
-    width:100%;
+    width:90%;
     position:absolute;
 }
