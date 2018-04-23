@@ -1,5 +1,6 @@
  <?php
 session_start();
+//var_dump($_SESSION["logged_user"]);
 require_once "../View/header.html";
 
 
@@ -15,15 +16,13 @@ if (isset($error) && $error) { // $error e от  if (isset($_POST["register"]) �
     require_once "../View/register.html";
 }
 
-
 if(isset($_GET["page"])){
     $page_name = $_GET["page"];
     if(isset($_SESSION["logged_user"])){
         require_once "../View/nav_logged.html";
         $page_name = $_GET["page"];
         require_once "../View/$page_name.html";
-    }
-    else{
+    }else{
         require_once "../View/nav_not_logged.html";
         $page_name = $_GET["page"];
         require_once "../View/$page_name.html";

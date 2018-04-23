@@ -1,4 +1,5 @@
 <?php
+session_start();
 error_reporting(E_ALL ^ E_NOTICE);
 spl_autoload_register(function ($class) {
     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
@@ -12,7 +13,7 @@ class UserController extends UsersDao {
     private $email;
     private $password;
     private $confirmPassword;
-    public $registerErr = [];
+    private $registerErr = [];
     private $userData = [];
 
     public function __construct() {
@@ -42,10 +43,10 @@ class UserController extends UsersDao {
 //               var_dump($loginResult);
                 $this->registerErr[] = "Invalid Email or Password";
                 $_SESSION["regiserErr"] = $this->registerErr;
+                $_SESSION["logged_user"] = true;
                 header("Location:  ../Controller/indexController.php?page=login");
             }
         }
-
     }
 
     public function register() {
