@@ -1,12 +1,14 @@
 <?php
-
-//
-//spl_autoload_register(function ($class) {
-//    $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-//    require_once __DIR__ . DIRECTORY_SEPARATOR . $class . ".php";
-//});
-//namespace Model;
 require_once 'dbConnection.php';
+
+namespace Model\dao;
+
+spl_autoload_register(function ($class) {
+    $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    require_once __DIR__ . DIRECTORY_SEPARATOR . $c . ".php";
+});
+
+use Model\ProductsModel;
 
 /**
  * Description of FoodsDao
@@ -21,7 +23,7 @@ class ProductsDao extends DbConnection {
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
         $result = [];
-        while ($row = $stmt->fetch()) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $row["id"];
             $result[] = $row["name"];
             $result[] = $row["price"];
@@ -36,12 +38,18 @@ class ProductsDao extends DbConnection {
         $query = "SELECT id, name, price, img_url FROM products WHERE category_id = 1;";
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
-        $result = [];
+        $arrayOfPizzas = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $row;
+            $singlePizza = new ProductsModel(
+                    $row["id"],
+                    $row["name"],
+                    $row["price"],
+                    $row["img_url"]
+                    );
+            $arrayOfPizzas[] = $singlePizza;
         }
 
-        return $result;
+        return $arrayOfPizzas;
     }
 
     public function getProductById($id) {

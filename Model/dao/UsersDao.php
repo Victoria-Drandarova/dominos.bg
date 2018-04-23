@@ -68,22 +68,22 @@ class UsersDao extends dbConnection {
     public function redactUserData($userData) {
 
         try {
-            $this->connection->beginTransaction();
+            $this->getConnection()->beginTransaction();
 
             $query = "UPDATE users SET first_name = ?, last_name = ?, password = ?
             WHERE users.id = ?";
 
-            $stmt = $this->connection->prepare($query);
+            $stmt = $this->getConnection()->prepare($query);
 
             $params = [$userData["first_name"], $userData["last_name"],
                 sha1($userData["password"]), $userData["id"]];
             $stmt->execute($params);
 
-            $this->connection->commit();
+            $this->getConnection()->commit();
             return $stmt->execute($params) ? true : false;
 
         } catch (PDOException $exp) {
-            $this->connection->rollBack();
+            $this->getConnection()->rollBack();
             $path = dirname(__DIR__);
             $path .= "/log/PDOExeption.txt";
             $errFile = fopen($path, "a");

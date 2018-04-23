@@ -1,11 +1,11 @@
 <?php
 
 spl_autoload_register(function ($class) {
-    $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
     require_once dirname(__DIR__) . DIRECTORY_SEPARATOR ."Model" 
-    . DIRECTORY_SEPARATOR . $class . ".php";
+    . DIRECTORY_SEPARATOR . $c . ".php";
 });
-//use Model as Mod;
+use Model\dao\ProductsDao;
 //require_once '../Model/ProductsDao.php';
 
 /**
@@ -13,7 +13,7 @@ spl_autoload_register(function ($class) {
  *
  * @author denis
  */
-class ProductsController extends ProductsDao {
+class ProductsController {
 
     private static $instance;
 
@@ -29,8 +29,8 @@ class ProductsController extends ProductsDao {
     public function getPizza() {
 
         try {
-
-            return $this->getAllPizza();
+            $productsDao = new ProductsDao();
+            return $productsDao->getAllPizza();
             
         } catch (Exception $exp) {
 
