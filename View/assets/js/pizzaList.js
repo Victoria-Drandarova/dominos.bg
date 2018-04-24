@@ -51,6 +51,7 @@ function getProductInfo(ind) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = JSON.parse(this.responseText);
+//            console.log(resp);
             var container = document.getElementById("pizza-conainer");
 
             var pizza = document.getElementById("pizza-warp");
@@ -90,7 +91,17 @@ function getProductInfo(ind) {
             btn.addEventListener("click", function () {
                 getCategories();
             });
+            
+            var buyBtn = document.createElement("BUTTON");
+//                btn.setAttribute("value", resp[i]["id"]);
+            buyBtn.setAttribute("id", "pizza-info");
+            buyBtn.setAttribute("value", resp[0]["id"]);
+            buyBtn.innerHTML = "Add to  cart";
+            buyBtn.addEventListener("click", function () {
+                addToCart(this.value);
+            });
             pizzaView.appendChild(btn);
+            pizzaView.appendChild(buyBtn);
             container.appendChild(pizzaView);
         }
     };
@@ -166,4 +177,20 @@ function minusExtraPrice(ingPrice) {
     var price = document.getElementById("pizza-info-price");
     
     price.innerHTML = Number(price.innerHTML) - Number(ingPrice);
+}
+
+function addToCart(productId){
+    
+    var request =  new XMLHttpRequest();
+    request.open("POST", "ProductsController.php");
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.onreadystatechange = function(){
+        if (this.readyState === 4 && this.status === 200) {
+            var response = this.responseText;
+            console.log(response);
+            
+            
+        }
+    };
+    request.send("proId=" + productId);
 }

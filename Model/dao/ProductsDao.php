@@ -15,6 +15,18 @@ use Model\dao\DbConnection;
  * @author denis
  */
 class ProductsDao extends DbConnection {
+    
+    public function getSingleProduct($productId) {
+        
+        $query = "SELECT p.id, p.name, p.price
+                 FROM products as p
+                 WHERE p.id = ?;";
+        $stmt = $this->getConnection()->prepare($query);
+        $param = [$productId];
+        $stmt->execute($param);
+        
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
     public function getAllProducts() {
     
@@ -99,7 +111,7 @@ class ProductsDao extends DbConnection {
     public function getProductInfo($productId) {
 
         $query = "SELECT i.name, i.price, p.name as product_name,
-                p.img_url, p.price as product_price
+                p.img_url, p.price as product_price, p.id
                 FROM ingredients as i
                 JOIN recipes as r
                 ON r.ingredient_id = i.id

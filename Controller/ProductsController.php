@@ -1,5 +1,9 @@
 <?php
 namespace Controller;
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 spl_autoload_register(function ($class) {
 
@@ -14,13 +18,27 @@ class ProductsController {
 
     private static $instance;
 
-    private function __construct() {}
+//    private function __construct() {}
 
     public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new ProductsController();
         }
         return self::$instance;
+    }
+    
+    public function addProductToCart($productId) {
+            $singleProduct = new ProductsDao();
+            $success = $singleProduct->getSingleProduct($productId);
+            if ($success) {
+                if (!in_array($success["id"], $_SESSION["cart"][$success["id"]])) {
+                     $_SESSION["cart"][$success["id"]] = $success;
+                }
+               
+                header("Location: ../View/some.php");
+            }else{
+                //todo return err msg
+            }        
     }
 
     public function getPizza() {
@@ -133,4 +151,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["categoriesId"])) {
     $products = ProductsController::getInstance();
     $categoriesId = trim(htmlentities($_GET["categoriesId"]));
     echo json_encode($products->getIngByCategory($categoriesId));
+}
+
+if (isset($_POST["proId"])) {
+    $products = ProductsController::getInstance();
+    $categoriesId = trim(htmlentities($_POST["proId"]));
+    $products->addProductToCart($categoriesId);
+    
 }
