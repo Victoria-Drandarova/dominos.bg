@@ -13,12 +13,21 @@ class ProductsModel implements \JsonSerializable{
     private $name;
     private $price;
     private $img;
-
-    public function __construct($id, $name, $price, $img) {
+    private $categoryId;
+    
+    public function __construct($id, $name, $price, $img, $categoryId) {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->img = $img;
+        $this->categoryId = $categoryId;
+    }
+    function getCategoryId() {
+        return $this->categoryId;
+    }
+
+    function setCategoryId($categoryId) {
+        $this->categoryId = $categoryId;
     }
 
     public function getId() {

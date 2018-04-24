@@ -1,18 +1,15 @@
 <?php
+namespace Controller;
 
 spl_autoload_register(function ($class) {
-    $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR ."Model" 
-    . DIRECTORY_SEPARATOR . $c . ".php";
-});
-use Model\dao\ProductsDao;
-//require_once '../Model/ProductsDao.php';
 
-/**
- * Description of ProductsController
- *
- * @author denis
- */
+    $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+    require_once dirname(__DIR__) . DIRECTORY_SEPARATOR .$c . '.php';
+});
+
+use Model\dao\ProductsDao;
+use Model\ProductsModel;
+
 class ProductsController {
 
     private static $instance;
@@ -29,10 +26,10 @@ class ProductsController {
     public function getPizza() {
 
         try {
-            $productsDao = new ProductsDao();
-            return $productsDao->getAllPizza();
+            $pizzaList = new ProductsDao();
+            return $pizzaList->getAllPizza();
             
-        } catch (Exception $exp) {
+        } catch (PDOException $exp) {
 
             $path = dirname(__DIR__);
             $path .= "/log/PDOExeption.txt";
@@ -51,9 +48,10 @@ class ProductsController {
 
         try {
 
-            return $this->getProductInfo($productId);
+            $info = new ProductsDao();
+            return $info->getProductInfo($productId);
             
-        } catch (Exception $exp) {
+        } catch (PDOException $exp) {
 
             $path = dirname(__DIR__);
             $path .= "/log/PDOExeption.txt";
@@ -71,10 +69,11 @@ class ProductsController {
     public function getIngCategory() {
 
         try {
-
-            return $this->getIngredientsCategory();
             
-        } catch (Exception $exp) {
+            $ingCategory = new ProductsDao();
+            return $ingCategory->getIngredientsCategory();
+            
+        } catch (PDOException $exp) {
 
             $path = dirname(__DIR__);
             $path .= "/log/PDOExeption.txt";
@@ -93,9 +92,10 @@ class ProductsController {
 
         try {
 
-            return $this->getIngredientsByCategory($categoryId);
+            $getIngredientsByCategory = new ProductsDao();
+            return $getIngredientsByCategory->getIngredientsByCategory($categoryId);
             
-        } catch (Exception $exp) {
+        } catch (PDOException $exp) {
 
             $path = dirname(__DIR__);
             $path .= "/log/PDOExeption.txt";
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pizza"])) {
     $products = ProductsController::getInstance();
     echo json_encode($products->getPizza());
 }
-/* retrun selected pizza with content of  the  pizza */
+/* retrun selected pizza with content of the pizza */
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["productId"])) {
     $products = ProductsController::getInstance();
     $productId = trim(htmlentities($_GET["productId"]));

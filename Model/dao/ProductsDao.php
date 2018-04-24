@@ -1,15 +1,14 @@
 <?php
-require_once 'dbConnection.php';
-
 namespace Model\dao;
 
 spl_autoload_register(function ($class) {
     $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-    require_once __DIR__ . DIRECTORY_SEPARATOR . $c . ".php";
+    require_once $c . '.php';
 });
 
 use Model\ProductsModel;
-
+use Model\IngredientsModel;
+use Model\dao\DbConnection;
 /**
  * Description of FoodsDao
  *
@@ -18,12 +17,12 @@ use Model\ProductsModel;
 class ProductsDao extends DbConnection {
 
     public function getAllProducts() {
-
+    
         $query = "SELECT id, name, price FROM products;";
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row["id"];
             $result[] = $row["name"];
             $result[] = $row["price"];
@@ -35,16 +34,19 @@ class ProductsDao extends DbConnection {
 
     public function getAllPizza() {
 
-        $query = "SELECT id, name, price, img_url FROM products WHERE category_id = 1;";
+        $query = "SELECT id, name, price, img_url, category_id
+                 FROM products WHERE category_id = 1;";
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
+        
         $arrayOfPizzas = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
             $singlePizza = new ProductsModel(
-                    $row["id"],
-                    $row["name"],
-                    $row["price"],
-                    $row["img_url"]
+                    $row->id,
+                    $row->name,
+                    $row->price,
+                    $row->img_url,
+                    $row->category_id
                     );
             $arrayOfPizzas[] = $singlePizza;
         }
@@ -54,20 +56,26 @@ class ProductsDao extends DbConnection {
 
     public function getProductById($id) {
 
-        $query = "SELECT p.name, p.price FROM products as p WHERE p.id = ?;";
+        $query = "SELECT p.id, p.name, p.price, p.img_url
+                FROM products as p
+                WHERE p.id = ?;";
         $stmt = $this->getConnection()->prepare($query);
         $param = [$id];
         $stmt->execute($param);
-        $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($product) {
-            return $product;
-        }
+        $product = $stmt->fetch(\PDO::FETCH_OBJ);
+        
+        $singlePizza = new ProductsModel(
+                $product->id,
+                $product->name,
+                $product->price,
+                $product->img_url
+                );
+        return $singlePizza;
     }
 
     public function getProductIngredients($productId) {
 
-        $query = "SELECT i.name
+        $query = "SELECT i.id, i.name, i.price, i.category_id 
                     FROM ingredients as i
                     JOIN recipes as r
                     ON r.ingredient_id = i.id
@@ -75,11 +83,17 @@ class ProductsDao extends DbConnection {
         $stmt = $this->getConnection()->prepare($query);
         $param = [$productId];
         $stmt->execute($param);
-        $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $row;
+        $ingredients = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
+            $singleIngredient = new IngredientsModel(
+                        $row->id,
+                        $row->name,
+                        $row->price,
+                        $row->category_id
+                    );
+            $ingredients[] = $singleIngredient;
         }
-        return $result;
+        return $ingredients;
     }
 
     public function getProductInfo($productId) {
@@ -96,7 +110,7 @@ class ProductsDao extends DbConnection {
         $param = [$productId];
         $stmt->execute($param);
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
             $result[] = $row;
         }
         return $result;
@@ -108,7 +122,7 @@ class ProductsDao extends DbConnection {
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute();
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
         return $result;
@@ -124,7 +138,7 @@ class ProductsDao extends DbConnection {
         $param = [$categoryId];
         $stmt->execute($param);
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
         return $result;
@@ -139,10 +153,29 @@ class ProductsDao extends DbConnection {
 
         $stmt->execute();
         $result = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
         return $result;
     }
-
+    
+    public function insertOrder($userId){
+        $connection = $this->getConnection();
+        try{
+        $connection->beginTransaction();
+        $orderQuery = "INSERT INTO orders(user_id, date)
+                       VALUES(?, now())";
+        $stmt = $connection->prepare($orderQuery);
+        $param = [$userId];
+        $stmt->execute($param);
+        
+        /* взимаме id на последния запис*/
+        $orderId = $connection->lastInsertId();
+        $connection->commit();
+        return  $orderId;
+        } catch (\PDOException $exp){
+            return  $exp->getMessage();
+        }
+        
+    }
 }
