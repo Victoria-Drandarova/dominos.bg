@@ -2,4 +2,4 @@
 session_start();
 //session_destroy();
 
-echo '<pre>'. print_r($_SESSION, true) .'</pre>';
+echo '<pre>'. print_r($_SESSION["cart"], true) .'</pre>';

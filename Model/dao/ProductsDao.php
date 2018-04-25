@@ -18,7 +18,7 @@ class ProductsDao extends DbConnection {
     
     public function getSingleProduct($productId) {
         
-        $query = "SELECT p.id, p.name, p.price
+        $query = "SELECT p.id, p.name, p.price, p.img_url
                  FROM products as p
                  WHERE p.id = ?;";
         $stmt = $this->getConnection()->prepare($query);
