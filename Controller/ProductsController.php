@@ -5,7 +5,6 @@ namespace Controller;
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-error_reporting(E_ALL ^ E_NOTICE);
 
 spl_autoload_register(function ($class) {
 
@@ -220,7 +219,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["prId"])) {
     $prId = trim(htmlentities($_GET["prId"]));
     echo $products->plusQuantity($prId);
 }
-
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["minusId"])) {
     $products = ProductsController::getInstance();

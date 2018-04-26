@@ -53,12 +53,16 @@ function getProductInfo(ind) {
             var resp = JSON.parse(this.responseText);
 //            console.log(resp);
             var container = document.getElementById("pizza-conainer");
-
+            
             var pizza = document.getElementById("pizza-warp");
             container.removeChild(pizza);
 
             var pizzaView = document.createElement("DIV");
             pizzaView.setAttribute("id", "pizza-wrap");
+            
+            var id = document.createElement("ipnut");
+            id.setAttribute("type", "hidden");
+            id.setAttribute("id", resp[0]["id"]);
 
             var productName = document.createElement("h3");
             productName.setAttribute("id", "pizza-info-name");
@@ -75,6 +79,7 @@ function getProductInfo(ind) {
             pizzaView.appendChild(productName);
             pizzaView.appendChild(productPrice);
             pizzaView.appendChild(img);
+            pizzaView.appendChild(id);
 
             for (var i in resp) {
                 var ingrediance = document.createElement("p");
@@ -170,7 +175,6 @@ function addExtraPrice(ingPrice) {
             minusExtraPrice(getProductId.value);
         }
     }
-
 }
 
 function minusExtraPrice(ingPrice) {

@@ -9,11 +9,11 @@ namespace Model;
  */
 class ProductsModel implements \JsonSerializable{
 
-    private $id;
-    private $name;
-    private $price;
-    private $img;
-    private $categoryId;
+    public $id;
+    public $name;
+    public $price;
+    public $img;
+    public $categoryId;
     
     public function __construct($id, $name, $price, $img, $categoryId) {
         $this->id = $id;
