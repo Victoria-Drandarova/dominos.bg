@@ -2,9 +2,6 @@
 
 namespace Controller;
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
 
 spl_autoload_register(function ($class) {
 
@@ -14,6 +11,10 @@ spl_autoload_register(function ($class) {
 
 use Model\dao\ProductsDao;
 use Model\ProductsModel;
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 class ProductsController {
 
@@ -41,45 +42,112 @@ class ProductsController {
                 echo "You allready have this food in your cart :)";
             }
 
-                header("Location: ../View/some.php");
+            header("Location: ../View/some.php");
         } else {
             //todo return err msg
+        }
+    }
+    
+    public function addExtraIngToProd($ingId, $prdId) {
+        try {
+            $ingredients = new ProductsDao();
+            $r = $ingredients->getIngrById($ingId);
+
+            if (isset($_SESSION["cart"])) {
+
+                if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
+                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
+                    echo $r["price"];
+//                    header("Location: ../View/some.php");
+                } else {
+                    //todo return err msg
+                }
+            } else {
+                //todo return err msg
+            }
+        } catch (PDOException $exp) {
+
+            $path = dirname(__DIR__);
+            $path .= "/log/PDOExeption.txt";
+            $errFile = fopen($path, "a");
+            if ($errFile) {
+                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
+                fclose($errFile);
+            } else {
+                fclose($errFile);
+            }
+            header("Location: ../index.php?page=errpage");
+        }
+    }
+    public function removeExtraIngToProd($ingId, $prdId) {
+        try {
+            $ingredients = new ProductsDao();
+            $r = $ingredients->getIngrById($ingId);
+
+            if (isset($_SESSION["cart"])) {
+
+                if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
+//                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
+                    $cnt = count($_SESSION["cart"][$prdId]["extraIng"]);
+                    for ($i = 0;  $i <  $cnt; $i++) {
+                        if ($_SESSION["cart"][$prdId]["extraIng"][$i] == $r["id"] ) {
+                            unset($_SESSION["cart"][$prdId]["extraIng"][$i]);
+                            break;
+                        }
+                    }
+                    echo $r["price"];
+//                    header("Location: ../View/some.php");
+                } else {
+                    //todo return err msg
+                }
+            } else {
+                //todo return err msg
+            }
+        } catch (PDOException $exp) {
+
+            $path = dirname(__DIR__);
+            $path .= "/log/PDOExeption.txt";
+            $errFile = fopen($path, "a");
+            if ($errFile) {
+                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
+                fclose($errFile);
+            } else {
+                fclose($errFile);
+            }
+            header("Location: ../index.php?page=errpage");
         }
     }
 
     public function plusQuantity($productId) {
         // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
         if (isset($_SESSION["cart"])) {
-            
+
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 $q = $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
                 return $_SESSION["cart"][$productId]["quantity"];
-            }else{
+            } else {
                 //todo return err msg
             }
-            
         } else {
             //todo return err msg
         }
     }
-    
+
     public function minusQunatity($productId) {
         // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
         if (isset($_SESSION["cart"])) {
-                
+
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 if ($_SESSION["cart"][$productId]["quantity"] == 1) {
                     unset($_SESSION["cart"][$productId]);
                     return;
                 }
-                    $q = $_SESSION["cart"][$productId]["quantity"] = 
-                    $_SESSION["cart"][$productId]["quantity"] - 1;
-                
+                $q = $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
+
                 return $_SESSION["cart"][$productId]["quantity"];
-            }else{
-               //to do return  err msg
+            } else {
+                //to do return  err msg
             }
-            
         } else {
             //todo return err msg
         }
@@ -224,4 +292,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["minusId"])) {
     $products = ProductsController::getInstance();
     $minusId = trim(htmlentities($_GET["minusId"]));
     echo $products->minusQunatity($minusId);
+}
+
+if (isset($_POST["ingId"]) && isset($_POST["prdId"])) {
+    $products = ProductsController::getInstance();
+    $ingId = trim(htmlentities($_POST["ingId"]));
+    $prodId = trim(htmlentities($_POST["prdId"]));
+    echo $products->addExtraIngToProd($ingId, $prodId);
+}
+
+
+if (isset($_POST["minusIngId"]) && isset($_POST["minusPrdId"])) {
+    $products = ProductsController::getInstance();
+    $ingId = trim(htmlentities($_POST["minusIngId"]));
+    $prodId = trim(htmlentities($_POST["minusPrdId"]));
+    echo $products->removeExtraIngToProd($ingId, $prodId);
 }
