@@ -90,13 +90,14 @@ class ProductsController {
 //                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
                     $cnt = count($_SESSION["cart"][$prdId]["extraIng"]);
                     for ($i = 0;  $i <  $cnt; $i++) {
-                        if ($_SESSION["cart"][$prdId]["extraIng"][$i] == $r["id"] ) {
+                        if (in_array($r["id"], $_SESSION["cart"][$prdId]["extraIng"][$i])) {
+                            /* this is under counstruct */
                             unset($_SESSION["cart"][$prdId]["extraIng"][$i]);
                             break;
                         }
                     }
-                    echo $r["price"];
-//                    header("Location: ../View/some.php");
+//                    echo $r["price"];
+                    header("Location: ../View/some.php");
                 } else {
                     //todo return err msg
                 }
@@ -140,7 +141,7 @@ class ProductsController {
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 if ($_SESSION["cart"][$productId]["quantity"] == 1) {
                     unset($_SESSION["cart"][$productId]);
-                    return;
+                    return 0;
                 }
                 $q = $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
 

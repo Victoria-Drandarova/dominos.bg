@@ -9,7 +9,9 @@
 
 namespace Controller;
 namespace Model;
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
 
@@ -42,16 +44,18 @@ if(isset($_POST['login'])) {
 //                header("Location: ");
 //            }
             if($result) {
-
+                /* dolnite 3 reda moje  da gi iztriesh. PS: ako iskash de */
                 $id = $pdo->getUserId($user);
                 $user->setId($id);
                 $details = $pdo->getUserDetailsById($user);
                 $_SESSION['userDetails'] = [];
+                
+                /*moje  da iztriesh i $new  masiva*/
                 $new =      ["fName" => $details['first_name'],
                              "lName" => $details['last_name'],
                               "email" => $details['email']
                                                             ];
-                $_SESSION['userDetails'] = $new;
+                $_SESSION['userDetails'] = $result;
                 $_SESSION["logged_user"] = true;
 
                 header("Location:  ../Controller/indexController.php?page=main");

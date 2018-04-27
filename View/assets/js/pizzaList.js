@@ -26,9 +26,10 @@ function getPizzaList() {
                 var btn = document.createElement("BUTTON");
                 btn.setAttribute("value", resp[i]["id"]);
                 btn.setAttribute("id", "buy-btn");
-                btn.innerHTML = "In Cart";
+                btn.innerHTML = "Buy me!";
                 btn.addEventListener("click", function () {
                     getProductInfo(this.value);
+                    addToCart(this.value);
                 });
 
                 pizzaWrap.appendChild(name);
@@ -45,13 +46,14 @@ function getPizzaList() {
 }
 getPizzaList();
 
+/* */
 function getProductInfo(ind) {
     var request = new XMLHttpRequest();
     request.open("GET", "ProductsController.php?productId=" + ind);
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = JSON.parse(this.responseText);
-//            console.log(resp);
+
             var container = document.getElementById("pizza-conainer");
 
             var pizza = document.getElementById("pizza-warp");
@@ -59,10 +61,6 @@ function getProductInfo(ind) {
 
             var pizzaView = document.createElement("DIV");
             pizzaView.setAttribute("id", "pizza-wrap");
-
-//            var id = document.createElement("ipnut");
-//            id.setAttribute("type", "hidden");
-//            id.setAttribute("id", resp[0]["id"]);
 
             var productName = document.createElement("h3");
             productName.setAttribute("id", "pizza-info-name");
@@ -79,7 +77,6 @@ function getProductInfo(ind) {
             pizzaView.appendChild(productName);
             pizzaView.appendChild(productPrice);
             pizzaView.appendChild(img);
-//            pizzaView.appendChild(id);
 
             for (var i in resp) {
                 var ingrediance = document.createElement("p");
@@ -97,16 +94,8 @@ function getProductInfo(ind) {
                 getCategories(this.value);
             });
 
-            var buyBtn = document.createElement("BUTTON");
-            btn.setAttribute("value", resp[i]["id"]);
-            buyBtn.setAttribute("id", "pizza-info");
-            buyBtn.setAttribute("value", resp[0]["id"]);
-            buyBtn.innerHTML = "Add to  cart";
-            buyBtn.addEventListener("click", function () {
-                addToCart(this.value);
-            });
             pizzaView.appendChild(btn);
-            pizzaView.appendChild(buyBtn);
+
             container.appendChild(pizzaView);
         }
     };

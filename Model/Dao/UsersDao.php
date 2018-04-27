@@ -144,11 +144,12 @@ class UserDao {
     }
 
     public function checkUserLogin(User $user) {
-        $query = $this->pdo->prepare("SELECT COUNT(*) as rows FROM users WHERE email = ? AND password = ?");
+        $query = $this->pdo->prepare("SELECT first_name, last_name, email FROM users
+                 WHERE email = ? AND password = ?");
         $query->execute(array($user->getEmail(), $user->getPassword()));
         $result = $query->fetch(\PDO::FETCH_ASSOC);
-        if ($result['rows'] > 0) {
-            return true;
+        if ($result) {
+            return $result;
         } else {
             return false;
         }

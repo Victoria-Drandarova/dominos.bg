@@ -4,7 +4,7 @@
 
 function getCartContent() {
     var request = new XMLHttpRequest();
-    request.open("POST", "ProductsController.php?");
+    request.open("POST", "ProductsController.php");
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -124,6 +124,9 @@ function minusQunatity(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
+            if (response == 0) {
+                  location.reload(); 
+            }
 //            console.log(response);
             var price = document.getElementById("price-" + productId);
             price.innerHTML = response;

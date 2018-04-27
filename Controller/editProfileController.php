@@ -1,6 +1,10 @@
 <?php
 namespace Controller;
-session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 //include '../Model/User.php';
 //include '../Model/Dao/UsersDao.php';
 include '../Controller/loginController.php';
@@ -14,7 +18,7 @@ function __autoload($class) {
     $class = "..\\" . $class;
     require_once str_replace("\\", "/", $class) . ".php";
 }
-
+echo json_encode($_SESSION['userDetails']);
 //$user = new User();
 //$userEmail = $userDetailsArray['email'];
 //$userFirstName = $userDetailsArray['first_name'];
@@ -33,19 +37,19 @@ function __autoload($class) {
 //$pdo = new UserDao();
 //$details = array();
 //$details = $pdo->getUserDetailsByEmail($user);
-
-$userFirstName = $details['fName'];
-$userLastName = $details['lName'];
-$userEmail = $details['email'];
-
-if(strlen($userEmail) == 0 || strlen($userFirstName) == 0 || strlen($userLastName) == 0) {
-    $errorMessage = "Имаше проблем със изписването на вашите данни!";
-    echo json_encode($errorMessage);
-
-}
-else {
-    echo json_encode($details);
-}
+//
+//$userFirstName = $details['fName'];
+//$userLastName = $details['lName'];
+//$userEmail = $details['email'];
+//
+//if(strlen($userEmail) == 0 || strlen($userFirstName) == 0 || strlen($userLastName) == 0) {
+//    $errorMessage = "Имаше проблем със изписването на вашите данни!";
+//    echo json_encode($errorMessage);
+//
+//}
+//else {
+//    echo json_encode($_SESSION['userDetails']);
+//}
 
 
 
