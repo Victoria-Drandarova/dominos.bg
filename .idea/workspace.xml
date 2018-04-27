@@ -6,9 +6,6 @@
       <change beforePath="$PROJECT_DIR$/Model/Dao/ProductsDao.php" afterPath="$PROJECT_DIR$/Model/Dao/ProductsDao.php" />
       <change beforePath="$PROJECT_DIR$/Model/Dao/PurchaseDao.php" afterPath="$PROJECT_DIR$/Model/Dao/PurchaseDao.php" />
       <change beforePath="$PROJECT_DIR$/Model/Dao/UsersDao.php" afterPath="$PROJECT_DIR$/Model/Dao/UsersDao.php" />
-      <change beforePath="$PROJECT_DIR$/View/assets/style.css" afterPath="$PROJECT_DIR$/View/assets/style.css" />
-      <change beforePath="$PROJECT_DIR$/View/nav_logged.html" afterPath="$PROJECT_DIR$/View/nav_logged.html" />
-      <change beforePath="$PROJECT_DIR$/View/nav_not_logged.html" afterPath="$PROJECT_DIR$/View/nav_not_logged.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,7 +36,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UsersDao.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UsersDao.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Model/Dao/UsersDao.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="252">
@@ -67,7 +64,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="orderWay.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="orderWay.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/View/orderWay.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
@@ -215,7 +212,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP from XAMPP" />
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1280" />
     <option name="height" value="629" />
@@ -334,15 +331,15 @@
       <workItem from="1524028219429" duration="73020000" />
       <workItem from="1524479860537" duration="3983000" />
       <workItem from="1524574271676" duration="26967000" />
-      <workItem from="1524809997757" duration="37900000" />
+      <workItem from="1524809997757" duration="38135000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="230912000" />
+    <option name="totallyTimeSpent" value="231147000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1618" height="868" extended-state="7" />
+    <frame x="-9" y="-9" width="1618" height="868" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.215625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -703,22 +700,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model/Dao/UsersDao.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="117" column="0" lean-forward="true" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
-          <folding>
-            <marker date="1524855238881" expanded="true" signature="4398:4465" ph="SELECT COUNT... " />
-            <marker date="1524855238881" expanded="true" signature="4827:4877" ph="SELECT COUNT... " />
-            <marker date="1524855238881" expanded="true" signature="5363:5511" ph="INSERT INTO users... " />
-            <marker date="1524855238881" expanded="true" signature="5875:6023" ph="UPDATE users... " />
-            <marker date="1524855238881" expanded="true" signature="6390:6449" ph="SELECT first... users" />
-            <marker date="1524855238881" expanded="true" signature="6761:6823" ph="SELECT first... users" />
-            <marker date="1524855238881" expanded="true" signature="7126:7162" ph="SELECT id FR... users" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Controller/editProfileController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
@@ -757,6 +738,22 @@
           <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
           <folding>
             <element signature="n#style#0;n#h2#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Dao/UsersDao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="117" column="0" lean-forward="true" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+          <folding>
+            <marker date="1524855238881" expanded="true" signature="4398:4465" ph="SELECT COUNT... " />
+            <marker date="1524855238881" expanded="true" signature="4827:4877" ph="SELECT COUNT... " />
+            <marker date="1524855238881" expanded="true" signature="5363:5511" ph="INSERT INTO users... " />
+            <marker date="1524855238881" expanded="true" signature="5875:6023" ph="UPDATE users... " />
+            <marker date="1524855238881" expanded="true" signature="6390:6449" ph="SELECT first... users" />
+            <marker date="1524855238881" expanded="true" signature="6761:6823" ph="SELECT first... users" />
+            <marker date="1524855238881" expanded="true" signature="7126:7162" ph="SELECT id FR... users" />
           </folding>
         </state>
       </provider>
