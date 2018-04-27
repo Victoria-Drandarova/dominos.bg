@@ -9,7 +9,8 @@ function getCartContent() {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
-//            console.log(response);
+            
+            
 
             generateCartList(response, "cart_content");
         }
@@ -57,6 +58,7 @@ function generateCartList(response, containerId) {
         var tr = document.createElement('tr');
 
         var name = document.createElement('td');
+        name.setAttribute("id", "n");
         var price = document.createElement('td');
         var quantity = document.createElement('td');
         var img = document.createElement('img');
@@ -66,9 +68,10 @@ function generateCartList(response, containerId) {
 
         var minus = document.createElement('button');
         minus.setAttribute("value", response[i]["id"]);
-
+        
         name.innerHTML = response[i]["name"];
         price.innerHTML = response[i]["price"];
+        price.setAttribute("id", "price-" + response[i]["price"]);
         quantity.innerHTML = response[i]["quantity"];
         quantity.setAttribute("id", "price-" + response[i]["id"]);
         img.src = "../View/assets/images/" + response[i]["img_url"];
@@ -87,6 +90,14 @@ function generateCartList(response, containerId) {
 
         var minusTd = document.createElement('td');
         minusTd.appendChild(minus);
+        
+        if (response[i]["extraIng"]) {
+            for(var k in response[i]["extraIng"]){
+//                alert(response[i]["extraIng"][k]);
+                
+                getExtraIng(response[i]["extraIng"][k], response[i]["price"], "n");
+            }
+        }
 
         tr.appendChild(name);
         tr.appendChild(price);
@@ -107,10 +118,31 @@ function plusQunatity(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
-//            console.log(response);
+            console.log(response);
             var price = document.getElementById("price-" + productId);
             price.innerHTML = response;
 
+        }
+    };
+    request.send();
+}
+
+function getExtraIng(ingId, productPrice, containerId) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "ProductsController.php?extraIngId=" + ingId);
+    
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var response = JSON.parse(this.responseText);
+//            console.log(response);
+            var price = document.getElementById("price-" + productPrice);
+            price.innerHTML = Number(price.innerHTML) + Number(response["price"]);
+            
+            var ingName = document.createElement("h5");
+            ingName.setAttribute("id", "ing");
+            ingName.innerHTML = "Extra Engredient: " + response["name"];
+            var container = document.getElementById(containerId);
+            container.appendChild(ingName);
         }
     };
     request.send();

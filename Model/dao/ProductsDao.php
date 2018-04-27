@@ -31,7 +31,7 @@ class ProductsDao extends DbConnection {
     }
 
     public function getIngrById($ingredientId) {
-        $query = "SELECT i.id, i.price 
+        $query = "SELECT i.id, i.price, i.name
         FROM dominos.ingredients as i WHERE i.id = ?;";
         
         $stmt = $this->getConnection()->prepare($query);

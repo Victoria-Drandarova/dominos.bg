@@ -306,3 +306,9 @@ h2 {
     color: white;
 }
 
+#ing{
+    /*margin-left: 20%;*/
+    font-size: 1.2em;
+    color: tomato;
+    font-style: oblique;
+}

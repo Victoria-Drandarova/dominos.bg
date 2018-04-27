@@ -2,7 +2,6 @@
 
 namespace Controller;
 
-
 spl_autoload_register(function ($class) {
 
     $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
@@ -42,12 +41,12 @@ class ProductsController {
                 echo "You allready have this food in your cart :)";
             }
 
-            header("Location: ../View/some.php");
+//            header("Location: ../View/some.php");
         } else {
             //todo return err msg
         }
     }
-    
+
     public function addExtraIngToProd($ingId, $prdId) {
         try {
             $ingredients = new ProductsDao();
@@ -57,6 +56,7 @@ class ProductsController {
 
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
                     $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
+
                     echo $r["price"];
 //                    header("Location: ../View/some.php");
                 } else {
@@ -79,7 +79,8 @@ class ProductsController {
             header("Location: ../index.php?page=errpage");
         }
     }
-    public function removeExtraIngToProd($ingId, $prdId) {
+
+    public function removeExtraIngFromProd($ingId, $prdId) {
         try {
             $ingredients = new ProductsDao();
             $r = $ingredients->getIngrById($ingId);
@@ -88,16 +89,17 @@ class ProductsController {
 
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
 //                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
+                    array_values('array_values', $_SESSION["cart"][$prdId]["extraIng"]);
                     $cnt = count($_SESSION["cart"][$prdId]["extraIng"]);
-                    for ($i = 0;  $i <  $cnt; $i++) {
-                        if (in_array($r["id"], $_SESSION["cart"][$prdId]["extraIng"][$i])) {
+                    for ($i = 0; $i < $cnt; $i++) {
+                        if ($_SESSION["cart"][$prdId]["extraIng"][$i] == $r["id"]) {
                             /* this is under counstruct */
                             unset($_SESSION["cart"][$prdId]["extraIng"][$i]);
                             break;
                         }
                     }
-//                    echo $r["price"];
-                    header("Location: ../View/some.php");
+                    echo $r["price"];
+//                    header("Location: ../View/some.php");
                 } else {
                     //todo return err msg
                 }
@@ -149,6 +151,16 @@ class ProductsController {
             } else {
                 //to do return  err msg
             }
+        } else {
+            //todo return err msg
+        }
+    }
+
+    public function getExtraIng($extraIngId) {
+        if (isset($_SESSION["cart"])) {
+            $ingredients = new ProductsDao();
+            $r = $ingredients->getIngrById($extraIngId);
+            echo json_encode($r);
         } else {
             //todo return err msg
         }
@@ -307,5 +319,11 @@ if (isset($_POST["minusIngId"]) && isset($_POST["minusPrdId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_POST["minusIngId"]));
     $prodId = trim(htmlentities($_POST["minusPrdId"]));
-    echo $products->removeExtraIngToProd($ingId, $prodId);
+    echo $products->removeExtraIngFromProd($ingId, $prodId);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["extraIngId"])) {
+    $products = ProductsController::getInstance();
+    $ingId = trim(htmlentities($_GET["extraIngId"]));
+    echo $products->getExtraIng($ingId);
 }

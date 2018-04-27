@@ -150,6 +150,24 @@ function getCategories(productId) {
     };
     request.send();
 }
+
+function addToCart(productId) {
+
+    var request = new XMLHttpRequest();
+    request.open("POST", "ProductsController.php");
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var response = this.responseText;
+//            console.log(response);
+            alert(response);
+
+
+        }
+    };
+    request.send("proId=" + productId);
+}
+
 function addExtraPrice(ingId, productId) {
 
     var getProductId = document.getElementById("check-" + ingId);
@@ -173,7 +191,7 @@ function minusExtraPrice(ingId, productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = this.responseText;
-            console.log(resp);
+//            console.log(resp);
             var price = document.getElementById("pizza-info-price");
             price.innerHTML = Number(price.innerHTML) - Number(resp);
         }
@@ -182,22 +200,6 @@ function minusExtraPrice(ingId, productId) {
 
 }
 
-function addToCart(productId) {
-
-    var request = new XMLHttpRequest();
-    request.open("POST", "ProductsController.php");
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            var response = this.responseText;
-//            console.log(response);
-            alert(response);
-
-
-        }
-    };
-    request.send("proId=" + productId);
-}
 
 function addExtraIngr(ingId, toProductId) {
     var request = new XMLHttpRequest();
@@ -206,6 +208,7 @@ function addExtraIngr(ingId, toProductId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = this.responseText;
+//            console.log(resp);
             var price = document.getElementById("pizza-info-price");
             price.innerHTML = Number(price.innerHTML) + Number(resp);
         }
