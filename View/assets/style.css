@@ -305,4 +305,7 @@ h2 {
     background-color: #4CAF50;
     color: white;
 }
-
+.first{
+    margin-top: 5%;
+    float: left;
+}
