@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Martin
@@ -8,13 +9,9 @@
 
 namespace Controller;
 namespace Model;
+session_start();
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
-
-session_start();
-
-//use Model\UserDao;
-//use Model\User;
 
 
 
@@ -31,23 +28,32 @@ if(isset($_POST['login'])) {
     try {
         $email = trim(htmlentities($_POST['email']));
         $pass = trim(htmlentities($_POST['password']));
-
         $user = new User($email, sha1($pass));
         $pdo = new UserDao();
+//        setcookie("email", $email);
 
         if(empty($email) || empty($pass)) {
             header("Location: ../Controller/indexController.php?page=loginFailed");
         }
         else {
             $result = $pdo->checkUserLogin($user);
-
+//            catch (\PDOException $e){
+//                //TODO redirect to error page
+//                header("Location: ");
+//            }
             if($result) {
 
                 $id = $pdo->getUserId($user);
                 $user->setId($id);
                 $details = $pdo->getUserDetailsById($user);
-                $_SESSION['user'] = $details;
+                $_SESSION['userDetails'] = [];
+                $new =      ["fName" => $details['first_name'],
+                             "lName" => $details['last_name'],
+                              "email" => $details['email']
+                                                            ];
+                $_SESSION['userDetails'] = $new;
                 $_SESSION["logged_user"] = true;
+
                 header("Location:  ../Controller/indexController.php?page=main");
 
 

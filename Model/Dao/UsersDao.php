@@ -144,28 +144,23 @@ class UserDao {
     }
 
     public function checkUserLogin(User $user) {
-        try {
-
-            $query = $this->pdo->prepare("SELECT COUNT(*) as rows FROM users WHERE email = ? AND password = ?");
-            $query->execute(array($user->getEmail(), $user->getPassword()));
-            $result = $query->fetch(\PDO::FETCH_ASSOC);
-            if ($result['rows'] > 0) {
-                return true;
-            } else if($result['rows'] === 0){
-                return false;
-            }
-        }
-        catch(\Exception $e) {
-
+        $query = $this->pdo->prepare("SELECT COUNT(*) as rows FROM users WHERE email = ? AND password = ?");
+        $query->execute(array($user->getEmail(), $user->getPassword()));
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        if ($result['rows'] > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     public function checkIfUserEmailExists(User $user) {
         try {
-            $query = $this->pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
+            $query = $this->pdo->prepare("SELECT COUNT(*) as rows FROM users WHERE email = ?");
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
-            if ($result > 0) {
+            if ($result['rows'] > 0) {
+                $GLOBALS[] = 'Вече е регистриран потребител с този емайл.';
                 return true;
             } else {
                 return false;
@@ -202,7 +197,6 @@ class UserDao {
             );
         }
         catch(\Exception $e) {
-
         }
 
         }
@@ -217,6 +211,19 @@ class UserDao {
         catch(\Exception $e) {
 
         }
+
+        }
+
+        public function getUserDetailsByEmail(User $user) {
+            try {
+                $query = $this->pdo->prepare("SELECT first_name, last_name, email FROM users WHERE email = ?");
+                $query->execute(array($user->getEmail()));
+                $result = $query->fetch(\PDO::FETCH_ASSOC);
+                return $result;
+            }
+            catch(\Exception $e) {
+
+            }
 
         }
 

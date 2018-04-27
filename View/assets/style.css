@@ -265,3 +265,15 @@ input[type=submit]:hover {
     border: 1px solid activeborder;
     text-align: center;
 }
+.one{
+    padding-right: 2%;
+    padding-left: 2%;
+    font-style: italic;
+    color: black;
+    background-color: white;
+
+}
+h2 {
+    padding-left:33%;
+    padding-top: 2%;
+}

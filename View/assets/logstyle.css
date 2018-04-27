@@ -64,6 +64,7 @@ body {margin:0;font-family:Arial}
 
 .dropdown:hover .dropdown-content {
     display: block;
+    z-index:  10000;
 }
 
 @media screen and (max-width: 600px) {
