@@ -9,7 +9,10 @@
 
 namespace Controller;
 namespace Model;
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
 
@@ -46,12 +49,12 @@ if(isset($_POST['login'])) {
                 $id = $pdo->getUserId($user);
                 $user->setId($id);
                 $details = $pdo->getUserDetailsById($user);
-                $_SESSION['userDetails'] = [];
+                $_SESSION["userDetails"];
                 $new =      ["fName" => $details['first_name'],
                              "lName" => $details['last_name'],
                               "email" => $details['email']
                                                             ];
-                $_SESSION['userDetails'] = $new;
+                $_SESSION["userDetails"] = $new;
                 $_SESSION["logged_user"] = true;
 
                 header("Location:  ../Controller/indexController.php?page=main");

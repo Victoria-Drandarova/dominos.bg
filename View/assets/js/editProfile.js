@@ -13,7 +13,8 @@ function setDetails() {
          }
 
     };
-    objReq.open("get", "../Controller/editProfileController.php");
+    objReq.open("get", "editProfileController.php");
     objReq.send();
 }
+setDetails();
 
