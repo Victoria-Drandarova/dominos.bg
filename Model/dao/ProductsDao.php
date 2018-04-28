@@ -17,6 +17,9 @@ use Model\dao\DbConnection;
  * @author denis
  */
 class ProductsDao extends DbConnection {
+    
+    const PIZZA = 1;
+    
 
     public function getSingleProduct($productId) {
 
@@ -32,7 +35,7 @@ class ProductsDao extends DbConnection {
 
     public function getIngrById($ingredientId) {
         $query = "SELECT i.id, i.price, i.name
-        FROM dominos.ingredients as i WHERE i.id = ?;";
+        FROM ingredients as i WHERE i.id = ?;";
         
         $stmt = $this->getConnection()->prepare($query);
         $param = [$ingredientId];
@@ -61,9 +64,9 @@ class ProductsDao extends DbConnection {
     public function getAllPizza() {
 
         $query = "SELECT id, name, price, img_url, category_id
-                 FROM products WHERE category_id = 1;";
+                 FROM products WHERE category_id = ?;";
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute();
+        $stmt->execute([self::PIZZA]);
 
         $arrayOfPizzas = [];
         while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {

@@ -35,13 +35,14 @@ class ProductsController {
             if (!in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
                 /* set default quantity  to  1 */
                 $success["quantity"] = 1;
+//                $success["extraIng"] = [];
                 $_SESSION["cart"][$success["id"]] = $success;
                 echo "You added " . $success['name'] . " in  your cart!";
             } else {
                 echo "You allready have this food in your cart :)";
             }
 
-//            header("Location: ../View/some.php");
+            header("Location: ../View/some.php");
         } else {
             //todo return err msg
         }
@@ -237,6 +238,21 @@ class ProductsController {
             header("Location: ../index.php?page=errpage");
         }
     }
+    
+    public function isInExtraList($ingrId, $productId) {
+        $proDao = new ProductsDao();
+        $ingrData = $proDao->getIngrById($ingrId);
+        $empty = true;
+        foreach ($_SESSION["cart"][$productId]["extraIng"] as  &$inId) {
+            if ($ingrData["id"] == $inId) {
+                echo $ingrData["price"];
+                $empty = false;
+            }
+        }
+        if ($empty) {
+            echo 0;
+        }
+    }
 
     public function getIngByCategory($categoryId) {
 
@@ -326,4 +342,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["extraIngId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_GET["extraIngId"]));
     echo $products->getExtraIng($ingId);
+}
+
+if (isset($_GET["iId"]) && isset($_GET["proId"])) {
+    $products = ProductsController::getInstance();
+    $ingId = trim(htmlentities($_GET["iId"]));
+    $proId = trim(htmlentities($_GET["proId"]));
+    return $products->isInExtraList($ingId, $proId);
 }

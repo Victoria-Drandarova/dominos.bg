@@ -125,13 +125,42 @@ function getCategories(productId) {
                         var catWrap = document.getElementById("cat-wrap");
                         var ul = document.createElement("ul");
                         for (var k in res) {
-                            var li = document.createElement("li");
-                            li.innerHTML = res[k]["name"];
 
                             var checkbox = document.createElement("input");
                             checkbox.setAttribute("value", res[k]["id"]);
                             checkbox.setAttribute("id", "check-" + res[k]["id"]);
                             checkbox.setAttribute("type", "checkbox");
+
+                            var XML = new XMLHttpRequest();
+                            XML.open("GET", "ProductsController.php?iId=" + res[k]["id"]
+                                    + "&proId=" + productId);
+                            XML.onreadystatechange = function () {
+                                if (this.readyState === 4 && this.status === 200) {
+                                    var r = this.responseText;
+//                                    console.log(r);
+                                    if (r > 0) {
+//                                        console.log(r);
+                                        checkbox.checked = true;
+                                        var price = document.getElementById("pizza-info-price");
+                                        price.innerHTML = Number(price.innerHTML)
+                                                + Number(r);
+//                                        
+                                    } else {
+                                        if (r < 1) {
+                                            checkbox.checked = false;
+                                            checkbox.addEventListener("click", function () {
+                                                minusExtraPrice(res[k]["id"], productId);
+                                                ;
+                                            });
+                                        }
+                                    }
+                                }
+                            };
+                            XML.send();
+                            var li = document.createElement("li");
+                            li.innerHTML = res[k]["name"];
+
+
                             li.appendChild(checkbox);
 
                             checkbox.addEventListener("click", function () {
@@ -159,8 +188,8 @@ function addToCart(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
-//            console.log(response);
-            alert(response);
+            console.log(response);
+//            alert(response);
 
 
         }
