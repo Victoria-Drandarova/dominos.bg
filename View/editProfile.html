@@ -1,15 +1,5 @@
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Add icon library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="../View/assets/loginRegistration.css" rel="stylesheet" type="text/css">
-
-</head>
-<body>
 <section id="login">
     <!--<form action="../Controller/UserController.php" method="post" style="max-width:500px;margin:auto">-->
     <div style="max-width:500px;margin:auto">
@@ -41,18 +31,35 @@
             <i class="fa fa-key icon"></i>
             <input class="input-field" id="rpass" type="password" placeholder="Повторете паролата" name="rpassword">
         </div>
-        <button type="submit" onclick="" name="editProfile" class="btn">Запазете промените</button>
+        <button type="submit" onclick="editInfo();" name="editProfile" class="btn">Запазете промените</button>
     </div>
     <!--</form>-->
-    <div id="err-list">
+    <div id="error-list">
 
     </div>
 
 </section>
+
+<script src="../View/assets/js/showProfile.js">
+    // var objReq = new XMLHttpRequest();
+    // objReq.onreadystatechange = function () {
+    //     if(this.readyState == 4 && this.status == 200) {
+    //         var response = JSON.parse(this.responseText);
+    //         document.getElementById("f_name").setAttribute("value", response.first_name);
+    //         document.getElementById("l_name").setAttribute("value", response.last_name);
+    //         document.getElementById("email").setAttribute("value", response.email);
+    //         // alert(this.responseText);
+    //     }
+    //
+    // }
+    // objReq.open("get", "../Controller/showProfileController.php");
+    // objReq.send();
+</script>
 <script src="../View/assets/js/editProfile.js">
 
 </script>
-</body>
-</html>
+
+
+
 
 

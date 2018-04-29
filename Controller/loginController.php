@@ -47,14 +47,11 @@ if(isset($_POST['login'])) {
             if($result) {
 
                 $id = $pdo->getUserId($user);
-                $user->setId($id);
-                $details = $pdo->getUserDetailsById($user);
-                $_SESSION["userDetails"];
-                $new =      ["fName" => $details['first_name'],
-                             "lName" => $details['last_name'],
-                              "email" => $details['email']
-                                                            ];
-                $_SESSION["userDetails"] = $new;
+//                $user->setId($id);
+//                $details = $pdo->getUserDetailsById($user);
+                $_SESSION["userId"] = $id;
+                $_SESSION["userDetails"] = [];
+                $_SESSION["userDetails"]["email"] = $email;
                 $_SESSION["logged_user"] = true;
 
                 header("Location:  ../Controller/indexController.php?page=main");

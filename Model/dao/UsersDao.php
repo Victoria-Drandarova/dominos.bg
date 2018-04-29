@@ -160,7 +160,6 @@ class UserDao {
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             if ($result['rows'] > 0) {
-                $GLOBALS[] = 'Вече е регистриран потребител с този емайл.';
                 return true;
             } else {
                 return false;
@@ -188,13 +187,16 @@ class UserDao {
 
     public function editUserProfile(User $user) {
         try {
-            $query = $this->pdo->prepare("UPDATE users SET (first_name, last_name, email, password) 
-                                                                      VALUES (?, ?, ?, ?)");
+//            $id = $user->getId();
+//            $query = $this->pdo->prepare("UPDATE users SET (first_name, last_name, email, password)
+//                                                                      VALUES (?, ?, ?, ?) WHERE id=?");
+            $query = $this->pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, password=? WHERE id=?");
             $query->execute(array($user->getFirstName(),
-                    $user->getLastName(),
-                    $user->getEmail(),
-                    $user->getPassword())
-            );
+                                  $user->getLastName(),
+                                  $user->getEmail(),
+                                  $user->getPassword(),
+                                  $user->getId()));
+
         }
         catch(\Exception $e) {
         }
@@ -207,8 +209,10 @@ class UserDao {
             $query->execute(array($user->getId()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             return $result;
+
         }
         catch(\Exception $e) {
+
 
         }
 
@@ -220,6 +224,7 @@ class UserDao {
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             return $result;
+
         }
         catch(\Exception $e) {
 
@@ -229,15 +234,47 @@ class UserDao {
 
     public function getUserId(User $user) {
         try {
-            $query = $this->pdo->prepare("SELECT id FROM users WHERE email = ?");
+            $query = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
-            return $result;
+            $id = $result['id'];
+            return $id;
+//            if($result['id'] != '') {
+//                return $result['id'];
+//            }
+//            else{
+//                return false;
+//            }
+
         }
         catch(\Exception $e) {
-
+            return 0;
         }
 
+    }
+
+    public function getPassword(User $user) {
+
+        $query =$this->pdo->prepare("SELECT password FROM users WHERE email = ?");
+        $query->execute(array($user->getEmail()));
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        if($result) {
+            return $result['password'];
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function insertAddress(User $user) {
+
+        $query =$this->pdo->prepare("INSERT INTO adress (town, hood, bl, entrance) VALUES (?, ?, ?, ?)");
+        $query->execute(array($user->getCity(),
+                              $user->getNeighborhood(),
+                              $user->getBlok(),
+                              $user->getEntrance()));
+
+//        $result = $query->fetch(\PDO::FETCH_ASSOC);
     }
 
 }

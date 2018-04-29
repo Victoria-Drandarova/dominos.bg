@@ -1,53 +1,119 @@
 <?php
-namespace Controller;
 
-//include '../Model/User.php';
-//include '../Model/Dao/UsersDao.php';
-include '../Controller/loginController.php';
+
+namespace Controller;
+namespace Model;
+include '../Model/User.php';
+include '../Model/Dao/UsersDao.php';
+
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 
-$details = $_SESSION['userDetails'];
-
+$error="";
+$GLOBALS['error'];
 function __autoload($class) {
     $class = "..\\" . $class;
     require_once str_replace("\\", "/", $class) . ".php";
 }
-echo json_encode($_SESSION['userDetails']);
-//$user = new User();
-//$userEmail = $userDetailsArray['email'];
-//$userFirstName = $userDetailsArray['first_name'];
-//$userLastName = $userDetailsArray['last_name'];
 
-//$userDetails = [
-//                      'email' => $userEmail,
-//                      'fName' => $userFirstName,
-//                      'lName' => $userLastName,
-//                                                ];
 
-//$test = ["test"];
+//if(isset($_POST["editProfile"])); {
 
-//$email = $_COOKIE["email"];
-//$user = new User($email);
-//$pdo = new UserDao();
-//$details = array();
-//$details = $pdo->getUserDetailsByEmail($user);
+        $firstName = $_POST['f_name'];
+        $lastName = $_POST['l_name'];
+        $email = $_POST['email'];
+        $oldPass = $_POST['oldpass'];
+        $password = $_POST['password'];
+        $rPassword = $_POST['rpassword'];
 
-//$userFirstName = $details['fName'];
-//$userLastName = $details['lName'];
-//$userEmail = $details['email'];
-//
-//if(strlen($userEmail) == 0 || strlen($userFirstName) == 0 || strlen($userLastName) == 0) {
-//    $errorMessage = "Имаше проблем със изписването на вашите данни!";
-//    echo json_encode($errorMessage);
-//
+
+        if(checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $rPassword)
+            && checkTextLength($email, $password, $firstName, $lastName)
+            && checkEmail($email) && checkOldPass($oldPass) && checkPasswords($password, $rPassword)) {
+
+            $pdo = new UserDao();
+            $userUpdate = new User($email, sha1($password), $firstName, $lastName);
+            $id = $_SESSION["userId"];
+            $userUpdate->setId($id);
+            $pdo->editUserProfile($userUpdate);
+            $_SESSION["userDetails"]["email"] = $email;
+            $GLOBALS['success'] = 'Успешно редактирахте профила си.';
+            echo json_encode($GLOBALS['success']);
+
+
+//            header("Location:  ../Controller/indexController.php?page=main");
+        }
+        else {
+            echo json_encode($GLOBALS['error']);
+        }
+
+
 //}
-//else {
-//    echo json_encode($details);
-//}
+
+
+
+
+
+function checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $rPassword) {
+    if (strlen($firstName) == 0 || strlen($lastName) == 0 || strlen($email) == 0
+            || strlen($oldPass) == 0 || strlen($password) == 0 || strlen($rPassword) == 0) {
+        $GLOBALS['error'] = 'Моля попълнете всички полета!';
+//        $GLOBALS['test'] = ''.$oldPass;
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function checkTextLength($email, $password, $firstName, $lastName) {
+    if(strlen($email) > 50 || strlen($password) > 50 || strlen($firstName) > 50 || strlen($lastName) > 50
+        || strlen($password) < 6 || strlen($firstName) < 2 || strlen($lastName) < 5) {
+        $GLOBALS['error'] =  'Въведените данни са твърде дълги или твърде къси!';
+        return false;
+    }
+    else {
+        return true;
+    }
+
+}
+
+function checkEmail($email) {
+    if(strpos($email, "@") === false || strpos($email, ".") === false) {
+        $GLOBALS['error'] =  'Невалиден емайл адрес.';
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+function checkPasswords($password, $rPassword) {
+    if ($password != $rPassword) {
+        $GLOBALS['error'] = 'Паролите не съвпадат.';
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function checkOldPass($oldPass) {
+    $user = new User($_SESSION["userDetails"]["email"]);
+    $pdo = new UserDao();
+    $result = $pdo->getPassword($user);
+
+    if (sha1($oldPass) != $result) {
+        $GLOBALS['error'] = 'Въведената стара парола не е вярна!';
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+
 
 
 

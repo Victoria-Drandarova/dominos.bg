@@ -21,7 +21,7 @@ class User {
     private $blok;
     private $entrance;
 
-    public function __construct($email, $password = null, $f_name = null, $l_name = null, $id = null, $city = null,
+    public function __construct($email = null, $password = null, $f_name = null, $l_name = null, $id = null, $city = null,
                                 $neighborhood = null, $blok = null, $entrance = null)
     {
 

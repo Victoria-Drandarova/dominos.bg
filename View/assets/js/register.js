@@ -1,4 +1,7 @@
+
 function register(){
+
+
     var first_name = document.getElementById("f_name").value;
     var last_name = document.getElementById("l_name").value;
     var email = document.getElementById("email").value;
@@ -14,15 +17,11 @@ function register(){
             var containerId = "err-list";
             generateErrList(response, containerId);
         }
-    }
+    };
 
     request.send("f_name=" +  first_name + "&l_name=" + last_name +
     "&email=" + email + "&password=" + pass + "&rpassword=" + rpass);
-    var result;
-    $.get("../Controller/registerController.php", function(data) {
-        result = data;
-    });
-    checkRegistration(result);
+
 }
 //index.php?name=viki&pass=123
 
@@ -40,12 +39,3 @@ function generateErrList(err, containerId){
 
 }
 
-function checkRegistration(regResult) {
-    if (regResult === true) {
-
-        window.location = "../Controller/indexController.php?page=login";
-    }
-    else {
-        generateErrList("Лошо", "err-list");
-    }
-}

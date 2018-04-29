@@ -1,0 +1,32 @@
+<section id="login" style="width: 500px;margin-bottom: 15%; margin-left: 30%">
+    <!--<form action="../Controller/addressController.php" method="post" style="max-width:500px;margin:auto">-->
+        <h2>Форма за добавяне на нов адрес</h2>
+        <div class="input-container">
+            <i class="fa fa-home icon"></i>
+            <input class="input-field" id="city" type="text" placeholder="Град">
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-home icon"></i>
+            <input class="input-field" id="hood" type="text" placeholder="Квартал">
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-home icon"></i>
+            <input class="input-field" id="blok" type="text" placeholder="Блок">
+        </div>
+        <div class="input-container">
+            <i class="fa fa-home icon"></i>
+            <input class="input-field" id="entrance" type="text" placeholder="Вход">
+        </div>
+        <button type="submit" onclick="setValues()" name="addAddress" class="btn">Добави</button>
+    <!--</form>-->
+    <div id="addressError">
+
+    </div>
+
+</section>
+
+<script src="../View/assets/js/addAddress.js">
+
+</script>
