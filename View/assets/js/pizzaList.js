@@ -136,20 +136,32 @@ function getCategories(productId) {
                                     + "&proId=" + productId);
                             XML.onreadystatechange = function () {
                                 if (this.readyState === 4 && this.status === 200) {
-                                    var r = this.responseText;
+                                    var r = JSON.parse(this.responseText);
 //                                    console.log(r);
-                                    if (r > 0) {
+
+                                    if (r) {
+//                                        alert(r["id"]);
 //                                        console.log(r);
-                                        checkbox.checked = true;
+                                        var cb = document.getElementById("check-" + r.id);
+                                        cb.checked = true;
+                                        
+                                        if (cb.checked === false) {
+                                            cb.checked = true;
+                                        }
                                         var price = document.getElementById("pizza-info-price");
                                         price.innerHTML = Number(price.innerHTML)
-                                                + Number(r);
-//                                        
+                                                + Number(r["price"]);
+                                        cb.addEventListener("click", function () {
+                                            minusExtraPrice(r["id"], productId);
+                                            ;
+                                        });
+
                                     } else {
-                                        if (r < 1) {
+                                        if (!r) {
+                                            console.log("nqma");
                                             checkbox.checked = false;
                                             checkbox.addEventListener("click", function () {
-                                                minusExtraPrice(res[k]["id"], productId);
+                                                addExtraPrice(r["id"], productId);
                                                 ;
                                             });
                                         }
@@ -189,8 +201,6 @@ function addToCart(productId) {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
             console.log(response);
-//            alert(response);
-
 
         }
     };
@@ -220,7 +230,7 @@ function minusExtraPrice(ingId, productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = this.responseText;
-//            console.log(resp);
+            console.log(resp);
             var price = document.getElementById("pizza-info-price");
             price.innerHTML = Number(price.innerHTML) - Number(resp);
         }
@@ -229,7 +239,6 @@ function minusExtraPrice(ingId, productId) {
 
 }
 
-
 function addExtraIngr(ingId, toProductId) {
     var request = new XMLHttpRequest();
     request.open("POST", "ProductsController.php");
@@ -237,7 +246,7 @@ function addExtraIngr(ingId, toProductId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = this.responseText;
-//            console.log(resp);
+            console.log(resp);
             var price = document.getElementById("pizza-info-price");
             price.innerHTML = Number(price.innerHTML) + Number(resp);
         }

@@ -20,7 +20,7 @@ function getCartContent() {
 getCartContent();
 
 function generateCartList(response, containerId) {
-
+    console.log(response);
     var basicContent = document.getElementById(containerId);
     var table = document.createElement('table');
 
@@ -54,7 +54,7 @@ function generateCartList(response, containerId) {
     table.appendChild(tr);
 
     for (var i in response) {
-
+        
         var tr = document.createElement('tr');
 
         var name = document.createElement('td');
@@ -72,8 +72,10 @@ function generateCartList(response, containerId) {
         name.innerHTML = response[i]["name"];
         price.innerHTML = response[i]["price"];
         price.setAttribute("id", "price-" + response[i]["price"]);
+        
         quantity.innerHTML = response[i]["quantity"];
         quantity.setAttribute("id", "price-" + response[i]["id"]);
+        
         img.src = "../View/assets/images/" + response[i]["img_url"];
 
         plus.innerHTML = "Add one more";

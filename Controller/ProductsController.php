@@ -35,14 +35,14 @@ class ProductsController {
             if (!in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
                 /* set default quantity  to  1 */
                 $success["quantity"] = 1;
-//                $success["extraIng"] = [];
+                $success["extraIng"] = [];
                 $_SESSION["cart"][$success["id"]] = $success;
                 echo "You added " . $success['name'] . " in  your cart!";
             } else {
                 echo "You allready have this food in your cart :)";
             }
 
-            header("Location: ../View/some.php");
+//            header("Location: ../View/some.php");
         } else {
             //todo return err msg
         }
@@ -54,9 +54,9 @@ class ProductsController {
             $r = $ingredients->getIngrById($ingId);
 
             if (isset($_SESSION["cart"])) {
-
+                
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
+                    $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = &$r["id"];
 
                     echo $r["price"];
 //                    header("Location: ../View/some.php");
@@ -84,22 +84,20 @@ class ProductsController {
     public function removeExtraIngFromProd($ingId, $prdId) {
         try {
             $ingredients = new ProductsDao();
-            $r = $ingredients->getIngrById($ingId);
+            $resultIng = $ingredients->getIngrById($ingId);
 
             if (isset($_SESSION["cart"])) {
 
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-//                    $_SESSION["cart"][$prdId]["extraIng"][] = $r["id"];
-                    array_values('array_values', $_SESSION["cart"][$prdId]["extraIng"]);
-                    $cnt = count($_SESSION["cart"][$prdId]["extraIng"]);
-                    for ($i = 0; $i < $cnt; $i++) {
-                        if ($_SESSION["cart"][$prdId]["extraIng"][$i] == $r["id"]) {
-                            /* this is under counstruct */
-                            unset($_SESSION["cart"][$prdId]["extraIng"][$i]);
-                            break;
+                    
+                    foreach ($_SESSION["cart"][$prdId]["extraIng"] as $ing){
+                        if ($ingId == $ing) {
+                            
+                            unset($_SESSION["cart"][$prdId]["extraIng"][$ingId]);
+                            return $resultIng["price"];
+                            
                         }
                     }
-                    echo $r["price"];
 //                    header("Location: ../View/some.php");
                 } else {
                     //todo return err msg
@@ -127,8 +125,8 @@ class ProductsController {
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
-                $q = $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
-                return $_SESSION["cart"][$productId]["quantity"];
+                $q = $_SESSION["cart"][$productId]["quantity"] = &$_SESSION["cart"][$productId]["quantity"] + 1;
+                return $q;
             } else {
                 //todo return err msg
             }
@@ -244,8 +242,8 @@ class ProductsController {
         $ingrData = $proDao->getIngrById($ingrId);
         $empty = true;
         foreach ($_SESSION["cart"][$productId]["extraIng"] as  &$inId) {
-            if ($ingrData["id"] == $inId) {
-                echo $ingrData["price"];
+            if ($ingrId == $inId) {
+                echo json_encode($ingrData);
                 $empty = false;
             }
         }
