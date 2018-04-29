@@ -12,6 +12,10 @@ use Model\PurchaseModel;
 use Model\dao\PurchaseDao;
 use Controller\ValidationRules\Validation;
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 /**
  * Description of PurchaseController
  *
@@ -27,39 +31,31 @@ class PurchaseController {
 
     public static function getInstance() {
         if (!self::$instance) {
-            self::$instance = new ProductsController();
+            self::$instance = new PurchaseController();
         }
         return self::$instance;
     }
 
     public function insertPurchase() {
-        $clearData = Validation::clearData();
-
-        $userId = $clearData($_SESSION["id"]);
 
         $purchaseDao = new PurchaseDao();
-        try {
+        
+        /* tazi edenica trqbwa  da se zamesti ot potrebitelskoto ID*/
+        $orderId = $purchaseDao->insertOrder(1);
 
-            /* $_SESSION["product_id"], $_SESSION["quantity"] */
-            /* $_SESSION["products_count"] */
-            $orderId = $purchaseDao->insertOrder($userId);
-
-            $purchaseModel = new PurchaseModel($orderId, $productId, $quantity);
-
-            /*
-             * for($i = 0; $i < $_SESSION["products_count"]; $i++ ){
-             *      
-             *          $purchaseDao->insertHistory($purchaseModel);
-             * }
-             */
-        } catch (\PDOException $exp) {
-            
+        foreach ($_SESSION["cart"] as $proId) {
+            $purchaseModel = new PurchaseModel(1, $orderId, $proId["id"], $proId["quantity"]);
+            $purchaseDao->insertHistory($purchaseModel);
         }
+        unset($_SESSION["cart"]);
+        echo "success";
     }
 
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["finish_order"])) {
     $purchaseController = PurchaseController::getInstance();
+
+    echo $purchaseController->insertPurchase();
 }
 

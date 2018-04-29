@@ -279,22 +279,21 @@ h2 {
     padding-top: 2%;
 }
 
-
-
-
 #product-table {
-    margin-left: 5%;
+    margin: 0 auto;
+    padding: 10px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
 #product-table td, #product-table th {
+    padding: 10px;
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#product-table tr:nth-child(even){background-color: #f2f2f2;}
+#product-table tr:nth-child(even){background-color: #ddd;}
 
 #product-table tr:hover {background-color: #ddd;}
 
@@ -311,4 +310,14 @@ h2 {
     font-size: 1.2em;
     color: tomato;
     font-style: oblique;
+}
+#finish{
+    width: 250px;
+    padding: 10px;
+    margin-left: 36%;
+    background-color: #ccc;
+    color: coral;
+}
+#btn-wrap{
+    padding: 20px;
 }

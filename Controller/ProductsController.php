@@ -18,6 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
 class ProductsController {
 
     private static $instance;
+    const MAX_PRODUCT = 10;
 
 //    private function __construct() {}
 
@@ -125,8 +126,11 @@ class ProductsController {
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
-                $q = $_SESSION["cart"][$productId]["quantity"] = &$_SESSION["cart"][$productId]["quantity"] + 1;
-                return $q;
+                if ($_SESSION["cart"][$productId]["quantity"] === self::MAX_PRODUCT) {
+                    return false;
+                }
+                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
+                return $_SESSION["cart"][$productId]["quantity"];
             } else {
                 //todo return err msg
             }
@@ -168,7 +172,7 @@ class ProductsController {
     public function getCartContent() {
         // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
         if (isset($_SESSION["cart"])) {
-
+            
             return json_encode($_SESSION["cart"]);
         } else {
             //todo return err msg

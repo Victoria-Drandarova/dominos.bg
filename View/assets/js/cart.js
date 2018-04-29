@@ -9,8 +9,6 @@ function getCartContent() {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
-            
-            
 
             generateCartList(response, "cart_content");
         }
@@ -25,6 +23,7 @@ function generateCartList(response, containerId) {
     var table = document.createElement('table');
 
     table.setAttribute("id", "product-table");
+
     var tr = document.createElement('tr');
 
     var productName = document.createElement('th');
@@ -54,28 +53,37 @@ function generateCartList(response, containerId) {
     table.appendChild(tr);
 
     for (var i in response) {
-        
-        var tr = document.createElement('tr');
 
+        var tr = document.createElement('tr');
+        var id = response[i]["id"];
         var name = document.createElement('td');
-        name.setAttribute("id", "n");
+        name.setAttribute("id", "n-" + id);
+
         var price = document.createElement('td');
         var quantity = document.createElement('td');
         var img = document.createElement('img');
-
+        var total = document.createElement("p");
+        
         var plus = document.createElement('button');
         plus.setAttribute("value", response[i]["id"]);
 
         var minus = document.createElement('button');
         minus.setAttribute("value", response[i]["id"]);
-        
+
         name.innerHTML = response[i]["name"];
         price.innerHTML = response[i]["price"];
         price.setAttribute("id", "price-" + response[i]["price"]);
         
+        var priceHolder = document.createElement("input");
+        priceHolder.setAttribute("type", "hidden");
+        priceHolder.setAttribute("id", "price-" + response[i]["id"]);
+        priceHolder.setAttribute("value", price.innerHTML);
+        
+        total.innerHTML = Number(priceHolder.value);
+//        console.log(total);
         quantity.innerHTML = response[i]["quantity"];
         quantity.setAttribute("id", "price-" + response[i]["id"]);
-        
+
         img.src = "../View/assets/images/" + response[i]["img_url"];
 
         plus.innerHTML = "Add one more";
@@ -92,12 +100,12 @@ function generateCartList(response, containerId) {
 
         var minusTd = document.createElement('td');
         minusTd.appendChild(minus);
-        
+
         if (response[i]["extraIng"]) {
-            for(var k in response[i]["extraIng"]){
+            for (var k in response[i]["extraIng"]) {
 //                alert(response[i]["extraIng"][k]);
-                
-                getExtraIng(response[i]["extraIng"][k], response[i]["price"], "n");
+
+                getExtraIng(response[i]["extraIng"][k], response[i]["price"], "n-" + id);
             }
         }
 
@@ -109,18 +117,37 @@ function generateCartList(response, containerId) {
         tr.appendChild(minusTd);
 
         table.appendChild(tr);
+
     }
+
     basicContent.appendChild(table);
+
+    var finishBtn = document.createElement("BUTTON");
+    finishBtn.setAttribute("id", "finish");
+    finishBtn.innerHTML = "Finish Order";
+    
+    finishBtn.addEventListener("click", function(){
+        finishOrder();
+    });
+    
+    var divWrap = document.createElement("DIV");
+    divWrap.setAttribute("id", 'btn-wrap');
+    divWrap.appendChild(finishBtn);
+    basicContent.appendChild(divWrap);
+    basicContent.appendChild(total);
 }
 
 function plusQunatity(productId) {
     var request = new XMLHttpRequest();
     request.open("GET", "ProductsController.php?prId=" + productId);
-    
+
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
             console.log(response);
+            if (!response) {
+                return;
+            }
             var price = document.getElementById("price-" + productId);
             price.innerHTML = response;
 
@@ -132,14 +159,14 @@ function plusQunatity(productId) {
 function getExtraIng(ingId, productPrice, containerId) {
     var request = new XMLHttpRequest();
     request.open("GET", "ProductsController.php?extraIngId=" + ingId);
-    
+
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
 //            console.log(response);
             var price = document.getElementById("price-" + productPrice);
             price.innerHTML = Number(price.innerHTML) + Number(response["price"]);
-            
+
             var ingName = document.createElement("h5");
             ingName.setAttribute("id", "ing");
             ingName.innerHTML = "Extra Engredient: " + response["name"];
@@ -154,12 +181,12 @@ function getExtraIng(ingId, productPrice, containerId) {
 function minusQunatity(productId) {
     var request = new XMLHttpRequest();
     request.open("GET", "ProductsController.php?minusId=" + productId);
-    
+
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
             if (response == 0) {
-                  location.reload(); 
+                location.reload();
             }
 //            console.log(response);
             var price = document.getElementById("price-" + productId);
@@ -168,4 +195,20 @@ function minusQunatity(productId) {
         }
     };
     request.send();
+}
+
+function finishOrder(){
+    
+    var XML = new XMLHttpRequest();
+    XML.open("POST", "PurchaseController.php");
+    XML.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    XML.onreadystatechange = function(){
+        if (this.readyState === 4 && this.status === 200) {
+            var response = this.responseText;
+            if (response == "success") {
+                location.reload(); 
+            }
+        }
+    };
+    XML.send("finish_order=" + 1);
 }

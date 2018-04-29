@@ -40,11 +40,12 @@ class PurchaseDao extends DbConnection {
     }
 
     public function insertHistory(PurchaseModel $ordParams) {
+        $connection = $this->getConnection();
         try {
-            $this->getConnection()->beginTransaction();
+            $connection->beginTransaction();
             $foodInOrderQuery = "INSERT INTO foods_in_order(order_id, product_id, quantity) 
                 VALUES(?,?,?)";
-            $stmt = $this->getConnection()->prepare($foodInOrderQuery);
+            $stmt = $connection->prepare($foodInOrderQuery);
             
             $params = [
                        $ordParams->getOrderId(),
@@ -52,9 +53,11 @@ class PurchaseDao extends DbConnection {
                        $ordParams->getQuantity()
                       ];
             $stmt->execute($params);
-            $this->getConnection()->commit();
+            $connection->commit();
+            
         } catch (\PDOException $exp) {
-            $this->getConnection()->rollBack();
+            $connection->rollBack();
+            echo $exp->getMessage();
             //TODO  redirect or err msg
         }
     }
