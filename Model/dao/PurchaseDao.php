@@ -12,7 +12,7 @@ use Model\dao\DbConnection;
 
 /**
  * Purchase dao that  hold  the  queries that work  with  
- * users history 
+ * users history and  insert of purchase
  *
  * @author denis
  */
@@ -58,6 +58,24 @@ class PurchaseDao extends DbConnection {
         } catch (\PDOException $exp) {
             $connection->rollBack();
             echo $exp->getMessage();
+            //TODO  redirect or err msg
+        }
+    }
+    
+    public function extraIngrToProduct($ordId, $prodId, $ingId) {
+        $connection = $this->getConnection();
+        try {
+            $connection->beginTransaction();
+            $ingrInProduct = "INSERT INTO added_ingredients(ord_id, product_id, ingredient_id)
+                VALUES(?,?,?)";
+            $stmt = $connection->prepare($ingrInProduct);
+            $params = [$ordId, $prodId, $ingId];
+            $stmt->execute($params);
+            $connection->commit();
+            
+        } catch (\PDOException $exp) {
+            $connection->rollBack();
+            return $exp->getMessage();
             //TODO  redirect or err msg
         }
     }

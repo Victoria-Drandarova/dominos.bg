@@ -20,7 +20,6 @@ class ProductsDao extends DbConnection {
     
     const PIZZA = 1;
     
-
     public function getSingleProduct($productId) {
 
         $query = "SELECT p.id, p.name, p.price, p.img_url

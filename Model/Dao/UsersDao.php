@@ -144,7 +144,7 @@ class UserDao {
     }
 
     public function checkUserLogin(User $user) {
-        $query = $this->pdo->prepare("SELECT first_name, last_name, email FROM users
+        $query = $this->pdo->prepare("SELECT id, first_name, last_name, email FROM users
                  WHERE email = ? AND password = ?");
         $query->execute(array($user->getEmail(), $user->getPassword()));
         $result = $query->fetch(\PDO::FETCH_ASSOC);

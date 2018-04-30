@@ -321,3 +321,32 @@ h2 {
 #btn-wrap{
     padding: 20px;
 }
+
+#histoy-table {
+    margin-left: 35%;
+    margin-top: 20px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 30%;
+}
+
+#histoy-table td, #histoy-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#histoy-table tr:nth-child(even){background-color: #f2f2f2;}
+
+#histoy-tabl tr:hover {background-color: #ddd;}
+
+#histoy-table th {
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.history-btn{
+    color: #4CAF50;
+}
