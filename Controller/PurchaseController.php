@@ -41,13 +41,15 @@ class PurchaseController {
         $purchaseDao = new PurchaseDao();
         try {
             /* tazi edenica trqbwa  da se zamesti ot potrebitelskoto ID */
-            $orderId = $purchaseDao->insertOrder(1);
+            $userId = $_SESSION["userDetails"]["id"];
+            $orderId = $purchaseDao->insertOrder($userId);
 
             foreach ($_SESSION["cart"] as $proId) {
-                $purchaseModel = new PurchaseModel(1, $orderId, $proId["id"], $proId["quantity"]);
+                $purchaseModel = new PurchaseModel(
+                $userId, $orderId, $proId["id"], $proId["quantity"]);
                 $purchaseDao->insertHistory($purchaseModel);
                 /* когато в продукта има допълнителна съставка я запписваме в базата
-                 * заедно със ид-то на поръчката и продукта в които  се  садържа  
+                 * заедно със ид-то на поръчката и продукта в които се садържа  
                  */
                 if ($proId["extraIng"]) {
                     $this->addExtraIngr($orderId, $proId["id"], $proId["extraIng"]);
@@ -91,27 +93,41 @@ class PurchaseController {
         $historyDao = new HistoryDao();
         $userId = $_SESSION["userDetails"]["id"];
         $historyArray = [];
+
         try {
+            $total = 0;
             $historyResult = $historyDao->getHistory($historyId, $userId);
             if ($historyResult) {
                 /* $historyResult["id"] = productID */
                 foreach ($historyResult as $order) {
+                    $quantity = $order["quantity"];
+                    $total += $order["price"] * $quantity;
+                    
                     try {
                         $extraIngr = $historyDao->getExtraIngr($order["id"], $historyId);
+                        if ($extraIngr) {//ако има допълнителни съставки вземи им цената и я добави
+                            foreach ($extraIngr as $price) {
+                                $price = $price["price"] * $quantity;
+                                $total += $price;
+                                
+                            }
+                        }
+                        
                     } catch (\PDOException $exp) {
                         return $exp->getMessage();
                     }
                 }
-
-                /* @var $extraIngr array */
+               
                 if ($extraIngr) {
                     $historyResult["extraIng"] = $extraIngr;
+                    $historyResult["total"] = round($total, 2);
                     $historyArray[] = $historyResult;
                 } else {
+                    $historyResult["total"] = round($total, 2);
                     return json_encode($historyResult);
                 }
 
-                return json_encode($historyArray);
+                return json_encode($historyResult);
             } else {
                 return false;
             }
@@ -119,7 +135,6 @@ class PurchaseController {
             return $exp->getMessage();
         }
     }
-
 }
 
 /* finish order */

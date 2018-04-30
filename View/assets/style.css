@@ -350,3 +350,12 @@ h2 {
 .history-btn{
     color: #4CAF50;
 }
+.order-info{
+    color: #4CAF50;
+    font-size: 1.3em;
+    text-align:  center;
+    font-style: oblique;
+}
+#history-holder{
+    background-color: activeborder;
+}
