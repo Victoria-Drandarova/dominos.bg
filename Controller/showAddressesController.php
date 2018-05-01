@@ -4,7 +4,7 @@ namespace Controller;
 require_once  '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 use \Model\User;
-use \Model\UserDao;
+use \Model\Dao\UserDao;
 
 session_start();
 
