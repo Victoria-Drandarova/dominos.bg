@@ -17,7 +17,9 @@ use Model\dao\DbConnection;
  * @author denis
  */
 class ProductsDao extends DbConnection {
-
+    
+    const PIZZA = 1;
+    
     public function getSingleProduct($productId) {
 
         $query = "SELECT p.id, p.name, p.price, p.img_url
@@ -31,8 +33,8 @@ class ProductsDao extends DbConnection {
     }
 
     public function getIngrById($ingredientId) {
-        $query = "SELECT i.id, i.price 
-        FROM dominos.ingredients as i WHERE i.id = ?;";
+        $query = "SELECT i.id, i.price, i.name
+        FROM ingredients as i WHERE i.id = ?;";
         
         $stmt = $this->getConnection()->prepare($query);
         $param = [$ingredientId];
@@ -61,14 +63,18 @@ class ProductsDao extends DbConnection {
     public function getAllPizza() {
 
         $query = "SELECT id, name, price, img_url, category_id
-                 FROM products WHERE category_id = 1;";
+                 FROM products WHERE category_id = ?;";
         $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute();
+        $stmt->execute([self::PIZZA]);
 
         $arrayOfPizzas = [];
         while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
             $singlePizza = new ProductsModel(
-                    $row->id, $row->name, $row->price, $row->img_url, $row->category_id
+                    $row->id,
+                    $row->name,
+                    $row->price,
+                    $row->img_url,
+                    $row->category_id
             );
             $arrayOfPizzas[] = $singlePizza;
         }
@@ -87,7 +93,10 @@ class ProductsDao extends DbConnection {
         $product = $stmt->fetch(\PDO::FETCH_OBJ);
 
         $singlePizza = new ProductsModel(
-                $product->id, $product->name, $product->price, $product->img_url
+                $product->id,
+                $product->name,
+                $product->price,
+                $product->img_url
         );
         return $singlePizza;
     }

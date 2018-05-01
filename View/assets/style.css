@@ -309,3 +309,72 @@ h2 {
     margin-top: 5%;
     float: left;
 }
+/*css for button add address*/
+.or{
+    color:darkblue;
+    text-decoration:none;
+    padding: .5em 2em;
+    outline: none;
+    border-width: 2px 0;
+    border-style: solid none;
+    border-color: maroon;
+    border-radius: 6px;
+    background: white;
+    transition: 0.2s;
+
+    margin-left: 2em;
+    text-align: -moz-center;
+    float: left;
+}
+.or:hover{
+    background: whitesmoke;
+}
+.or:active {
+    background: whitesmoke;
+}
+.navbutton {
+    width: 19%;
+    margin-right: 100%;
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+/*css for the table with addresses*/
+.products_table{
+
+
+    text-align: center;
+    border-collapse: separate;
+    border-spacing: 3px;
+    background: maroon;
+    color: black;
+    border: 6px solid grey;
+    border-radius: 20px;
+    width: 60%;
+    float: left;
+    margin-right: 100%;
+    padding-left: 3%;
+    padding-right: 1%;
+}
+th {
+    font-size: 17px;
+    color: white;}
+td {
+    background: whitesmoke;
+    padding: 2px;
+
+
+}
+.tprod {
+    margin-top: 6%;
+    margin-left: 2%;
+
+}
+.mySlides {
+    display:none;
+}
+
+
+
+
+
+

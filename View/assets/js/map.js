@@ -23,7 +23,7 @@ var map;
 function initMap(a, b) {
     map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(a, b),
-        zoom: 20
+        zoom: 18
     });
 
     var icon = '../View/assets/images/pizzaMap1.png';

@@ -16,11 +16,15 @@ function register(){
             console.log(response);
             var containerId = "err-list";
             generateErrList(response, containerId);
+            // var url = '../Controller/indexController.php?page=login';
+            // window.location.replace(url);
+
         }
     };
 
     request.send("f_name=" +  first_name + "&l_name=" + last_name +
     "&email=" + email + "&password=" + pass + "&rpassword=" + rpass);
+
 
 }
 //index.php?name=viki&pass=123

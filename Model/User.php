@@ -20,9 +20,10 @@ class User {
     private $neighborhood;
     private $blok;
     private $entrance;
+    private $addressId;
 
     public function __construct($email = null, $password = null, $f_name = null, $l_name = null, $id = null, $city = null,
-                                $neighborhood = null, $blok = null, $entrance = null)
+                                $neighborhood = null, $blok = null, $entrance = null, $addressId = null)
     {
 
         $this->email = $email;
@@ -34,6 +35,7 @@ class User {
         $this->neighborhood = $neighborhood;
         $this->blok = $blok;
         $this->entrance = $entrance;
+        $this->addressId = $addressId;
     }
 
     public function getEmail() {
@@ -106,6 +108,14 @@ class User {
 
     public function setId($id) {
         $this->id = $id;
+    }
+
+    public function getAddressId() {
+        return $this->addressId;
+    }
+
+    public function setAddressId($addressId) {
+        $this->addressId = $addressId;
     }
 }
 

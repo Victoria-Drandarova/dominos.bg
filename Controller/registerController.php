@@ -46,9 +46,15 @@ if(isset($_POST['register'])); {
         $user = new User($email, sha1($pass), $firstName, $lastName);
         $result = $dao->checkIfUserEmailExists($user);
         if(!$result) {
+
             $dao->registerUser($user);
+            $GLOBALS['error'] = 'Успешно се регистрирахте.';
+            echo json_encode($GLOBALS['error']);
+
+//            $GLOBALS['link'] = '../Controller/indexController.php?page=login';
+//            echo json_encode($GLOBALS['link']);
 //            return $_POST['regResult'] = true;
-            header("Location:  ../Controller/indexController.php?page=login");
+//            header("Location:  ../Controller/indexController.php?page=login");
         }
         else {
             $GLOBALS['error'] = 'Вече е регистриран потребител с този емайл.';

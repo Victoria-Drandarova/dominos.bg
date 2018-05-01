@@ -128,7 +128,6 @@ class UserDao {
     const DB_NAME = "dominos";
     const USER = "root";
     const PASS = "";
-    /* @var $pdo \PDO */
     private $pdo;
 
     public function __construct()    {
@@ -171,7 +170,6 @@ class UserDao {
     }
 
     public function registerUser(User $user) {
-        try {
             $query = $this->pdo->prepare("INSERT INTO users (first_name, last_name, email, password)
                                                                       VALUES (?, ?, ?, ?)");
             $query->execute(array($user->getFirstName(),
@@ -179,14 +177,10 @@ class UserDao {
                     $user->getEmail(),
                     $user->getPassword())
             );
-        }
-        catch(\Exception $e) {
 
-        }
     }
 
     public function editUserProfile(User $user) {
-        try {
 //            $id = $user->getId();
 //            $query = $this->pdo->prepare("UPDATE users SET (first_name, last_name, email, password)
 //                                                                      VALUES (?, ?, ?, ?) WHERE id=?");
@@ -197,59 +191,36 @@ class UserDao {
                                   $user->getPassword(),
                                   $user->getId()));
 
-        }
-        catch(\Exception $e) {
-        }
 
     }
 
     public function getUserDetailsById(User $user) {
-        try {
+
             $query = $this->pdo->prepare("SELECT first_name, last_name, email FROM users WHERE id = ?");
             $query->execute(array($user->getId()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             return $result;
 
-        }
-        catch(\Exception $e) {
-
-
-        }
 
     }
 
     public function getUserDetailsByEmail(User $user) {
-        try {
+
             $query = $this->pdo->prepare("SELECT first_name, last_name, email FROM users WHERE email = ?");
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             return $result;
 
-        }
-        catch(\Exception $e) {
-
-        }
-
     }
 
     public function getUserId(User $user) {
-        try {
+
             $query = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
             $query->execute(array($user->getEmail()));
             $result = $query->fetch(\PDO::FETCH_ASSOC);
             $id = $result['id'];
             return $id;
-//            if($result['id'] != '') {
-//                return $result['id'];
-//            }
-//            else{
-//                return false;
-//            }
-
-        }
-        catch(\Exception $e) {
-            return 0;
-        }
+//
 
     }
 
@@ -273,8 +244,58 @@ class UserDao {
                               $user->getNeighborhood(),
                               $user->getBlok(),
                               $user->getEntrance()));
+        $lastId = $this->pdo->lastInsertId();
+        return $lastId;
 
 //        $result = $query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function insertIntoLinkTable(User $user) {
+
+        $query =$this->pdo->prepare("INSERT INTO user_addresses (user_id, address_id) VALUES (?, ?)");
+        $query->execute(array($user->getId(), $user->getAddressId()));
+
+    }
+
+
+    public function getAddressIdFromLinkTable(User $user) {
+
+        $query =$this->pdo->prepare("SELECT address_id FROM user_addresses WHERE user_id = ?");
+        $query->execute(array($user->getId()));
+        while($resultRow = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = $resultRow['address_id'];
+        }
+        return $result;
+
+    }
+
+    public function getAddressDetails(User $user) {
+
+        $query =$this->pdo->prepare("SELECT * FROM adress WHERE id = ?");
+        $query->execute(array($user->getAddressId()));
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function deleteUserAddress(User $user) {
+        try {
+
+            $id = $user->getAddressId();
+
+            $this->pdo->beginTransaction();
+            $this->pdo->query("DELETE FROM adress WHERE id = '$id'");
+//            $this->pdo->query("DELETE FROM user_addresses WHERE address_id = '$id'");
+
+//            $query -> execute(array($user->getAddressId()));
+//            $query2 -> execute(array($user->getAddressId()));
+            $this->pdo->commit();
+
+        }
+        catch(\PDOException $e) {
+            echo $e;
+            $this->pdo->rollBack();
+
+        }
     }
 
 }

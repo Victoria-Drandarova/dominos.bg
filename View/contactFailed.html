@@ -1,21 +1,24 @@
+<h3 style="margin-left: 20%;color: white">Моля, попълнете формата отново. Въведените данни са твърде къси.</h3><br><br>
 <section id="login">
-    <h2>Форма за обратна връзка</h2><br><br>
     <form action="../Controller/configContactController.php" method="post" style="max-width:500px;margin:auto">
+
         <div class="input-container">
             <i class="fa fa-user icon"></i>
-            <input class="input-field" type="text" maxlength="15" placeholder="Име" name="f_name" required>
+            <input class="input-field" type="text" placeholder="Име" name="f_name" required>
         </div>
+
         <div class="input-container">
             <i class="fa fa-user icon"></i>
-            <input class="input-field" type="text" maxlength="15" placeholder="Фамилия" name="l_name" required>
+            <input class="input-field" type="text" placeholder="Фамилия" name="l_name" required>
+        </div>
+
+        <div class="input-container">
+            <i class="fa fa-envelope icon"></i>
+            <input class="input-field" type="email" placeholder="email" name="email" required>
         </div>
         <div class="input-container">
             <i class="fa fa-envelope icon"></i>
-            <input class="input-field" type="email" placeholder="email" maxlength="30" name="email" required>
-        </div>
-        <div class="input-container">
-            <i class="fa fa-envelope icon"></i>
-            <textarea rows="6" style="color: red" placeholder="Вашето запитване..." maxlength="200" name="comments" required></textarea>
+            <textarea rows="6" style="color: red"  placeholder="Вашето запитване..." name="comments" required></textarea>
         </div>
         <button type="submit" name="send_email" class="btn">Изпрати</button>
     </form>
