@@ -8,14 +8,12 @@
  */
 
 namespace Controller;
-namespace Model;
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
-
-
 
 function __autoload($class)
 {
@@ -23,7 +21,8 @@ function __autoload($class)
     require_once str_replace("\\", "/", $class) . ".php";
 }
 
-
+use Model\User;
+use Model\Dao\UserDao;
 
 if(isset($_POST['login'])) {
 

@@ -8,7 +8,7 @@ spl_autoload_register(function ($class) {
     require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . $c . '.php';
 });
 
-use Model\dao\ProductsDao;
+use Model\Dao\ProductsDao;
 use Model\ProductsModel;
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -18,6 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
 class ProductsController {
 
     private static $instance;
+
     const MAX_PRODUCT = 10;
 
 //    private function __construct() {}
@@ -30,22 +31,29 @@ class ProductsController {
     }
 
     public function addProductToCart($productId) {
+        if (!isset($_SESSION["userDetails"])) {
+            return false;
+        }
         $singleProduct = new ProductsDao();
-        $success = $singleProduct->getSingleProduct($productId);
-        if ($success) {
-            if (!in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
-                /* set default quantity  to  1 */
-                $success["quantity"] = 1;
-                $success["extraIng"] = [];
-                $_SESSION["cart"][$success["id"]] = $success;
-                echo "You added " . $success['name'] . " in  your cart!";
-            } else {
-                echo "You allready have this food in your cart :)";
-            }
+        try {
+            $success = $singleProduct->getSingleProduct($productId);
+            if ($success) {
+                if (!in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
+                    /* set default quantity  to  1 */
+                    $success["quantity"] = 1;
+                    $success["extraIng"] = [];
+                    $_SESSION["cart"][$success["id"]] = $success;
+                    echo "You added " . $success['name'] . " in  your cart!";
+                } else {
+                    echo "You allready have this food in your cart :)";
+                }
 
 //            header("Location: ../View/some.php");
-        } else {
-            //todo return err msg
+            } else {
+                //todo return err msg
+            }
+        } catch (\PDOException $exp) {
+            $this->insertErr($exp);
         }
     }
 
@@ -55,7 +63,7 @@ class ProductsController {
             $r = $ingredients->getIngrById($ingId);
 
             if (isset($_SESSION["cart"])) {
-                
+
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
                     $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = &$r["id"];
 
@@ -68,35 +76,25 @@ class ProductsController {
                 //todo return err msg
             }
         } catch (PDOException $exp) {
-
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
 
     public function removeExtraIngFromProd($ingId, $prdId) {
+        $ingredients = new ProductsDao();
         try {
-            $ingredients = new ProductsDao();
+
             $resultIng = $ingredients->getIngrById($ingId);
 
             if (isset($_SESSION["cart"])) {
 
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-                    
-                    foreach ($_SESSION["cart"][$prdId]["extraIng"] as $ing){
+
+                    foreach ($_SESSION["cart"][$prdId]["extraIng"] as $ing) {
                         if ($ingId == $ing) {
-                            
+
                             unset($_SESSION["cart"][$prdId]["extraIng"][$ingId]);
                             return $resultIng["price"];
-                            
                         }
                     }
 //                    header("Location: ../View/some.php");
@@ -108,16 +106,7 @@ class ProductsController {
             }
         } catch (PDOException $exp) {
 
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
 
@@ -162,44 +151,42 @@ class ProductsController {
     public function getExtraIng($extraIngId) {
         if (isset($_SESSION["cart"])) {
             $ingredients = new ProductsDao();
-            $r = $ingredients->getIngrById($extraIngId);
-            echo json_encode($r);
+            try {
+                $r = $ingredients->getIngrById($extraIngId);
+                echo json_encode($r);
+            } catch (\PDOException $exp) {
+                $this->insertErr($exp);
+            }
         } else {
             //todo return err msg
         }
     }
 
     public function getCartContent() {
-        // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
-        if (isset($_SESSION["cart"])) {
-            
+
+        if (isset($_SESSION["userDetails"])) {
+
             return json_encode($_SESSION["cart"]);
-        } else {
-            //todo return err msg
-        }
+        } 
+            return false;
+        
     }
 
     public function getPizza() {
-
+        $pizzaList = new ProductsDao();
         try {
-            $pizzaList = new ProductsDao();
+            
             return $pizzaList->getAllPizza();
         } catch (PDOException $exp) {
-
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
 
     public function getInfoProduct($productId) {
+
+        if (!isset($_SESSION["userDetails"])) {
+            return false;
+        }
 
         try {
 
@@ -207,16 +194,7 @@ class ProductsController {
             return $info->getProductInfo($productId);
         } catch (PDOException $exp) {
 
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
 
@@ -227,33 +205,41 @@ class ProductsController {
             $ingCategory = new ProductsDao();
             return $ingCategory->getIngredientsCategory();
         } catch (PDOException $exp) {
-
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
-    
+
     public function isInExtraList($ingrId, $productId) {
-        $proDao = new ProductsDao();
-        $ingrData = $proDao->getIngrById($ingrId);
-        $empty = true;
-        foreach ($_SESSION["cart"][$productId]["extraIng"] as  &$inId) {
-            if ($ingrId == $inId) {
-                echo json_encode($ingrData);
-                $empty = false;
+        
+        try {
+            $proDao = new ProductsDao();
+            $ingrData = $proDao->getIngrById($ingrId);
+            $empty = true;
+            foreach ($_SESSION["cart"][$productId]["extraIng"] as &$inId) {
+                if ($ingrId == $inId) {
+                    echo json_encode($ingrData);
+                    $empty = false;
+                }
             }
+            if ($empty) {
+                echo 0;
+            }
+        } catch (\PDOException $exp) {
+            $this->insertErr($exp);
         }
-        if ($empty) {
-            echo 0;
+    }
+
+    public function insertErr($exp) {
+        $path = dirname(__DIR__);
+        $path .= "/log/PDOExeption.txt";
+        $errFile = fopen($path, "a");
+        if ($errFile) {
+            fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
+            fclose($errFile);
+        } else {
+            fclose($errFile);
         }
+        header("Location: ../index.php?page=errpage");
     }
 
     public function getIngByCategory($categoryId) {
@@ -263,17 +249,7 @@ class ProductsController {
             $getIngredientsByCategory = new ProductsDao();
             return json_encode($getIngredientsByCategory->getIngredientsByCategory($categoryId));
         } catch (PDOException $exp) {
-
-            $path = dirname(__DIR__);
-            $path .= "/log/PDOExeption.txt";
-            $errFile = fopen($path, "a");
-            if ($errFile) {
-                fwrite($errFile, $exp->getMessage() . '. Date -->> ' . date('l jS \of F Y h:i:s A'));
-                fclose($errFile);
-            } else {
-                fclose($errFile);
-            }
-            header("Location: ../index.php?page=errpage");
+            $this->insertErr($exp);
         }
     }
 

@@ -1,7 +1,7 @@
 /* getCartContent is function that show user's
  *  products and allow to modify the quantity of the
  *  selected product  */
-
+getCartContent();
 function getCartContent() {
     var request = new XMLHttpRequest();
     request.open("POST", "ProductsController.php");
@@ -9,16 +9,19 @@ function getCartContent() {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
-
-            generateCartList(response, "cart_content");
+            if (!response) {
+                window.location.replace("../Controller/indexController.php?page=login");
+            }
+                generateCartList(response, "cart_content");
+            
+            
         }
     };
     request.send("cart=1");
 }
-getCartContent();
 
 function generateCartList(response, containerId) {
-    console.log(response);
+//    console.log(response);
     var basicContent = document.getElementById(containerId);
     var table = document.createElement('table');
 
@@ -121,7 +124,9 @@ function generateCartList(response, containerId) {
     }
 
     basicContent.appendChild(table);
-
+    
+    var tab = document.getElementById("product-table");
+   
     var finishBtn = document.createElement("BUTTON");
     finishBtn.setAttribute("id", "finish");
     finishBtn.innerHTML = "Finish Order";
@@ -129,6 +134,10 @@ function generateCartList(response, containerId) {
     finishBtn.addEventListener("click", function(){
         finishOrder();
     });
+     
+    if (tab.children.length < 2) {
+        finishBtn.style.display = "none";
+    }
     
     var divWrap = document.createElement("DIV");
     divWrap.setAttribute("id", 'btn-wrap');

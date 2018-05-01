@@ -55,7 +55,7 @@ function showDetailHistory(historyId) {
     XML.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = JSON.parse(this.responseText);
-            console.log(resp);
+//            console.log(resp);
             var divHolder = document.createElement("DIV");
             divHolder.setAttribute("id", historyId);
 
@@ -69,32 +69,34 @@ function generateHistoryDetails(arr, containerId) {
     var container = document.getElementById(containerId);
     container.setAttribute("id", "history-holder");
     container.innerHTML = "";
-
     var wrap = document.createElement("DIV");
-
     container.appendChild(wrap);
 
     for (var i in arr) {
-
 
         if (i == 0) {
             var name = document.createElement("p");
             name.setAttribute("class", "order-info-name");
             name.innerHTML = "Product: " + arr[i]["name"];
 
+            var quantity = document.createElement("p");
+            quantity.setAttribute("class", "order-info-name");
+            quantity.innerHTML = "Quantity: " + arr[i]["quantity"];
+
             var nn = document.createElement("p");
             nn.setAttribute("class", "order-info");
             nn.innerHTML = "Plus: " + arr[i]["in_name"];
             var total = document.createElement("h4");
             total.setAttribute("class", "total-price");
-            total.innerHTML = "Total price: " + arr["total"] + "lv.";  
-            
+            total.innerHTML = "Total price: " + arr["total"] + "lv.";
+
             wrap.appendChild(name);
+            wrap.appendChild(quantity);
             wrap.appendChild(nn);
-//            wrap.appendChild(total);
+
         } else {
-            if (arr[i]["name"] == arr[i - 1]["name"]) {
-//                console.log("ima weche  takowa ime " + arr[i]["name"]);
+            if (arr[i]["name"] === arr[i - 1]["name"]) {
+
                 var nn = document.createElement("p");
                 nn.setAttribute("class", "order-info");
                 nn.innerHTML = "Plus: " + arr[i]["in_name"];
@@ -104,24 +106,21 @@ function generateHistoryDetails(arr, containerId) {
                 name.setAttribute("class", "order-info-name");
                 name.innerHTML = "Product: " + arr[i]["name"];
 
+                var quantity = document.createElement("p");
+                quantity.setAttribute("class", "order-info-name");
+                quantity.innerHTML = "Quantity: " + arr[i]["quantity"];
+
                 var nn = document.createElement("p");
                 nn.setAttribute("class", "order-info");
                 nn.innerHTML = "Plus: " + arr[i]["in_name"];
                 wrap.appendChild(nn);
-
                 wrap.appendChild(name);
+                wrap.appendChild(quantity);
                 wrap.appendChild(nn);
-                
             }
-//            console.log(name);
         }
-            wrap.appendChild(total);
-
+        wrap.appendChild(total);
     }
-
-    
     container.appendChild(wrap);
     container.appendChild(total);
-
-
 }
