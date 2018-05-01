@@ -7,8 +7,6 @@
  * Time: 19:05
  */
 
-namespace Controller;
-namespace Model;
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -16,23 +14,13 @@ if (session_status() == PHP_SESSION_NONE) {
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
 
-
-
-function __autoload($class)
-{
-    $class = "..\\" . $class;
-    require_once str_replace("\\", "/", $class) . ".php";
-}
-
-
-
 if(isset($_POST['login'])) {
 
     try {
         $email = trim(htmlentities($_POST['email']));
         $pass = trim(htmlentities($_POST['password']));
-        $user = new User($email, sha1($pass));
-        $pdo = new UserDao();
+        $user = new \Model\User($email, sha1($pass));
+        $pdo = new \Model\Dao\UsersDao();
 //        setcookie("email", $email);
 
         if(empty($email) || empty($pass)) {

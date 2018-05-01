@@ -6,14 +6,14 @@
  * Date: 24.4.2018 г.
  * Time: 16:27
  */
-namespace Model;
+namespace Model\Dao;
 
 
 
 use Model\User;
 
 
-class UserDao {
+class UsersDao {
 
     const DB_IP = "127.0.0.1";
     const DB_PORT = "3306";
