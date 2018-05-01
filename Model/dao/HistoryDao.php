@@ -32,15 +32,22 @@ class HistoryDao extends DbConnection{
     
     public function getHistory($orderId, $userId) {
         
-            $query = "SELECT p.name, p.price, p.id, fio.quantity
+            $query = "SELECT p.name , p.price,p.id,
+                    fio.quantity, i.name as in_name, i.price as in_price
                     FROM products as p
                     JOIN foods_in_order as fio
-                    ON fio.product_id = p.id
-                    JOIN orders as ord      
-                    ON ord.user_order_id = fio.order_id 
+                    ON p.id = fio.product_id
+                    JOIN orders as ord
+                    ON ord.user_order_id = fio.order_id
                     AND fio.order_id = ?
+                    JOIN added_ingredients as ai
+                    ON ai.ord_id = ord.user_order_id
+                    AND ai.product_id = p.id
+                    JOIN ingredients as i
+                    ON i.id = ai.ingredient_id
                     JOIN users as u
-                    ON u.id = ?";
+                    ON u.id = ?
+                    GROUP BY ai.ingredient_id";
             $stmt = $this->getConnection()->prepare($query);
             $param = [$orderId, $userId];
             $stmt->execute($param);

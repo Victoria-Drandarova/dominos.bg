@@ -76,36 +76,52 @@ function generateHistoryDetails(arr, containerId) {
 
     for (var i in arr) {
 
-        var name = document.createElement("p");
-        name.setAttribute("class", "order-info");
-        name.setAttribute("id", "name-" + arr[i]["id"]);
-        name.innerHTML = "Product: " + arr[i]["name"];
 
-        if (arr[i]["extraIng"] !== false) {
+        if (i == 0) {
+            var name = document.createElement("p");
+            name.setAttribute("class", "order-info-name");
+            name.innerHTML = "Product: " + arr[i]["name"];
 
-            for (var j in arr["extraIng"]) {
-                var prodName = document.createElement("h2");
-//                prodName.setAttribute("class", "order-info");
-                prodName.innerHTML += arr["extraIng"][i]["name"] + " + ";
+            var nn = document.createElement("p");
+            nn.setAttribute("class", "order-info");
+            nn.innerHTML = "Plus: " + arr[i]["in_name"];
+            var total = document.createElement("h4");
+            total.setAttribute("class", "total-price");
+            total.innerHTML = "Total price: " + arr["total"] + "lv.";  
+            
+            wrap.appendChild(name);
+            wrap.appendChild(nn);
+//            wrap.appendChild(total);
+        } else {
+            if (arr[i]["name"] == arr[i - 1]["name"]) {
+//                console.log("ima weche  takowa ime " + arr[i]["name"]);
+                var nn = document.createElement("p");
+                nn.setAttribute("class", "order-info");
+                nn.innerHTML = "Plus: " + arr[i]["in_name"];
+                wrap.appendChild(nn);
+            } else {
+                var name = document.createElement("p");
+                name.setAttribute("class", "order-info-name");
+                name.innerHTML = "Product: " + arr[i]["name"];
 
+                var nn = document.createElement("p");
+                nn.setAttribute("class", "order-info");
+                nn.innerHTML = "Plus: " + arr[i]["in_name"];
+                wrap.appendChild(nn);
+
+                wrap.appendChild(name);
+                wrap.appendChild(nn);
+                
             }
+//            console.log(name);
         }
+            wrap.appendChild(total);
 
-        var quantity = document.createElement("p");
-        quantity.setAttribute("class", "order-info");
-        quantity.innerHTML = "Quanriry: " + arr[i]["quantity"];
-
-        var total = document.createElement("p");
-        total.setAttribute("class", "order-info");
-        total.innerHTML = "Total price: " + arr["total"] + " lv.";
-
-        wrap.appendChild(name);
-        wrap.appendChild(quantity);
-        wrap.appendChild(prodName);
-        wrap.appendChild(total);
     }
 
+    
     container.appendChild(wrap);
     container.appendChild(total);
+
 
 }

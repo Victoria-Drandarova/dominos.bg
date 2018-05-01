@@ -1,7 +1,7 @@
 <?php
 
 namespace Controller;
-
+error_reporting(E_ALL ^ E_NOTICE);
 spl_autoload_register(function ($class) {
 
     $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
@@ -46,7 +46,7 @@ class PurchaseController {
 
             foreach ($_SESSION["cart"] as $proId) {
                 $purchaseModel = new PurchaseModel(
-                $userId, $orderId, $proId["id"], $proId["quantity"]);
+                        $userId, $orderId, $proId["id"], $proId["quantity"]);
                 $purchaseDao->insertHistory($purchaseModel);
                 /* когато в продукта има допълнителна съставка я запписваме в базата
                  * заедно със ид-то на поръчката и продукта в които се садържа  
@@ -99,35 +99,21 @@ class PurchaseController {
             $historyResult = $historyDao->getHistory($historyId, $userId);
             if ($historyResult) {
                 /* $historyResult["id"] = productID */
-                foreach ($historyResult as $order) {
-                    $quantity = $order["quantity"];
-                    $total += $order["price"] * $quantity;
-                    
-                    try {
-                        $extraIngr = $historyDao->getExtraIngr($order["id"], $historyId);
-                        if ($extraIngr) {//ако има допълнителни съставки вземи им цената и я добави
-                            foreach ($extraIngr as $price) {
-                                $price = $price["price"] * $quantity;
-                                $total += $price;
-                                
-                            }
-                        }
-                        
-                    } catch (\PDOException $exp) {
-                        return $exp->getMessage();
+                $cnt = count($historyResult);
+                for ($i = 0; $i < $cnt; $i++) {
+
+                    $quantity = $historyResult[$i]["quantity"];
+
+                    if ($historyResult[$i]["name"] !== $historyResult[$i - 1]["name"]) {
+                        $total += ($historyResult[$i]["price"] * $quantity);
+                        $total += ($historyResult[$i]["in_price"] * $quantity);
+                    } else {
+                        $total += ($historyResult[$i]["in_price"] * $quantity);
                     }
                 }
-               
-                if ($extraIngr) {
-                    $historyResult["extraIng"] = $extraIngr;
-                    $historyResult["total"] = round($total, 2);
-                    $historyArray[] = $historyResult;
-                } else {
-                    $historyResult["total"] = round($total, 2);
-                    return json_encode($historyResult);
-                }
 
-                return json_encode($historyResult);
+                $historyResult["total"] = $total;
+                return json_encode($historyResult, JSON_FORCE_OBJECT);
             } else {
                 return false;
             }
@@ -135,6 +121,7 @@ class PurchaseController {
             return $exp->getMessage();
         }
     }
+
 }
 
 /* finish order */

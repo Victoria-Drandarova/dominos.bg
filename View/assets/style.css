@@ -359,3 +359,16 @@ h2 {
 #history-holder{
     background-color: activeborder;
 }
+.total-price{
+    text-align: center;
+    border: 1px dodgerblue;
+    padding: 10px;
+    background: #ddd;
+    color: teal;
+    font-weight: 150;
+}
+.order-info-name{
+    text-align:  center;
+    color: skyblue;
+    font-size: 1.3em;
+}
