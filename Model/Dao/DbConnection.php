@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\dao;
+namespace Model\Dao;
 //use \PDO;
 class DbConnection {
 

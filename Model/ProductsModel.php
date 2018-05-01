@@ -12,14 +12,14 @@ class ProductsModel implements \JsonSerializable{
     public $id;
     public $name;
     public $price;
-    public $img;
+    public $img_url;
     public $categoryId;
     
     public function __construct($id, $name, $price, $img, $categoryId) {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
-        $this->img = $img;
+        $this->img_url = $img;
         $this->categoryId = $categoryId;
     }
     function getCategoryId() {
@@ -43,7 +43,7 @@ class ProductsModel implements \JsonSerializable{
     }
 
     public function getImg() {
-        return $this->img;
+        return $this->img_url;
     }
 
     public function setId($id) {
@@ -59,7 +59,7 @@ class ProductsModel implements \JsonSerializable{
     }
 
     public function setImg($img) {
-        $this->img = $img;
+        $this->img_url = $img;
     }
     
     public function jsonSerialize() {

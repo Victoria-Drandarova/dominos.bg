@@ -8,7 +8,7 @@ spl_autoload_register(function ($class) {
     require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . $c . '.php';
 });
 
-use Model\dao\ProductsDao;
+use Model\Dao\ProductsDao;
 use Model\ProductsModel;
 
 if (session_status() == PHP_SESSION_NONE) {

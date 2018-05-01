@@ -12,8 +12,8 @@
 
 namespace Controller;
 namespace Model;
-include '../Model/User.php';
-include '../Model/Dao/UsersDao.php';
+require_once '../Model/User.php';
+require_once '../Model/Dao/UsersDao.php';
 
 session_start();
 

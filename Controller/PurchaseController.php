@@ -9,8 +9,10 @@ spl_autoload_register(function ($class) {
 });
 
 use Model\PurchaseModel;
-use Model\dao\PurchaseDao;
-use Model\dao\HistoryDao;
+
+use Model\Dao\PurchaseDao;
+use Model\Dao\HistoryDao;
+
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

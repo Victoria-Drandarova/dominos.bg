@@ -5,8 +5,8 @@
 //include '../Model/User.php';
 //include '../Model/Dao/UsersDao.php';
 namespace Model;
-include '../Model/User.php';
-include '../Model/Dao/UsersDao.php';
+require_once '../Model/User.php';
+require_once '../Model/Dao/UsersDao.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

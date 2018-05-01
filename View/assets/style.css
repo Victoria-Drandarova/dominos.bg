@@ -216,10 +216,12 @@ input[type=submit]:hover {
     width: 20%;
     /*float: left;*/
     height: auto;
+    background-color: tomato;
     display: inline-block;
     border: 1px solid blue;
+    border-radius: 10px;
     margin: 10px;
-    padding: 5px;
+    padding: 10px;
 }
 
 #pizza-conainer{
@@ -279,22 +281,21 @@ h2 {
     padding-top: 2%;
 }
 
-
-
-
 #product-table {
-    margin-left: 5%;
+    margin: 0 auto;
+    padding: 10px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
 #product-table td, #product-table th {
+    padding: 10px;
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-#product-table tr:nth-child(even){background-color: #f2f2f2;}
+#product-table tr:nth-child(even){background-color: #ddd;}
 
 #product-table tr:hover {background-color: #ddd;}
 
@@ -378,3 +379,91 @@ td {
 
 
 
+#ing{
+    /*margin-left: 20%;*/
+    font-size: 1.2em;
+    color: tomato;
+    font-style: oblique;
+}
+#finish{
+    width: 250px;
+    padding: 10px;
+    margin-left: 36%;
+    background-color: #ccc;
+    color: coral;
+}
+#btn-wrap{
+    padding: 20px;
+}
+#buy-btn{
+    font-size: 1em;
+    color: springgreen;
+    display: block;
+    margin-left: 70px;
+}
+#product-img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 65px;
+    margin-bottom: 10px;
+}
+#buy-btn:hover{
+    font-size: 1em;
+    background-color: darksalmon;
+    color: thistle;
+    border-radius: 10px;
+}
+#product-info{
+    margin-left: 70px;
+}
+#histoy-table {
+    margin-left: 35%;
+    margin-top: 20px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 30%;
+}
+
+#histoy-table td, #histoy-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#histoy-table tr:nth-child(even){background-color: #f2f2f2;}
+
+#histoy-tabl tr:hover {background-color: #ddd;}
+
+#histoy-table th {
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.history-btn{
+    color: #4CAF50;
+}
+.order-info{
+    color: #4CAF50;
+    font-size: 1.3em;
+    text-align:  center;
+    font-style: oblique;
+}
+#history-holder{
+    background-color: activeborder;
+}
+.total-price{
+    text-align: center;
+    border: 1px dodgerblue;
+    padding: 10px;
+    background: #ddd;
+    color: teal;
+    font-weight: 150;
+}
+.order-info-name{
+    text-align:  center;
+    color: skyblue;
+    font-size: 1.3em;
+}
