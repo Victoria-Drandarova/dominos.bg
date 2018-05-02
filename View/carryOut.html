@@ -1,0 +1,43 @@
+<body class="colbody" style="background-color: white">
+
+<div class="vertical-menu" style="float: left;">
+    <a class="active" style="color:darkblue">Изберете ресторант и час за взимане на поръчка</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />София, ж.к Лозенец 25</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />София, ж.к Дружба 2 улица 25</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />София, ж.к Младост бл.345</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />Пловдив, ж.к Слатина номер 56</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />Пловдив-Тракия ул. Георги Данчов 16</a>
+    <a onclick="initMap(42.6744602797609, 23.30944039173596)">
+        <input name="address"type="radio" />Пловдив-Център ул. Иван Андонов 5</a>
+</div>
+<div class="container" style="width: 20%">
+    <a style="color: darkblue">Изберете ресторант и час за взимане на поръчка</a><br>
+    <input name="checkbox"type="radio" /> 8 часа <br />
+    <input name="checkbox" type="radio" /> 9 часа<br />
+    <input name="checkbox" type="radio" /> 10 часа <br />
+    <input name="checkbox" type="radio" /> 11 часа <br />
+    <input name="checkbox" type="radio" /> 12 часа <br />
+    <input name="checkbox"type="radio" /> 13 часа<br />
+    <input name="checkbox" type="radio" /> 14 часа <br />
+    <input name="checkbox" type="radio" /> 15 часа <br />
+    <input name="checkbox" type="radio" /> 16 часа<br />
+    <input name="checkbox" type="radio" /> 17 часа<br />
+    <input name="checkbox" type="radio" /> 18 часа <br />
+    <input name="checkbox" type="radio" /> 19 часа<br />
+    <input name="checkbox" type="radio" /> 20 часа <br />
+    <input name="checkbox" type="radio" /> 21 часа <br />
+    <input name="checkbox" type="radio" /> 22 часа<br />
+</div>
+<div style="width: 60%; height: 40%" id="map" ></div>
+<script src="../View/assets/js/map.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo-dooaX6Kx7UmFlTAEG2hUf05MhvrJ-s&callback=initMap">
+</script>
+<a class="or navbutton" href="../Controller/indexController.php?page=pizzaList">КЪМ МЕНЮТО</a>
+
+

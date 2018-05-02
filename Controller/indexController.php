@@ -23,8 +23,26 @@ if(isset($_GET["page"])){
         require_once "../View/$page_name.html";
     }else{
         require_once "../View/nav_not_logged.html";
-        
-        require_once "../View/$page_name.html";
+        if($page_name=="pizzaList"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="mapRestaurants"){
+            require_once "../View/$page_name.html";
+        }
+        elseif($page_name=="contact"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="register"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="login"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="main"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="termsOfUse") {
+            require_once "../View/$page_name.html";
+
+        }else{
+            require_once "../View/login.html";
+        }
+
     }
 }else{
     require_once "../View/nav_not_logged.html";

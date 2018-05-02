@@ -39,7 +39,10 @@ function generateCartList(response, containerId) {
 
     var img = document.createElement('th');
     img.innerHTML = "Image";
-
+    
+    var size = document.createElement('th');
+    size.innerHTML = "Size";
+    
     var plus = document.createElement('th');
     plus.innerHTML = "Add one more";
 
@@ -49,6 +52,7 @@ function generateCartList(response, containerId) {
     tr.appendChild(productName);
     tr.appendChild(price);
     tr.appendChild(quantity);
+    tr.appendChild(size);
     tr.appendChild(img);
     tr.appendChild(plus);
     tr.appendChild(minus);
@@ -59,6 +63,7 @@ function generateCartList(response, containerId) {
         var tr = document.createElement('tr');
         var id = response[i]["id"];
         var name = document.createElement('td');
+        var size = document.createElement("td");
         name.setAttribute("id", "n-" + id);
 
         var price = document.createElement('td');
@@ -72,7 +77,8 @@ function generateCartList(response, containerId) {
         var minus = document.createElement('button');
         minus.setAttribute("value", response[i]["id"]);
 
-        name.innerHTML = response[i]["name"] + " / Size: " + response[i]["size"];
+        name.innerHTML = response[i]["name"];
+        size.innerHTML = response[i]["size"];
         price.innerHTML = response[i]["price"] + " lv." ;
         price.setAttribute("id", "price-" + response[i]["price"]);
         
@@ -114,6 +120,7 @@ function generateCartList(response, containerId) {
         tr.appendChild(name);
         tr.appendChild(price);
         tr.appendChild(quantity);
+        tr.appendChild(size);
         tr.appendChild(img);
         tr.appendChild(plusTd);
         tr.appendChild(minusTd);

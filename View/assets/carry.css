@@ -1,0 +1,43 @@
+.body{
+    background-color: white;
+}
+.vertical-menu {
+    width: 100%;
+    overflow-y: scroll;
+    height: 30%;
+    margin-right: 3%;
+    /*margin-top: 1%;*/
+    margin-bottom: 2%;
+}
+
+.vertical-menu a {
+    background-color: white;
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+
+}
+
+.vertical-menu a:hover {
+    background-color: whitesmoke;
+}
+
+.vertical-menu a.active {
+    /*background-color: grey;*/
+    color: white;
+}
+.container {
+    border:2px solid white;
+    height: 40%;
+    overflow-y: scroll;
+    background-color: white;
+
+    margin-bottom: 2%;
+    float: left;
+
+
+}
+.colbody{
+    background-color: gainsboro;
+}
