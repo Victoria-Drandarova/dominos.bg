@@ -13,7 +13,7 @@ namespace Model\Dao;
 use Model\User;
 
 
-class UserDao {
+class UsersDao {
 
     const DB_IP = "127.0.0.1";
     const DB_PORT = "3306";

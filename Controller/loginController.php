@@ -1,40 +1,22 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Martin
  * Date: 24.4.2018 г.
  * Time: 19:05
  */
-
-namespace Controller;
-namespace Model;
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 include '../Model/User.php';
 include '../Model/Dao/UsersDao.php';
-
-
-
-function __autoload($class)
-{
-    $class = "..\\" . $class;
-    require_once str_replace("\\", "/", $class) . ".php";
-}
-
-
-
 if(isset($_POST['login'])) {
-
     try {
         $email = trim(htmlentities($_POST['email']));
         $pass = trim(htmlentities($_POST['password']));
-        $user = new User($email, sha1($pass));
-        $pdo = new UserDao();
+        $user = new \Model\User($email, sha1($pass));
+        $pdo = new \Model\Dao\UsersDao();
 //        setcookie("email", $email);
-
         if(empty($email) || empty($pass)) {
             header("Location: ../Controller/indexController.php?page=loginFailed");
         }
@@ -45,7 +27,6 @@ if(isset($_POST['login'])) {
 //                header("Location: ");
 //            }
             if($result) {
-
                 $id = $pdo->getUserId($user);
 //                $user->setId($id);
 //                $details = $pdo->getUserDetailsById($user);
@@ -53,28 +34,16 @@ if(isset($_POST['login'])) {
                 $_SESSION["userDetails"] = [];
                 $_SESSION["userDetails"]["email"] = $email;
                 $_SESSION["logged_user"] = true;
-
                 header("Location:  ../Controller/indexController.php?page=main");
-
-
             }
             else {
 //            echo 'Your email or password is wrong';
                 header("Location: ../Controller/indexController.php?page=loginFailed");
-
-
 //                    echo 'Email is '.$text=$user->getEmail().' and Password is '.$text=$user->getPassword();
             }
-
         }
-
-
     }
     catch(\Exception $e) {
         echo 'The following error has occured: '.$e;
     }
 }
-
-
-
-

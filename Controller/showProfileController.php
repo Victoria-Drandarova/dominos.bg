@@ -4,7 +4,7 @@
 //include '../Controller/loginController.php';
 //include '../Model/User.php';
 //include '../Model/Dao/UsersDao.php';
-namespace Model;
+namespace Controller;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 
@@ -17,8 +17,8 @@ function __autoload($class) {
     require_once str_replace("\\", "/", $class) . ".php";
 }
 $email = $_SESSION["userDetails"]["email"];
-$user = new User($email);
-$pdo = new UserDao();
+$user = new \Model\User($email);
+$pdo = new \Model\Dao\UsersDao();
 $userDetails = $pdo->getUserDetailsByEmail($user);
 $_SESSION["userDetails"] = $userDetails;
 echo json_encode($_SESSION["userDetails"]);

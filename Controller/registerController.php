@@ -11,7 +11,7 @@
 
 
 namespace Controller;
-namespace Model;
+//namespace Model;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 
@@ -19,7 +19,6 @@ session_start();
 
 //Use Dao\UserDao;
 //Use Model\User;
-
 $error = '';
 $GLOBALS['error'];
 
@@ -32,18 +31,18 @@ function __autoload($class) {
 if(isset($_POST['register'])); {
 
 
-    $firstName = $_POST['f_name'];
-    $lastName = $_POST['l_name'];
-    $email = $_POST['email'];
-    $pass = $_POST['password'];
-    $repeatPass = $_POST['rpassword'];
+    $firstName =trim(htmlentities( $_POST['f_name']));
+    $lastName = trim(htmlentities($_POST['l_name']));
+    $email = trim(htmlentities($_POST['email']));
+    $pass = trim(htmlentities($_POST['password']));
+    $repeatPass = trim(htmlentities($_POST['rpassword']));
 
     if(checkEmptyFields($firstName, $lastName, $email, $pass, $repeatPass)
         && checkTextLength($email, $pass, $firstName, $lastName)
         && checkEmail($email) && checkPasswords($pass, $repeatPass))
     {
-        $dao = new UserDao();
-        $user = new User($email, sha1($pass), $firstName, $lastName);
+        $dao = new\Model\Dao\UsersDao();
+        $user = new\Model\User($email, sha1($pass), $firstName, $lastName);
         $result = $dao->checkIfUserEmailExists($user);
         if(!$result) {
 

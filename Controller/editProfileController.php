@@ -2,7 +2,7 @@
 
 
 namespace Controller;
-namespace Model;
+//namespace Model;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 
@@ -22,20 +22,20 @@ function __autoload($class) {
 
 //if(isset($_POST["editProfile"])); {
 
-$firstName = $_POST['f_name'];
-$lastName = $_POST['l_name'];
-$email = $_POST['email'];
-$oldPass = $_POST['oldpass'];
-$password = $_POST['password'];
-$rPassword = $_POST['rpassword'];
+$firstName = trim(htmlentities($_POST['f_name']));
+$lastName = trim(htmlentities($_POST['l_name']));
+$email = trim(htmlentities($_POST['email']));
+$oldPass = trim(htmlentities($_POST['oldpass']));
+$password =trim(htmlentities( $_POST['password']));
+$rPassword = trim(htmlentities($_POST['rpassword']));
 
 
 if(checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $rPassword)
     && checkTextLength($email, $password, $firstName, $lastName)
     && checkEmail($email) && checkOldPass($oldPass) && checkPasswords($password, $rPassword)) {
 
-    $pdo = new UserDao();
-    $userUpdate = new User($email, sha1($password), $firstName, $lastName);
+    $pdo = new\Model\Dao\UsersDao();
+    $userUpdate = new\Model\User($email, sha1($password), $firstName, $lastName);
     $id = $_SESSION["userId"];
     $userUpdate->setId($id);
     $pdo->editUserProfile($userUpdate);
@@ -100,8 +100,8 @@ function checkPasswords($password, $rPassword) {
 }
 
 function checkOldPass($oldPass) {
-    $user = new User($_SESSION["userDetails"]["email"]);
-    $pdo = new UserDao();
+    $user = new\Model\User($_SESSION["userDetails"]["email"]);
+    $pdo = new\Model\Dao\UsersDao();
     $result = $pdo->getPassword($user);
 
     if (sha1($oldPass) != $result) {

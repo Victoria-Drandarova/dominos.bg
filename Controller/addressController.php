@@ -1,7 +1,7 @@
 <?php
 
 namespace Controller;
-namespace Model;
+//namespace Model;
 include '../Model/Dao/UsersDao.php';
 include '../Model/User.php';
 
@@ -26,8 +26,8 @@ function __autoload($class) {
 
     if (checkEmptyFields($city, $hood, $blok, $entrance) && checkTextLength($city, $hood, $blok, $entrance)) {
 
-        $userAddress = new User(null, null, null, null,null, $city, $hood, $blok, $entrance);
-        $pdo = new UserDao();
+        $userAddress = new\Model\User(null, null, null, null,null, $city, $hood, $blok, $entrance);
+        $pdo = new\Model\Dao\UsersDao();
         $lastId = $pdo->insertAddress($userAddress);
         $userId = $_SESSION["userId"];
         $userAddress->setId($userId);
