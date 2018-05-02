@@ -43,14 +43,15 @@ class PurchaseDao extends DbConnection {
         $connection = $this->getConnection();
         try {
             $connection->beginTransaction();
-            $foodInOrderQuery = "INSERT INTO foods_in_order(order_id, product_id, quantity) 
-                VALUES(?,?,?)";
+            $foodInOrderQuery = "INSERT INTO foods_in_order(order_id, product_id, quantity, size_id) 
+                VALUES(?,?,?,?)";
             $stmt = $connection->prepare($foodInOrderQuery);
             
             $params = [
                        $ordParams->getOrderId(),
                        $ordParams->getProductId(),
-                       $ordParams->getQuantity()
+                       $ordParams->getQuantity(),
+                       $ordParams->getSizeId()
                       ];
             $stmt->execute($params);
             $connection->commit();

@@ -9,12 +9,11 @@ function getCartContent() {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
+            console.log(response);
             if (!response) {
                 window.location.replace("../Controller/indexController.php?page=login");
             }
                 generateCartList(response, "cart_content");
-            
-            
         }
     };
     request.send("cart=1");
@@ -73,8 +72,8 @@ function generateCartList(response, containerId) {
         var minus = document.createElement('button');
         minus.setAttribute("value", response[i]["id"]);
 
-        name.innerHTML = response[i]["name"];
-        price.innerHTML = response[i]["price"];
+        name.innerHTML = response[i]["name"] + " / Size: " + response[i]["size"];
+        price.innerHTML = response[i]["price"] + " lv." ;
         price.setAttribute("id", "price-" + response[i]["price"]);
         
         var priceHolder = document.createElement("input");
@@ -120,7 +119,6 @@ function generateCartList(response, containerId) {
         tr.appendChild(minusTd);
 
         table.appendChild(tr);
-
     }
 
     basicContent.appendChild(table);

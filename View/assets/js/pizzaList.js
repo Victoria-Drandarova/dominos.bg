@@ -21,7 +21,7 @@ function getPizzaList() {
                 price.innerHTML = "Price " + resp[i]["price"] + " lv.";
 
                 var img = document.createElement("img");
-                img.setAttribute("id", "product-img")
+                img.setAttribute("id", "product-img");
                 img.src = "../View/assets/images/" + resp[i]["img_url"];
 
                 var btn = document.createElement("BUTTON");
@@ -54,11 +54,11 @@ function getProductInfo(ind) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = JSON.parse(this.responseText);
-            
+
             if (!resp) {
-                 window.location.replace("../Controller/indexController.php?page=login");
+                window.location.replace("../Controller/indexController.php?page=login");
             }
-            
+
             var container = document.getElementById("pizza-conainer");
 
             var pizza = document.getElementById("pizza-warp");
@@ -98,13 +98,58 @@ function getProductInfo(ind) {
             btn.addEventListener("click", function () {
                 getCategories(this.value);
             });
-
+            getSizes(ind);
             pizzaView.appendChild(btn);
 
             container.appendChild(pizzaView);
         }
     };
     request.send();
+}
+
+function getSizes(producInd) {
+    var sizeAjax = new XMLHttpRequest();
+    sizeAjax.open("GET", "SizesController.php?size=1");
+    sizeAjax.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var sizes = JSON.parse(this.responseText);
+            createDropDown(sizes, "size-wrap", producInd);
+        }
+    };
+    sizeAjax.send();
+}
+
+function createDropDown(sizes, containerId, producInd) {
+    var select = document.createElement("SELECT");
+    select.setAttribute("id", "size-dropdown");
+    var container = document.getElementById(containerId);
+
+    for (var i in sizes) {
+        var option = document.createElement("OPTION");
+        option.setAttribute("id", "size-option");
+        option.setAttribute("value", sizes[i]["id"]);
+        option.innerHTML = sizes[i]["size"];
+
+        select.appendChild(option);
+
+    }
+    select.addEventListener("change", function () {
+        changeSize(this.value, producInd);
+    });
+    container.appendChild(select);
+}
+
+function changeSize(size, productId) {
+    var changeSize = new XMLHttpRequest();
+    changeSize.open("GET", "SizesController.php?changeSize=" + size + "&productId=" + productId);
+    changeSize.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var sizes = JSON.parse(this.responseText);
+//            console.log(sizes);
+            var productPrice = document.getElementById("pizza-info-price").innerHTML = sizes;;
+        }
+    };
+    changeSize.send();
 }
 
 function getCategories(productId) {
@@ -200,7 +245,7 @@ function addToCart(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
-            
+
             if (!response) {
                 window.location.replace("../Controller/indexController.php?page=login");
             }

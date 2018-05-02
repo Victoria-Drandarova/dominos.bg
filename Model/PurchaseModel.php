@@ -11,15 +11,25 @@ class PurchaseModel implements \JsonSerializable{
     private $orderId;
     private $productId;
     private $quantity;
+    private $sizeId;
     
-    public function __construct($userId, $orderId, $productId, $quantity) {
+    public function __construct($userId, $orderId, $productId, $quantity, $sizeId) {
         $this->userId = $userId;
         $this->orderId = $orderId;
         $this->productId = $productId;
         $this->quantity = $quantity;
+        $this->sizeId = $sizeId;
     }
     
-    public function getUserId() {
+    public function getSizeId() {
+        return $this->sizeId;
+    }
+
+    public function setSizeId($sizeId) {
+        $this->sizeId = $sizeId;
+    }
+
+        public function getUserId() {
         return $this->userId;
     }
 

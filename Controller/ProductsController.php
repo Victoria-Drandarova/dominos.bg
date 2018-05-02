@@ -9,7 +9,6 @@ spl_autoload_register(function ($class) {
 });
 
 use Model\Dao\ProductsDao;
-use Model\ProductsModel;
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -20,7 +19,7 @@ class ProductsController {
     private static $instance;
 
     const MAX_PRODUCT = 10;
-
+    const DEFAULT_SIZE_ID = 2;
 //    private function __construct() {}
 
     public static function getInstance() {
@@ -42,6 +41,8 @@ class ProductsController {
                     /* set default quantity  to  1 */
                     $success["quantity"] = 1;
                     $success["extraIng"] = [];
+                    $success["size"] = "Medium";
+                    $success["size_id"] = SELF::DEFAULT_SIZE_ID;
                     $_SESSION["cart"][$success["id"]] = $success;
                     echo "You added " . $success['name'] . " in  your cart!";
                 } else {

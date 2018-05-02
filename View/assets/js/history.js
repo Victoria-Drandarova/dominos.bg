@@ -14,6 +14,7 @@ function getHistory() {
     historyAjax.send();
 }
 
+
 function generateHistoryList(response, containerId) {
     var basicContent = document.getElementById(containerId);
     basicContent.innerHTML = "";

@@ -48,7 +48,8 @@ class PurchaseController {
 
             foreach ($_SESSION["cart"] as $proId) {
                 $purchaseModel = new PurchaseModel(
-                        $userId, $orderId, $proId["id"], $proId["quantity"]);
+                        $userId, $orderId, $proId["id"], $proId["quantity"], $proId["size_id"]
+                        );
                 $purchaseDao->insertHistory($purchaseModel);
                 /* когато в продукта има допълнителна съставка я запписваме в базата
                  * заедно със ид-то на поръчката и продукта в които се садържа  
