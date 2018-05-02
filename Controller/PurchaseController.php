@@ -77,7 +77,7 @@ class PurchaseController {
 
     public function getHistoryList() {
         $historyDao = new HistoryDao();
-        $userId = $_SESSION["userDetails"]["id"];
+        $userId = $_SESSION["userId"];
 
         try {
             $historyResult = $historyDao->historyList($userId);
@@ -93,8 +93,7 @@ class PurchaseController {
 
     public function getHistoryById($historyId) {
         $historyDao = new HistoryDao();
-        $userId = $_SESSION["userDetails"]["id"];
-        $historyArray = [];
+        $userId = $_SESSION["userId"];
 
         try {
             $total = 0;
