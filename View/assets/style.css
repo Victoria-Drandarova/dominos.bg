@@ -216,7 +216,7 @@ input[type=submit]:hover {
     width: 20%;
     /*float: left;*/
     height: auto;
-    background-color: tomato;
+    background-color: white;
     display: inline-block;
     border: 1px solid blue;
     border-radius: 10px;
@@ -460,7 +460,7 @@ td {
     padding: 10px;
     background: #ddd;
     color: teal;
-    font-weight: 150;
+    /*font-weight: 150;*/
 }
 .order-info-name{
     text-align:  center;
@@ -468,3 +468,7 @@ td {
     font-size: 1.3em;
 }
 
+
+#addressErrField{
+    margin-bottom: 20%;
+}
