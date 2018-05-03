@@ -384,6 +384,7 @@ td {
     font-size: 1.2em;
     color: tomato;
     font-style: oblique;
+
 }
 #finish{
     width: 250px;
@@ -397,9 +398,10 @@ td {
 }
 #buy-btn{
     font-size: 1em;
-    color: springgreen;
+    color: white;
     display: block;
     margin-left: 70px;
+    background-color: darkred;
 }
 #product-img{
     width: 100px;
@@ -410,7 +412,7 @@ td {
 }
 #buy-btn:hover{
     font-size: 1em;
-    background-color: darksalmon;
+    background-color: grey;
     color: thistle;
     border-radius: 10px;
 }
