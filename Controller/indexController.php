@@ -27,8 +27,9 @@ if(isset($_GET["page"])){
             require_once "../View/$page_name.html";
         }elseif($page_name=="mapRestaurants"){
             require_once "../View/$page_name.html";
-        }
-        elseif($page_name=="contact"){
+        } elseif($page_name=="contact"){
+            require_once "../View/$page_name.html";
+        } elseif($page_name=="loginFailed"){
             require_once "../View/$page_name.html";
         }elseif($page_name=="register"){
             require_once "../View/$page_name.html";

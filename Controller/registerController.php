@@ -6,19 +6,17 @@
  * Time: 14:15
  */
 
-//namespace Controller;
+
 
 
 
 namespace Controller;
-//namespace Model;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 
 session_start();
 
-//Use Dao\UserDao;
-//Use Model\User;
+
 $error = '';
 $GLOBALS['error'];
 
@@ -28,7 +26,7 @@ function __autoload($class) {
 }
 
 
-if(isset($_POST['register'])); {
+//if(isset($_POST['register'])); {
 
 
     $firstName =trim(htmlentities( $_POST['f_name']));
@@ -63,7 +61,7 @@ if(isset($_POST['register'])); {
     }
     else {
         echo json_encode($GLOBALS['error']);
-    }
+//    }
 }
 
 function checkEmptyFields($firstName, $lastName, $email, $pass, $repeatPass){
