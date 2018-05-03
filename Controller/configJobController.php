@@ -25,7 +25,7 @@ if(isset($_POST['send_cv'])) {
     $email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
 
 
-    if(strlen($city) < 5 || strlen($first_name) < 2 || strlen($last_name) < 4 || strlen($email_from) < 10) {
+    if(strlen($city) < 5 || strlen($first_name) < 2 || strlen($last_name) < 4 || strlen($email_from) < 9) {
 
 //        header ("Location:../Controller/indexController.php?page=jobsFailed");
         $error_message .= 'The Comments you entered do not appear to be valid.<br />';
