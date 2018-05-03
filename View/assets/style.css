@@ -67,7 +67,13 @@ body {
     background-color: white;
     padding: 20px 10px;
 }
-.header a {
+
+/*#logoD{*/
+    /*margin-left: 1%;*/
+    /*width: 25%;*/
+
+/*}*/
+.header a{
     float: left;
     color: maroon;
     text-align: center;
@@ -76,6 +82,7 @@ body {
     font-size: 18px;
     line-height: 25px;
     border-radius: 4px;
+
 }
 
 .header a.logo {
@@ -285,26 +292,35 @@ h2 {
     margin: 0 auto;
     padding: 10px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
     width: 100%;
+
 }
 
 #product-table td, #product-table th {
-    padding: 10px;
-    border: 1px solid #ddd;
+
+    /*border: 1px solid #ddd;*/
     padding: 8px;
+    background-color: white;
+
 }
+/*img{*/
+    /*width: 20%;*/
+
+/*}*/
+
 
 #product-table tr:nth-child(even){background-color: #ddd;}
 
-#product-table tr:hover {background-color: #ddd;}
+/*#product-table tr:hover {background-color: #ddd;}*/
 
 #product-table th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: grey;
     color: white;
+
 }
 .first{
     margin-top: 5%;
@@ -441,14 +457,14 @@ td {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: grey;
     color: white;
 }
 .history-btn{
-    color: #4CAF50;
+    color: grey;
 }
 .order-info{
-    color: #4CAF50;
+    color: grey;
     font-size: 1.3em;
     text-align:  center;
     font-style: oblique;
@@ -473,4 +489,21 @@ td {
 
 #addressErrField{
     margin-bottom: 20%;
+}
+.pizza-wrap{
+    margin-left:1% ;
+}
+#pizza-wrap{
+    width: 100%;
+  }
+#pizza-info{
+    margin-left: 35%;
+    width: 35%;
+}
+#cat-wrap{
+margin-top: 1%;
+}
+#product-table{
+    background-color: grey;
+    margin-bottom: 10%;
 }
