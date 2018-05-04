@@ -17,8 +17,6 @@ function __autoload($class) {
 //add new address
 
 //if(isset($_POST['addAddress']));
-
-
     $city = $_POST['city'];
     $hood = $_POST['hood'];
     $blok = $_POST['blok'];

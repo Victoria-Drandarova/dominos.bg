@@ -5,12 +5,7 @@ if(isset($_POST['send_cv'])) {
     $email_subject = "Работа Dominos.bg";
 
     function died($error) {
-        // your error code can go here
         header ("Location: ../Controller/indexController.php?page=jobsFailed");
-//        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
-//        echo "These errors appear below.<br /><br />";
-//        echo $error."<br /><br />";
-//        echo "Please go back and fix these errors.<br /><br />";
         die();
     }
 
@@ -27,7 +22,7 @@ if(isset($_POST['send_cv'])) {
 
     if(strlen($city) < 5 || strlen($first_name) < 2 || strlen($last_name) < 4 || strlen($email_from) < 9) {
 
-//        header ("Location:../Controller/indexController.php?page=jobsFailed");
+
         $error_message .= 'The Comments you entered do not appear to be valid.<br />';
     }
 

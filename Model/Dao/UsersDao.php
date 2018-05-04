@@ -73,9 +73,7 @@ class UsersDao {
     }
 
     public function editUserProfile(User $user) {
-//            $id = $user->getId();
-//            $query = $this->pdo->prepare("UPDATE users SET (first_name, last_name, email, password)
-//                                                                      VALUES (?, ?, ?, ?) WHERE id=?");
+
             $query = $this->pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, password=? WHERE id=?");
             $query->execute(array($user->getFirstName(),
                                   $user->getLastName(),
@@ -139,7 +137,6 @@ class UsersDao {
         $lastId = $this->pdo->lastInsertId();
         return $lastId;
 
-//        $result = $query->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function insertIntoLinkTable(User $user) {

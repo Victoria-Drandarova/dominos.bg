@@ -12,7 +12,7 @@ if(isset($_POST['login'])) {
         $pass = trim(htmlentities($_POST['password']));
         $user = new \Model\User($email, sha1($pass));
         $pdo = new \Model\Dao\UsersDao();
-//        setcookie("email", $email);
+
         if(empty($email) || empty($pass)) {
             header("Location: ../Controller/indexController.php?page=loginFailed");
         }
@@ -27,18 +27,15 @@ if(isset($_POST['login'])) {
             }
             if($result) {
                 $id = $pdo->getUserId($user);
-//                $user->setId($id);
-//                $details = $pdo->getUserDetailsById($user);
                 $_SESSION["userId"] = $id;
-//                $_SESSION["userDetails"] = [];
                 $_SESSION["userDetails"]["email"] = $email;
                 $_SESSION["logged_user"] = true;
                 header("Location:  ../Controller/indexController.php?page=main");
             }
             else {
-//            echo 'Your email or password is wrong';
+
                 header("Location: ../Controller/indexController.php?page=loginFailed");
-//                    echo 'Email is '.$text=$user->getEmail().' and Password is '.$text=$user->getPassword();
+
             }
         }
     }

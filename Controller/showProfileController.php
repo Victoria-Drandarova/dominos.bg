@@ -1,9 +1,5 @@
 <?php
-//namespace Controller;
-//namespace Model;
-//include '../Controller/loginController.php';
-//include '../Model/User.php';
-//include '../Model/Dao/UsersDao.php';
+
 namespace Controller;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
