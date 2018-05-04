@@ -1,65 +1,21 @@
 <?php
- public function getHistoryById($historyId) {
-        $historyDao = new HistoryDao();
-        $userId = $_SESSION["userDetails"]["id"];
-        $historyArray = [];
 
-        try {
-            $total = 0;
-            $historyResult = $historyDao->getHistory($historyId, $userId);
-            if ($historyResult) {
-                /* $historyResult["id"] = productID */
-                foreach ($historyResult as $order) {
-                    $quantity = $order["quantity"];
-                    $total += $order["price"] * $quantity;
-                    
-                    try {
-                        $extraIngr = $historyDao->getExtraIngr($order["id"], $historyId);
-                        if ($extraIngr) {//ако има допълнителни съставки вземи им цената и я добави
-                            foreach ($extraIngr as $price) {
-                                $price = $price["price"] * $quantity;
-                                $total += $price;
-                                
-                            }
-                        }
-                        
-                    } catch (\PDOException $exp) {
-                        return $exp->getMessage();
+for ($i = 0; $i < $cnt; $i++) {
+                    $quantity = $historyResult[$i]["quantity"];
+                    if (is_null($historyResult[$i]["in_price"])) {
+                        $historyResult[$i]["in_price"] = 0;
                     }
-                }
-                /* @var $extraIngr array */
-                if ($extraIngr) {
-                    $historyResult["extraIng"] = $extraIngr;
-                    $historyResult["total"] = round($total, 2);
-                    $historyArray[] = $historyResult;
-                } else {
-                    $historyResult["total"] = round($total, 2);
-                    return json_encode($historyResult, JSON_FORCE_OBJECT);
-                }
+                    
+                    
+                    if (is_null($historyResult[$i]["in_name"])) {
+                        $historyResult[$i]["in_name"] = "No extra ingredient!";
+                    }
 
-                return json_encode($historyArray, JSON_FORCE_OBJECT);
-            } else {
-                return false;
-            }
-        } catch (\PDOException $exp) {
-            return $exp->getMessage();
-        }
-        
-        $q = "
-SELECT p.name , p.price,p.id,
-fio.quantity, i.name as in_name, i.price as in_price
-FROM products as p
-JOIN foods_in_order as fio
-ON p.id = fio.product_id
-JOIN orders as ord
-ON ord.user_order_id = fio.order_id
-AND fio.order_id = 53
-JOIN added_ingredients as ai
-ON ai.ord_id = ord.user_order_id
-AND ai.product_id = p.id
-JOIN ingredients as i
-ON i.id = ai.ingredient_id
-JOIN users as u
-ON u.id = 17
-GROUP BY ai.ingredient_id";
-    }
+                        if ($historyResult[$i]["name"] !== $historyResult[$i - 1]["name"]) {
+                            $total += ($historyResult[$i]["price"] * $quantity );
+                            $total += ($historyResult[$i]["in_price"] * $quantity);
+                        } else {
+                            $total += ($historyResult[$i]["in_price"] * $quantity);
+                        }
+                    
+                }

@@ -54,7 +54,7 @@ function getProductInfo(ind) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = JSON.parse(this.responseText);
-
+            console.log(resp);
             if (!resp) {
                 window.location.replace("../Controller/indexController.php?page=login");
             }
@@ -109,17 +109,21 @@ function getProductInfo(ind) {
 
 function getSizes(producInd) {
     var sizeAjax = new XMLHttpRequest();
-    sizeAjax.open("GET", "SizesController.php?size=1");
+    sizeAjax.open("GET", "SizesController.php?size=" + producInd);
     sizeAjax.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var sizes = JSON.parse(this.responseText);
-            createDropDown(sizes, "size-wrap", producInd);
+            console.log(sizes);
+            var totalPrice = document.getElementById("pizza-info-price");
+            totalPrice.innerHTML = sizes["total"];
+            
+            createDropDown(sizes, "size-wrap", producInd, sizes["id"]);
         }
     };
     sizeAjax.send();
 }
 
-function createDropDown(sizes, containerId, producInd) {
+function createDropDown(sizes, containerId, producInd, defaultId) {
     var select = document.createElement("SELECT");
     select.setAttribute("id", "size-dropdown");
     var container = document.getElementById(containerId);
@@ -129,7 +133,9 @@ function createDropDown(sizes, containerId, producInd) {
         option.setAttribute("id", "size-option");
         option.setAttribute("value", sizes[i]["id"]);
         option.innerHTML = sizes[i]["size"];
-
+        if (option.value == defaultId) {
+            option.selected = "selected";
+        }
         select.appendChild(option);
 
     }
@@ -187,7 +193,7 @@ function getCategories(productId) {
                             XML.onreadystatechange = function () {
                                 if (this.readyState === 4 && this.status === 200) {
                                     var result = JSON.parse(this.responseText);
-
+console.log(result);
                                     if (result) {
 
                                         var cb = document.getElementById("check-" + result.id);
@@ -196,9 +202,10 @@ function getCategories(productId) {
                                         if (cb.checked === false) {
                                             cb.checked = true;
                                         }
+                                        
                                         var price = document.getElementById("pizza-info-price");
-                                        price.innerHTML = Number(price.innerHTML)
-                                                + Number(result["price"]);
+                                        price.innerHTML = 
+                                                result["total"];
                                         cb.addEventListener("click", function () {
                                             minusExtraPrice(result["id"], productId);
                                             ;
@@ -245,7 +252,7 @@ function addToCart(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
-
+            alert(response);
             if (!response) {
                 window.location.replace("../Controller/indexController.php?page=login");
             }
@@ -292,8 +299,9 @@ function addExtraIngr(ingId, toProductId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var resp = this.responseText;
+            console.log(resp);
             var price = document.getElementById("pizza-info-price");
-            price.innerHTML = Number(price.innerHTML) + Number(resp);
+            price.innerHTML = resp;
         }
     };
     request.send("ingId=" + ingId + "&prdId=" + toProductId);

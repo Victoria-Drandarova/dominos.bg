@@ -1,4 +1,5 @@
 <?php
+
 namespace Model\Dao;
 
 spl_autoload_register(function ($class) {
@@ -13,27 +14,28 @@ use Model\Dao\DbConnection;
  *
  * @author denis
  */
-class HistoryDao extends DbConnection{
-    
+class HistoryDao extends DbConnection {
+
     public function historyList($userId) {
-        
-            $query = "SELECT user_order_id, date FROM orders WHERE user_id = ?";
-            $stmt = $this->getConnection()->prepare($query);
-            $param = [$userId];
-            $stmt->execute($param);
-            
-            $listOfHistory = [];
-            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
-                $listOfHistory[] = $row;
-            }
-            return $listOfHistory ? $listOfHistory : false;
-             
+
+        $query = "SELECT user_order_id, date FROM orders WHERE user_id = ?";
+        $stmt = $this->getConnection()->prepare($query);
+        $param = [$userId];
+        $stmt->execute($param);
+
+        $listOfHistory = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $listOfHistory[] = $row;
+        }
+        return $listOfHistory ? $listOfHistory : false;
     }
-    
+
     public function getHistory($orderId, $userId) {
-        
-            $query = "SELECT p.name , p.price,p.id,
-                    fio.quantity, i.name as in_name, i.price as in_price
+
+        $query = "SELECT p.name , p.price,p.id,
+                    fio.quantity, i.name as in_name,
+                    i.price as in_price,
+                    ps.cost, ps.size
                     FROM products as p
                     JOIN foods_in_order as fio
                     ON p.id = fio.product_id
@@ -47,21 +49,23 @@ class HistoryDao extends DbConnection{
                     ON i.id = ai.ingredient_id
                     JOIN users as u
                     ON u.id = ?
+                    JOIN pizza_size as ps
+                    ON ps.id = fio.size_id
                     GROUP BY ai.ingredient_id";
-            $stmt = $this->getConnection()->prepare($query);
-            $param = [$orderId, $userId];
-            $stmt->execute($param);
-            
-            $history = [];
-            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
-                $history[] = $row;
-            }
-            return  $history ? $history : false; 
-       
-    }
-    
-    public function getExtraIngr($productId, $orderId) {
         
+        $stmt = $this->getConnection()->prepare($query);
+        $param = [$orderId, $userId];
+        $stmt->execute($param);
+
+        $history = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $history[] = $row;
+        }
+        return $history ? $history : false;
+    }
+
+    public function getExtraIngr($productId, $orderId) {
+
         $query = "SELECT i.name, i.price
                  FROM ingredients as i 
                  JOIN added_ingredients as a_i
@@ -71,14 +75,15 @@ class HistoryDao extends DbConnection{
                  GROUP BY i.name";
         $stmt = $this->getConnection()->prepare($query);
         $params = [$productId, $orderId];
-        
+
         $stmt->execute($params);
-        
+
         $extraIngr = [];
-        
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $extraIngr[] = $row;
         }
         return $extraIngr ? $extraIngr : false;
     }
+
 }

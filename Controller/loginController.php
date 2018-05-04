@@ -32,6 +32,7 @@ if(isset($_POST['login'])) {
                 $_SESSION["userId"] = $id;
 //                $_SESSION["userDetails"] = [];
                 $_SESSION["userDetails"]["email"] = $email;
+                $_SESSION["cart"] = [];
                 $_SESSION["logged_user"] = true;
                 header("Location:  ../Controller/indexController.php?page=main");
             }

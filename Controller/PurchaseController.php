@@ -43,7 +43,7 @@ class PurchaseController {
         $purchaseDao = new PurchaseDao();
         try {
             /* tazi edenica trqbwa  da se zamesti ot potrebitelskoto ID */
-            $userId = $_SESSION["userDetails"]["id"];
+            $userId = $_SESSION["userId"];
             $orderId = $purchaseDao->insertOrder($userId);
 
             foreach ($_SESSION["cart"] as $proId) {
@@ -103,11 +103,13 @@ class PurchaseController {
                 /* $historyResult["id"] = productID */
                 $cnt = count($historyResult);
                 for ($i = 0; $i < $cnt; $i++) {
-
+                    
                     $quantity = $historyResult[$i]["quantity"];
-
+                    $sizeCost = $historyResult[$i]["cost"];
+                    
                     if ($historyResult[$i]["name"] !== $historyResult[$i - 1]["name"]) {
-                        $total += ($historyResult[$i]["price"] * $quantity);
+                        $total += $historyResult[$i]["price"] * $quantity;
+                        $total + ($sizeCost);
                         $total += ($historyResult[$i]["in_price"] * $quantity);
                     } else {
                         $total += ($historyResult[$i]["in_price"] * $quantity);
