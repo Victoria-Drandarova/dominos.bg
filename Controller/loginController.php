@@ -29,6 +29,7 @@ if(isset($_POST['login'])) {
                 $id = $pdo->getUserId($user);
                 $_SESSION["userId"] = $id;
                 $_SESSION["userDetails"]["email"] = $email;
+                $_SESSION["cart"] = [];
                 $_SESSION["logged_user"] = true;
                 header("Location:  ../Controller/indexController.php?page=main");
             }

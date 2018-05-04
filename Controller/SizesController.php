@@ -39,11 +39,27 @@ class SizesController {
         return self::$_instance;
     }
 
-    public function getSizes() {
+    public function getSizes($prodId) {
         $sizeDao = new SizeDao();
-        $productDao = new ProductsDao();
+        $productsDao = new ProductsDao();
         try {
+            $productSizeId = $_SESSION["cart"][$prodId]["size_id"];
+            $r = $sizeDao->getPrizeById($productSizeId);
+            
+            $total = 0;
+            
+            foreach ($_SESSION["cart"][$prodId]["extraIng"] as $inId) {
+                $prodPrice = $productsDao->getIngrById($inId);
+                $total += $prodPrice["price"];
+            }
+            
+            $total += $_SESSION["cart"][$prodId]["price"] *
+            $_SESSION["cart"][$prodId]["quantity"];
+            $total + ($r["cost"]);
+            
             $sizes = $sizeDao->getSizeList();
+            $sizes["total"] = $total;
+            $sizes["id"] = $r["id"];
             return json_encode($sizes);
         } catch (\PDOException $exp) {
             return $exp->getMessage();
@@ -53,7 +69,7 @@ class SizesController {
     public function changeSize($sizeId, $productId) {
         $sizeDao = new SizeDao();
         $singleProduct = new ProductsDao();
-        if ((integer)$sizeId > 3 || (integer)$sizeId < 1) {
+        if ((integer) $sizeId > 3 || (integer) $sizeId < 1) {
             return;
         }
         try {
@@ -66,33 +82,31 @@ class SizesController {
             if ($success) {
                 if (in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
                     /* set default quantity  to  1 */
-                    switch ($price["id"]){
+                    switch ($price["id"]) {
                         case self::SMAL :
                             $_SESSION["cart"][$success["id"]]["price"] = $originalPrice - 2;
                             $_SESSION["cart"][$success["id"]]["size_id"] = self::SMAL;
                             $_SESSION["cart"][$success["id"]]["size"] = "Small";
                             return json_encode($_SESSION["cart"][$success["id"]]["price"]);
-                            
+
                         case self::MEDIUM :
                             $_SESSION["cart"][$success["id"]]["price"] = $originalPrice;
                             $_SESSION["cart"][$success["id"]]["size_id"] = self::MEDIUM;
                             $_SESSION["cart"][$success["id"]]["size"] = "Medium";
                             return $_SESSION["cart"][$success["id"]]["price"];
-                        
+
                         case self::LARGE :
                             $_SESSION["cart"][$success["id"]]["price"] = $originalPrice + 2;
                             $_SESSION["cart"][$success["id"]]["size_id"] = self::LARGE;
                             $_SESSION["cart"][$success["id"]]["size"] = "Large";
                             return json_encode($_SESSION["cart"][$success["id"]]["price"]);
-                           
-                        default:
-                            return;                            
-                    }
 
+                        default:
+                            return;
+                    }
                 } else {
                     //todo return err msg
                 }
-
             } else {
                 //todo return err msg
             }
@@ -100,11 +114,13 @@ class SizesController {
             return $exp->getMessage();
         }
     }
+
 }
 
 if (isset($_GET["size"])) {
     $sizeController = SizesController::getInstance();
-    echo $sizeController->getSizes();
+    $productId = trim(htmlentities($_GET["size"]));
+    echo $sizeController->getSizes($productId);
 }
 
 if (isset($_GET["changeSize"]) && isset($_GET["productId"])) {

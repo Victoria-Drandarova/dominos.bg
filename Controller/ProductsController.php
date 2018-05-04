@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+error_reporting(E_ALL ^ E_NOTICE);
 spl_autoload_register(function ($class) {
 
     $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
@@ -9,6 +10,7 @@ spl_autoload_register(function ($class) {
 });
 
 use Model\Dao\ProductsDao;
+use Model\Dao\SizeDao;
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -20,6 +22,7 @@ class ProductsController {
 
     const MAX_PRODUCT = 10;
     const DEFAULT_SIZE_ID = 2;
+
 //    private function __construct() {}
 
     public static function getInstance() {
@@ -62,14 +65,26 @@ class ProductsController {
         try {
             $ingredients = new ProductsDao();
             $r = $ingredients->getIngrById($ingId);
-
+            $size = new SizeDao();
+            
             if (isset($_SESSION["cart"])) {
-
+                $s = $size->getPrizeById($_SESSION["cart"][$prdId]["size_id"]);
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
                     $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = &$r["id"];
+                    
+                    $total = 0;
 
-                    echo $r["price"];
-//                    header("Location: ../View/some.php");
+                    foreach ($_SESSION["cart"][$prdId]["extraIng"] as $inId) {
+                        $prodPrice = $ingredients->getIngrById($inId);
+                        $total += $prodPrice["price"];
+                    }
+
+                    $total += $_SESSION["cart"][$prdId]["price"] *
+                            $_SESSION["cart"][$prdId]["quantity"];
+                    $total + ($s["cost"]);
+
+                    echo $total;
+
                 } else {
                     //todo return err msg
                 }
@@ -166,17 +181,38 @@ class ProductsController {
     public function getCartContent() {
 
         if (isset($_SESSION["userDetails"])) {
-
+            
+            $total = 0;
+            
+            $sizeDao = new SizeDao();
+            $productDao = new ProductsDao();
+            
+            foreach ($_SESSION["cart"] as $product) {
+                $quantity = $product["quantity"];
+                $total += $product["price"] * $quantity;
+                
+                if ($product["extraIng"]) {
+                    foreach ($product["extraIng"] as $ingId) {
+                        $ingPrice = $productDao->getIngrById($ingId);
+                        $total += $ingPrice["price"] * $quantity;
+                    }
+                    
+                }
+                
+                $sizePrice = $sizeDao->getPrizeById($product["size_id"]);
+                $total + ($sizePrice["cost"]);
+                
+            }
+            $_SESSION["cart"]["cart_total"] = $total;
             return json_encode($_SESSION["cart"]);
-        } 
-            return false;
-        
+        }
+        return false;
     }
 
     public function getPizza() {
         $pizzaList = new ProductsDao();
         try {
-            
+
             return $pizzaList->getAllPizza();
         } catch (PDOException $exp) {
             $this->insertErr($exp);
@@ -211,13 +247,20 @@ class ProductsController {
     }
 
     public function isInExtraList($ingrId, $productId) {
-        
+
         try {
             $proDao = new ProductsDao();
             $ingrData = $proDao->getIngrById($ingrId);
+            $sizePrize = new SizeDao();
+            $r = $sizePrize->getPrizeById($_SESSION["cart"][$productId]["size_id"]);
+
             $empty = true;
             foreach ($_SESSION["cart"][$productId]["extraIng"] as &$inId) {
                 if ($ingrId == $inId) {
+                    $total = $_SESSION["cart"][$productId]["price"] *
+                            $_SESSION["cart"][$productId]["quantity"] + $ingrData["price"];
+                    $total + ($r["cost"]);
+                    $ingrData["total"] = $total;
                     echo json_encode($ingrData);
                     $empty = false;
                 }
@@ -328,4 +371,9 @@ if (isset($_GET["iId"]) && isset($_GET["proId"])) {
     $ingId = trim(htmlentities($_GET["iId"]));
     $proId = trim(htmlentities($_GET["proId"]));
     return $products->isInExtraList($ingId, $proId);
+}
+
+if (isset($_GET["total"])) {
+    
+    echo $_SESSION[0];
 }

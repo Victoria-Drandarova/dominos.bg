@@ -41,7 +41,7 @@ class ProductsDao extends DbConnection {
         $stmt->execute($param);
         
          $singleIngr = $stmt->fetch(\PDO::FETCH_ASSOC);
-         return $singleIngr;
+         return $singleIngr ? $singleIngr : false;
     }
 
     public function getAllProducts() {

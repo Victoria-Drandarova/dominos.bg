@@ -83,16 +83,22 @@ function generateHistoryDetails(arr, containerId) {
             var quantity = document.createElement("p");
             quantity.setAttribute("class", "order-info-name");
             quantity.innerHTML = "Quantity: " + arr[i]["quantity"];
+            
+            var size = document.createElement("p");
+            size.setAttribute("class", "order-info-name");
+            size.innerHTML = "Size: " + arr[i]["size"];
 
             var nn = document.createElement("p");
             nn.setAttribute("class", "order-info");
             nn.innerHTML = "Plus: " + arr[i]["in_name"];
+            
             var total = document.createElement("h4");
             total.setAttribute("class", "total-price");
             total.innerHTML = "Total price: " + arr["total"] + "lv.";
 
             wrap.appendChild(name);
             wrap.appendChild(quantity);
+            wrap.appendChild(size);
             wrap.appendChild(nn);
 
         } else {
@@ -110,12 +116,17 @@ function generateHistoryDetails(arr, containerId) {
                 var quantity = document.createElement("p");
                 quantity.setAttribute("class", "order-info-name");
                 quantity.innerHTML = "Quantity: " + arr[i]["quantity"];
+                
+                 var size = document.createElement("p");
+                size.setAttribute("class", "order-info-name");
+                size.innerHTML = "Quantity: " + arr[i]["size"];
 
                 var nn = document.createElement("p");
                 nn.setAttribute("class", "order-info");
                 nn.innerHTML = "Plus: " + arr[i]["in_name"];
                 wrap.appendChild(nn);
                 wrap.appendChild(name);
+                wrap.appendChild(size);
                 wrap.appendChild(quantity);
                 wrap.appendChild(nn);
             }
