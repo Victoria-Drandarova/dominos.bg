@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da16136c-531f-4c1e-adb3-3e11dd722a3b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Controller/HistoryV0.1" afterPath="$PROJECT_DIR$/Controller/HistoryV0.1" />
-      <change beforePath="$PROJECT_DIR$/Controller/ProductsController.php" afterPath="$PROJECT_DIR$/Controller/ProductsController.php" />
-      <change beforePath="$PROJECT_DIR$/Controller/PurchaseController.php" afterPath="$PROJECT_DIR$/Controller/PurchaseController.php" />
-      <change beforePath="$PROJECT_DIR$/Controller/SizesController.php" afterPath="$PROJECT_DIR$/Controller/SizesController.php" />
-      <change beforePath="$PROJECT_DIR$/Controller/loginController.php" afterPath="$PROJECT_DIR$/Controller/loginController.php" />
-      <change beforePath="$PROJECT_DIR$/Model/Dao/HistoryDao.php" afterPath="$PROJECT_DIR$/Model/Dao/HistoryDao.php" />
-      <change beforePath="$PROJECT_DIR$/Model/Dao/ProductsDao.php" afterPath="$PROJECT_DIR$/Model/Dao/ProductsDao.php" />
-      <change beforePath="$PROJECT_DIR$/View/assets/js/cart.js" afterPath="$PROJECT_DIR$/View/assets/js/cart.js" />
-      <change beforePath="$PROJECT_DIR$/View/assets/js/history.js" afterPath="$PROJECT_DIR$/View/assets/js/history.js" />
-      <change beforePath="$PROJECT_DIR$/View/assets/js/pizzaList.js" afterPath="$PROJECT_DIR$/View/assets/js/pizzaList.js" />
-      <change beforePath="$PROJECT_DIR$/View/assets/style.css" afterPath="$PROJECT_DIR$/View/assets/style.css" />
-    </list>
+    <list default="true" id="da16136c-531f-4c1e-adb3-3e11dd722a3b" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -203,7 +191,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP from XAMPP" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="y" value="23" />
     <option name="width" value="1280" />
     <option name="height" value="629" />
@@ -316,15 +304,15 @@
       <workItem from="1524910062815" duration="58655000" />
       <workItem from="1525034307354" duration="578000" />
       <workItem from="1525064906280" duration="57255000" />
-      <workItem from="1525327391928" duration="19567000" />
+      <workItem from="1525327391928" duration="19766000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="395276000" />
+    <option name="totallyTimeSpent" value="395475000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1618" height="868" extended-state="6" />
+    <frame x="-9" y="-9" width="1618" height="868" extended-state="7" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
