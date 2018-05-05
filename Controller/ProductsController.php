@@ -134,8 +134,13 @@ class ProductsController {
                 if ($_SESSION["cart"][$productId]["quantity"] === self::MAX_PRODUCT) {
                     return false;
                 }
-                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
-                return $_SESSION["cart"][$productId]["quantity"];
+                $_SESSION["cart"][$productId]["quantity"] =
+                $_SESSION["cart"][$productId]["quantity"] + 1;
+                 
+                $newQuantity = new \stdClass();
+                $newQuantity->quantity = $_SESSION["cart"][$productId]["quantity"];
+                
+                return json_encode($newQuantity);
             } else {
                 //todo return err msg
             }
@@ -153,9 +158,13 @@ class ProductsController {
                     unset($_SESSION["cart"][$productId]);
                     return 0;
                 }
-                $q = $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
-
-                return $_SESSION["cart"][$productId]["quantity"];
+                $_SESSION["cart"][$productId]["quantity"] =
+                $_SESSION["cart"][$productId]["quantity"] - 1;
+                 
+                $newQuantity = new \stdClass();
+                $newQuantity->quantity = $_SESSION["cart"][$productId]["quantity"];
+                
+                return json_encode($newQuantity);
             } else {
                 //to do return  err msg
             }
@@ -188,13 +197,13 @@ class ProductsController {
             $productDao = new ProductsDao();
             
             foreach ($_SESSION["cart"] as $product) {
-                $quantity = $product["quantity"];
-                $total += $product["price"] * $quantity;
+                
+                $total += $product["price"] * $product["quantity"];
                 
                 if ($product["extraIng"]) {
                     foreach ($product["extraIng"] as $ingId) {
                         $ingPrice = $productDao->getIngrById($ingId);
-                        $total += $ingPrice["price"] * $quantity;
+                        $total += $ingPrice["price"] * $product["quantity"];
                     }
                     
                 }
@@ -203,8 +212,10 @@ class ProductsController {
                 $total + ($sizePrice["cost"]);
                 
             }
-            $_SESSION["cart"]["cart_total"] = $total;
-            return json_encode($_SESSION["cart"]);
+            $content = new \stdClass();
+            $content->pizzaList = $_SESSION["cart"];
+            $content->total = $total;
+            return json_encode($content);
         }
         return false;
     }

@@ -29,7 +29,9 @@ class ProductsDao extends DbConnection {
         $param = [$productId];
         $stmt->execute($param);
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $product = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        return $product ? $product : false;
     }
 
     public function getIngrById($ingredientId) {
