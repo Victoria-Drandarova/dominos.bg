@@ -7,10 +7,6 @@ if(isset($_POST['send_email'])) {
     function died($error) {
         // your error code can go here
         header ("Location:../Controller/indexController.php?page=contactFailed");
-//        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
-//        echo "These errors appear below.<br /><br />";
-//        echo $error."<br /><br />";
-//        echo "Please go back and fix these errors.<br /><br />";
         die();
     }
 

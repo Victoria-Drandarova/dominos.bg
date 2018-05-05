@@ -3,8 +3,7 @@
 namespace Controller;
 require_once  '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
-use \Model\User;
-//use \Model\Dao\UserDao;
+
 
 session_start();
 
@@ -16,7 +15,6 @@ $userId = $_SESSION['userId'];
 $pdo = new \Model\Dao\UsersDao();
 $user = new\Model\ User(null, null, null, null, $userId);
 $addressIds = $pdo->getAddressIdFromLinkTable($user);
-//echo json_encode($addressIds);
 
 foreach($addressIds as $id) {
     $user->setAddressId($id);

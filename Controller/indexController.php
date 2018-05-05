@@ -37,6 +37,10 @@ if(isset($_GET["page"])){
             require_once "../View/$page_name.html";
         }elseif($page_name=="main"){
             require_once "../View/$page_name.html";
+        }elseif($page_name=="contactFailed"){
+            require_once "../View/$page_name.html";
+        }elseif($page_name=="jobsFailed"){
+            require_once "../View/$page_name.html";
         }elseif($page_name=="termsOfUse") {
             require_once "../View/$page_name.html";
 

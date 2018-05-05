@@ -2,7 +2,6 @@
 
 
 namespace Controller;
-//namespace Model;
 require_once '../Model/User.php';
 require_once '../Model/Dao/UsersDao.php';
 
@@ -20,8 +19,6 @@ function __autoload($class) {
 }
 
 
-//if(isset($_POST["editProfile"])); {
-
 $firstName = trim(htmlentities($_POST['f_name']));
 $lastName = trim(htmlentities($_POST['l_name']));
 $email = trim(htmlentities($_POST['email']));
@@ -36,6 +33,7 @@ if(checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $rPassw
 
     $pdo = new\Model\Dao\UsersDao();
     $userUpdate = new\Model\User($email, sha1($password), $firstName, $lastName);
+
     $id = $_SESSION["userId"];
     $userUpdate->setId($id);
     $pdo->editUserProfile($userUpdate);
@@ -44,15 +42,10 @@ if(checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $rPassw
     echo json_encode($GLOBALS['success']);
 
 
-//            header("Location:  ../Controller/indexController.php?page=main");
 }
 else {
     echo json_encode($GLOBALS['error']);
 }
-
-
-//}
-
 
 
 
@@ -61,7 +54,6 @@ function checkEmptyFields($firstName, $lastName, $email, $oldPass,  $password, $
     if (strlen($firstName) == 0 || strlen($lastName) == 0 || strlen($email) == 0
         || strlen($oldPass) == 0 || strlen($password) == 0 || strlen($rPassword) == 0) {
         $GLOBALS['error'] = 'Моля попълнете всички полета!';
-//        $GLOBALS['test'] = ''.$oldPass;
         return false;
     } else {
         return true;
@@ -111,6 +103,8 @@ function checkOldPass($oldPass) {
         return true;
     }
 }
+
+
 
 
 

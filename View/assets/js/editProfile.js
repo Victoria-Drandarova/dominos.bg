@@ -15,7 +15,6 @@ function editInfo(){
         if(this.readyState === 4 && this.status === 200){
             var editResponse = JSON.parse(this.responseText);
             console.log(editResponse);
-            console.warn(editResponse);
             var containerId = "error-list";
             generateErrList(editResponse, containerId);
         }

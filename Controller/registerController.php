@@ -48,20 +48,15 @@ function __autoload($class) {
             $GLOBALS['error'] = 'Успешно се регистрирахте.';
             echo json_encode($GLOBALS['error']);
 
-//            $GLOBALS['link'] = '../Controller/indexController.php?page=login';
-//            echo json_encode($GLOBALS['link']);
-//            return $_POST['regResult'] = true;
-//            header("Location:  ../Controller/indexController.php?page=login");
         }
         else {
             $GLOBALS['error'] = 'Вече е регистриран потребител с този емайл.';
             echo json_encode($GLOBALS['error']);
-//            return $_POST['regResult'] = false;
         }
     }
     else {
         echo json_encode($GLOBALS['error']);
-//    }
+
 }
 
 function checkEmptyFields($firstName, $lastName, $email, $pass, $repeatPass){
