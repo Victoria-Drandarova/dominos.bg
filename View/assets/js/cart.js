@@ -35,12 +35,13 @@ function generateCartList(response, containerId) {
         var productName = document.createElement('td');
         productName.setAttribute("id", "n-" + id);
         productName.innerHTML = response.pizzaList[i].name;
-        
+
         var productPrice = document.createElement('td');
         productPrice.innerHTML = response.pizzaList[i].price + " lv.";
-        productPrice.setAttribute("id", "price-1" + response.pizzaList[i].price);
-        
-          var productQuantity = document.createElement('td');
+        productPrice.setAttribute("class", "new-price-" + id);
+        productPrice.setAttribute("id", "price-" + response.pizzaList[i].price);
+
+        var productQuantity = document.createElement('td');
         productQuantity.setAttribute("id", "q-" + response.pizzaList[i].id);
         productQuantity.innerHTML = response.pizzaList[i].quantity;
 
@@ -48,13 +49,17 @@ function generateCartList(response, containerId) {
         productSize.innerHTML = response.pizzaList[i].size;
 
         var img = document.createElement('img');
+        img.style.width = "200px";
+        img.style.height = "200px";
+        img.style.borderRadius = "50%";
         img.src = "../View/assets/images/" + response.pizzaList[i].img_url;
         var imgTd = document.createElement("td");
         imgTd.appendChild(img);
 
         var total = document.createElement("p");
+        total.setAttribute("id", "total");
         total.innerHTML = "Total price: " + response.total + " lv.";
-        
+
         var plus = document.createElement('button');
         plus.setAttribute("value", response.pizzaList[i].id);
         plus.innerHTML = "Add one more";
@@ -80,9 +85,8 @@ function generateCartList(response, containerId) {
 
         if (response.pizzaList[i].extraIng) {
             for (var k in response.pizzaList[i].extraIng) {
-//                alert(response[i]["extraIng"][k]);
 
-                getExtraIng(response.pizzaList[i].extraIng[k], response.pizzaList[i].price, "n-" + id);
+                getExtraIng(response.pizzaList[i].extraIng[k], "n-" + id);
             }
         }
 
@@ -94,29 +98,48 @@ function generateCartList(response, containerId) {
         tr.appendChild(plusTd);
         tr.appendChild(minusTd);
         tableData.appendChild(tr);
-        
+
     }
-    
-    table.appendChild(tableData);
-    basicContent.appendChild(table);
-    
+//    table.appendChild(tableData);
+//    basicContent.appendChild(table);
+
     var finishBtn = document.createElement("BUTTON");
     finishBtn.setAttribute("id", "finish");
+
     finishBtn.innerHTML = "Finish Order";
 
     finishBtn.addEventListener("click", function () {
         finishOrder();
     });
-    var tab = document.getElementByClassName("products_table");
+    var tab = document.getElementById("products_table");
     if (tab.children.length < 2) {
         finishBtn.style.display = "none";
     }
-    
+
     var divWrap = document.createElement("DIV");
-//    divWrap.appendChild(finishBtn);
-    
+    divWrap.appendChild(finishBtn);
+
     basicContent.appendChild(divWrap);
     basicContent.appendChild(total);
+}
+
+function getExtraIng(ingId, containerId) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "ProductsController.php?extraIngId=" + ingId);
+
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var response = JSON.parse(this.responseText);
+//            console.log(response);
+
+            var ingName = document.createElement("p");
+            ingName.innerHTML = "Extra Engredient: " + response["name"];
+
+            var container = document.getElementById(containerId);
+            container.appendChild(ingName);
+        }
+    };
+    request.send();
 }
 
 function plusQunatity(productId) {
@@ -130,8 +153,14 @@ function plusQunatity(productId) {
             if (!response) {
                 return;
             }
-            var price = document.getElementById("q-" + productId);
-            price.innerHTML = response.quantity;
+            document.getElementsByClassName("new-price-" + productId)[0].innerHTML
+            = response.prodPrice + " lv.";
+            
+            document.getElementById("total").innerHTML = "Total price: " +
+            response.total + " lv.";
+            
+            var quantity = document.getElementById("q-" + productId);
+            quantity.innerHTML = response.quantity;
 
         }
     };
@@ -145,34 +174,20 @@ function minusQunatity(productId) {
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
+            console.log(response);
             if (response == 0) {
                 location.reload();
             }
-//            console.log(response);
+            
+             document.getElementsByClassName("new-price-" + productId)[0].innerHTML
+            = response.prodPrice + " lv.";
+    
+            document.getElementById("total").innerHTML = "Total price: " +
+            response.total + " lv.";
+            
             var price = document.getElementById("q-" + productId);
             price.innerHTML = response.quantity;
 
-        }
-    };
-    request.send();
-}
-
-function getExtraIng(ingId, productPrice, containerId) {
-    var request = new XMLHttpRequest();
-    request.open("GET", "ProductsController.php?extraIngId=" + ingId);
-
-    request.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            var response = JSON.parse(this.responseText);
-//            console.log(response);
-            var price = document.getElementById("price-" + productPrice);
-            price.innerHTML = Number(price.innerHTML) + Number(response["price"]);
-
-            var ingName = document.createElement("h5");
-            ingName.setAttribute("id", "ing");
-            ingName.innerHTML = "Extra Engredient: " + response["name"];
-            var container = document.getElementById(containerId);
-            container.appendChild(ingName);
         }
     };
     request.send();
@@ -187,8 +202,13 @@ function finishOrder() {
         if (this.readyState === 4 && this.status === 200) {
             var response = this.responseText;
             if (response == "success") {
-                location.reload();
+                var table = document.getElementById("tprod");
+                while (table.firstChild) {
+                    table.removeChild(table.firstChild);
+                }
             }
+            alert("You finish you order!");
+
         }
     };
     XML.send("finish_order=" + 1);

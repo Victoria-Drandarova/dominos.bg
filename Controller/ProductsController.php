@@ -52,7 +52,6 @@ class ProductsController {
                     echo "You allready have this food in your cart :)";
                 }
 
-//            header("Location: ../View/some.php");
             } else {
                 //todo return err msg
             }
@@ -113,7 +112,7 @@ class ProductsController {
                             return $resultIng["price"];
                         }
                     }
-//                    header("Location: ../View/some.php");
+
                 } else {
                     //todo return err msg
                 }
@@ -127,20 +126,35 @@ class ProductsController {
     }
 
     public function plusQuantity($productId) {
-        // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
+        
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 if ($_SESSION["cart"][$productId]["quantity"] === self::MAX_PRODUCT) {
                     return false;
                 }
+                $ingredients = new ProductsDao();
+                
+                $totalOrder = &json_decode($this->getCartContent());
+                
                 $_SESSION["cart"][$productId]["quantity"] =
                 $_SESSION["cart"][$productId]["quantity"] + 1;
                  
-                $newQuantity = new \stdClass();
-                $newQuantity->quantity = $_SESSION["cart"][$productId]["quantity"];
+                $newStats = new \stdClass();
+                $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
                 
-                return json_encode($newQuantity);
+                $prodPrice = $_SESSION["cart"][$productId]["price"]
+                *  $newStats->quantity ;
+                
+                if ($_SESSION["cart"][$productId]["extraIng"]) {
+                    foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
+                        $addedIngr = $ingredients->getIngrById($extraIngId);
+                        $prodPrice += ($addedIngr["price"]  * $newStats->quantity);
+                    }
+                }
+                $newStats->total = $totalOrder->total;
+                $newStats->prodPrice = $prodPrice;
+                return json_encode($newStats);
             } else {
                 //todo return err msg
             }
@@ -150,7 +164,7 @@ class ProductsController {
     }
 
     public function minusQunatity($productId) {
-        // if(isset($_SESSION["logged_user"]) && isset($_SESSION["cart"]))
+        
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
@@ -158,13 +172,27 @@ class ProductsController {
                     unset($_SESSION["cart"][$productId]);
                     return 0;
                 }
+                $ingredients = new ProductsDao();
+                $totalOrder = json_decode($this->getCartContent());
                 $_SESSION["cart"][$productId]["quantity"] =
                 $_SESSION["cart"][$productId]["quantity"] - 1;
                  
-                $newQuantity = new \stdClass();
-                $newQuantity->quantity = $_SESSION["cart"][$productId]["quantity"];
+                $newStats = new \stdClass();
+                $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
                 
-                return json_encode($newQuantity);
+                $prodPrice = $_SESSION["cart"][$productId]["price"]
+                *  $newStats->quantity ;
+                
+                
+                if ($_SESSION["cart"][$productId]["extraIng"]) {
+                    foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
+                        $addedIngr = $ingredients->getIngrById($extraIngId);
+                        $prodPrice += ($addedIngr["price"]  * $newStats->quantity);
+                    }
+                }
+                $newStats->total = $totalOrder->total;
+                $newStats->prodPrice = $prodPrice;
+                return json_encode($newStats);
             } else {
                 //to do return  err msg
             }
@@ -204,14 +232,14 @@ class ProductsController {
                     foreach ($product["extraIng"] as $ingId) {
                         $ingPrice = $productDao->getIngrById($ingId);
                         $total += $ingPrice["price"] * $product["quantity"];
-                    }
-                    
+                    }  
                 }
                 
                 $sizePrice = $sizeDao->getPrizeById($product["size_id"]);
                 $total + ($sizePrice["cost"]);
                 
             }
+            
             $content = new \stdClass();
             $content->pizzaList = $_SESSION["cart"];
             $content->total = $total;
