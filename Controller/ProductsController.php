@@ -23,7 +23,9 @@ class ProductsController {
     const MAX_PRODUCT = 10;
     const DEFAULT_SIZE_ID = 2;
 
-//    private function __construct() {}
+    private function __construct() {
+        
+    }
 
     public static function getInstance() {
         if (!self::$instance) {
@@ -51,7 +53,6 @@ class ProductsController {
                 } else {
                     echo "You allready have this food in your cart :)";
                 }
-
             } else {
                 //todo return err msg
             }
@@ -65,12 +66,13 @@ class ProductsController {
             $ingredients = new ProductsDao();
             $r = $ingredients->getIngrById($ingId);
             $size = new SizeDao();
-            
+
             if (isset($_SESSION["cart"])) {
-                $s = $size->getPrizeById($_SESSION["cart"][$prdId]["size_id"]);
+
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-                    $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = &$r["id"];
-                    
+                    $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = $r["id"];
+                    $currentSizeId = $_SESSION["cart"][$prdId]["size_id"];
+                    $pizzaSize = $size->getPrizeById($currentSizeId);
                     $total = 0;
 
                     foreach ($_SESSION["cart"][$prdId]["extraIng"] as $inId) {
@@ -78,12 +80,11 @@ class ProductsController {
                         $total += $prodPrice["price"];
                     }
 
-                    $total += $_SESSION["cart"][$prdId]["price"] *
-                            $_SESSION["cart"][$prdId]["quantity"];
-                    $total + ($s["cost"]);
+                    $total += $_SESSION["cart"][$prdId]["price"];
+                    $total += ($pizzaSize["cost"]);
 
-                    echo $total;
-
+                    $tot = \number_format((float) $total, 2);
+                    return json_encode($tot);
                 } else {
                     //todo return err msg
                 }
@@ -96,26 +97,31 @@ class ProductsController {
     }
 
     public function removeExtraIngFromProd($ingId, $prdId) {
-        $ingredients = new ProductsDao();
+
         try {
 
-            $resultIng = $ingredients->getIngrById($ingId);
+            $ingredients = new ProductsDao();
+            $size = new SizeDao();
 
-            if (isset($_SESSION["cart"])) {
+            if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
 
-                if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-
-                    foreach ($_SESSION["cart"][$prdId]["extraIng"] as $ing) {
-                        if ($ingId == $ing) {
-
-                            unset($_SESSION["cart"][$prdId]["extraIng"][$ingId]);
-                            return $resultIng["price"];
-                        }
+                $currentSizeId = $_SESSION["cart"][$prdId]["size_id"];
+                $pizzaSize = $size->getPrizeById($currentSizeId);
+                $total = 0;
+                $total += $_SESSION["cart"][$prdId]["price"];
+                foreach ($_SESSION["cart"][$prdId]["extraIng"] as $inId) {
+                    if ($inId == $ingId) {
+                        unset($_SESSION["cart"][$prdId]["extraIng"][$ingId]);
+                    } else {
+                        $prodPrice = $ingredients->getIngrById($inId);
+                        $total += $prodPrice["cost"];
                     }
-
-                } else {
-                    //todo return err msg
                 }
+                
+                $total += ($pizzaSize["cost"]);
+
+                $tot = \number_format((float) $total, 2);
+                return json_encode($tot);
             } else {
                 //todo return err msg
             }
@@ -126,7 +132,7 @@ class ProductsController {
     }
 
     public function plusQuantity($productId) {
-        
+
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
@@ -134,24 +140,21 @@ class ProductsController {
                     return false;
                 }
                 $ingredients = new ProductsDao();
-                
-                $totalOrder = &json_decode($this->getCartContent());
-                
-                $_SESSION["cart"][$productId]["quantity"] =
-                $_SESSION["cart"][$productId]["quantity"] + 1;
-                 
+
+                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
+
                 $newStats = new \stdClass();
                 $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
-                
-                $prodPrice = $_SESSION["cart"][$productId]["price"]
-                *  $newStats->quantity ;
-                
+
+                $prodPrice = $_SESSION["cart"][$productId]["price"] * $newStats->quantity;
+
                 if ($_SESSION["cart"][$productId]["extraIng"]) {
                     foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
                         $addedIngr = $ingredients->getIngrById($extraIngId);
-                        $prodPrice += ($addedIngr["price"]  * $newStats->quantity);
+                        $prodPrice += ($addedIngr["price"] * $newStats->quantity);
                     }
                 }
+                $totalOrder = &json_decode($this->getCartContent());
                 $newStats->total = $totalOrder->total;
                 $newStats->prodPrice = $prodPrice;
                 return json_encode($newStats);
@@ -164,7 +167,7 @@ class ProductsController {
     }
 
     public function minusQunatity($productId) {
-        
+
         if (isset($_SESSION["cart"])) {
 
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
@@ -173,23 +176,22 @@ class ProductsController {
                     return 0;
                 }
                 $ingredients = new ProductsDao();
-                $totalOrder = json_decode($this->getCartContent());
-                $_SESSION["cart"][$productId]["quantity"] =
-                $_SESSION["cart"][$productId]["quantity"] - 1;
-                 
+               
+                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
+
                 $newStats = new \stdClass();
                 $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
-                
-                $prodPrice = $_SESSION["cart"][$productId]["price"]
-                *  $newStats->quantity ;
-                
-                
+
+                $prodPrice = $_SESSION["cart"][$productId]["price"] * $newStats->quantity;
+
+
                 if ($_SESSION["cart"][$productId]["extraIng"]) {
                     foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
                         $addedIngr = $ingredients->getIngrById($extraIngId);
-                        $prodPrice += ($addedIngr["price"]  * $newStats->quantity);
+                        $prodPrice += ($addedIngr["price"] * $newStats->quantity);
                     }
                 }
+                 $totalOrder = json_decode($this->getCartContent());
                 $newStats->total = $totalOrder->total;
                 $newStats->prodPrice = $prodPrice;
                 return json_encode($newStats);
@@ -218,28 +220,27 @@ class ProductsController {
     public function getCartContent() {
 
         if (isset($_SESSION["userDetails"])) {
+
             
-            $total = 0;
-            
+
             $sizeDao = new SizeDao();
             $productDao = new ProductsDao();
-            
+            $total = 0;
             foreach ($_SESSION["cart"] as $product) {
-                
+
                 $total += $product["price"] * $product["quantity"];
-                
+
                 if ($product["extraIng"]) {
                     foreach ($product["extraIng"] as $ingId) {
                         $ingPrice = $productDao->getIngrById($ingId);
                         $total += $ingPrice["price"] * $product["quantity"];
-                    }  
+                    }
                 }
-                
+
                 $sizePrice = $sizeDao->getPrizeById($product["size_id"]);
-                $total + ($sizePrice["cost"]);
-                
+                $total += ($sizePrice["cost"]);
             }
-            
+
             $content = new \stdClass();
             $content->pizzaList = $_SESSION["cart"];
             $content->total = $total;
@@ -413,6 +414,6 @@ if (isset($_GET["iId"]) && isset($_GET["proId"])) {
 }
 
 if (isset($_GET["total"])) {
-    
+
     echo $_SESSION[0];
 }
