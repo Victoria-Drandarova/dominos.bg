@@ -1,39 +1,28 @@
 <?php
-
 namespace Controller;
-
 error_reporting(E_ALL ^ E_NOTICE);
 spl_autoload_register(function ($class) {
-
     $c = str_replace("\\", DIRECTORY_SEPARATOR, $class);
     require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . $c . '.php';
 });
-
 use Model\Dao\ProductsDao;
 use Model\Dao\SizeDao;
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
 class ProductsController {
-
     private static $instance;
-
     const MAX_PRODUCT = 10;
     const DEFAULT_SIZE_ID = 2;
-
     private function __construct() {
-        
-    }
 
+    }
     public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new ProductsController();
         }
         return self::$instance;
     }
-
     public function addProductToCart($productId) {
         if (!isset($_SESSION["userDetails"])) {
             return false;
@@ -60,29 +49,23 @@ class ProductsController {
             $this->insertErr($exp);
         }
     }
-
     public function addExtraIngToProd($ingId, $prdId) {
         try {
             $ingredients = new ProductsDao();
             $r = $ingredients->getIngrById($ingId);
             $size = new SizeDao();
-
             if (isset($_SESSION["cart"])) {
-
                 if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
                     $_SESSION["cart"][$prdId]["extraIng"][$r["id"]] = $r["id"];
                     $currentSizeId = $_SESSION["cart"][$prdId]["size_id"];
                     $pizzaSize = $size->getPrizeById($currentSizeId);
                     $total = 0;
-
                     foreach ($_SESSION["cart"][$prdId]["extraIng"] as $inId) {
                         $prodPrice = $ingredients->getIngrById($inId);
                         $total += $prodPrice["price"];
                     }
-
                     $total += $_SESSION["cart"][$prdId]["price"];
                     $total += ($pizzaSize["cost"]);
-
                     $tot = \number_format((float) $total, 2);
                     return json_encode($tot);
                 } else {
@@ -95,16 +78,11 @@ class ProductsController {
             $this->insertErr($exp);
         }
     }
-
     public function removeExtraIngFromProd($ingId, $prdId) {
-
         try {
-
             $ingredients = new ProductsDao();
             $size = new SizeDao();
-
             if (in_array($prdId, array_column($_SESSION["cart"], "id"))) {
-
                 $currentSizeId = $_SESSION["cart"][$prdId]["size_id"];
                 $pizzaSize = $size->getPrizeById($currentSizeId);
                 $total = 0;
@@ -117,40 +95,41 @@ class ProductsController {
                         $total += $prodPrice["price"];
                     }
                 }
-                
-                $total += ($pizzaSize["cost"]);
 
+                $total += ($pizzaSize["cost"]);
                 $tot = \number_format((float) $total, 2);
                 return json_encode($tot);
             } else {
                 //todo return err msg
             }
         } catch (PDOException $exp) {
-
             $this->insertErr($exp);
         }
     }
-
     public function plusQuantity($productId) {
-
         if (isset($_SESSION["cart"])) {
-
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 if ($_SESSION["cart"][$productId]["quantity"] === self::MAX_PRODUCT) {
                     return false;
                 }
                 $ingredients = new ProductsDao();
 
+
                 $_SESSION["cart"][$productId]["quantity"] =
                 $_SESSION["cart"][$productId]["quantity"] + 1;
 
+
+                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] + 1;
+
                 $newStats = new \stdClass();
                 $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
-
                 $prodPrice = $_SESSION["cart"][$productId]["price"] * $newStats->quantity;
+
                 $added = 0;
                 /* взимаме общата  цена  за пица */
                 $totalOrder = json_decode($this->getCartContent());
+
+
                 if ($_SESSION["cart"][$productId]["extraIng"]) {
                     foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
                         $addedIngr = $ingredients->getIngrById($extraIngId);
@@ -169,27 +148,25 @@ class ProductsController {
             //todo return err msg
         }
     }
-
     public function minusQunatity($productId) {
-
         if (isset($_SESSION["cart"])) {
-
             if (in_array($productId, array_column($_SESSION["cart"], "id"))) {
                 if ($_SESSION["cart"][$productId]["quantity"] == 1) {
                     unset($_SESSION["cart"][$productId]);
                     return 0;
                 }
                 $ingredients = new ProductsDao();
-               
-                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
 
+                $_SESSION["cart"][$productId]["quantity"] = $_SESSION["cart"][$productId]["quantity"] - 1;
                 $newStats = new \stdClass();
                 $newStats->quantity = $_SESSION["cart"][$productId]["quantity"];
-
                 $prodPrice = $_SESSION["cart"][$productId]["price"] * $newStats->quantity;
+
 
                 $added = 0;
                 $totalOrder = json_decode($this->getCartContent());
+
+
                 if ($_SESSION["cart"][$productId]["extraIng"]) {
                     foreach ($_SESSION["cart"][$productId]["extraIng"] as $extraIngId) {
                         $addedIngr = $ingredients->getIngrById($extraIngId);
@@ -197,7 +174,11 @@ class ProductsController {
                         $prodPrice += ($addedIngr["price"] * $newStats->quantity);
                     }
                 }
+
                 
+
+                $totalOrder = json_decode($this->getCartContent());
+
                 $newStats->total = $totalOrder->total;
                 $newStats->prodPrice = $prodPrice;
                 return json_encode($newStats);
@@ -208,7 +189,6 @@ class ProductsController {
             //todo return err msg
         }
     }
-
     public function getExtraIng($extraIngId) {
         if (isset($_SESSION["cart"])) {
             $ingredients = new ProductsDao();
@@ -222,9 +202,7 @@ class ProductsController {
             //todo return err msg
         }
     }
-
     public function getCartContent() {
-
         if (isset($_SESSION["userDetails"])) {
 
             $sizeDao = new SizeDao();
@@ -233,10 +211,14 @@ class ProductsController {
             $content->singleTotal = [];
             $total = 0;
             foreach ($_SESSION["cart"] as $product) {
+
                 $singTotal = 0;
                 $total += $product["price"] * $product["quantity"];
                 $singTotal += $product["price"] * $product["quantity"];
                 
+
+                $total += $product["price"] * $product["quantity"];
+
                 if ($product["extraIng"]) {
                     foreach ($product["extraIng"] as $ingId) {
                         $ingPrice = $productDao->getIngrById($ingId);
@@ -244,77 +226,78 @@ class ProductsController {
                         $singTotal += $ingPrice["price"] * $product["quantity"];
                     }
                 }
-
                 $sizePrice = $sizeDao->getPrizeById($product["size_id"]);
                 $total += ($sizePrice["cost"]);
                 $singTotal += ($sizePrice["cost"]);
                 $content->singleTotal[$product["id"]] = $singTotal;
             }
 
+
             
+
+            $content = new \stdClass();
+
             $content->pizzaList = $_SESSION["cart"];
             $content->total = $total;
             return json_encode($content);
         }
         return false;
     }
-
     public function getPizza() {
         $pizzaList = new ProductsDao();
         try {
-
             return $pizzaList->getAllPizza();
         } catch (PDOException $exp) {
             $this->insertErr($exp);
         }
     }
-
     public function getInfoProduct($productId) {
-
         if (!isset($_SESSION["userDetails"])) {
             return false;
         }
-
         try {
-
             $info = new ProductsDao();
             return $info->getProductInfo($productId);
         } catch (PDOException $exp) {
-
             $this->insertErr($exp);
         }
     }
-
     public function getIngCategory() {
-
         try {
-
             $ingCategory = new ProductsDao();
             return $ingCategory->getIngredientsCategory();
         } catch (PDOException $exp) {
             $this->insertErr($exp);
         }
     }
-
     public function isInExtraList($ingrId, $productId) {
-
         try {
             $prodDao = new ProductsDao();
             /* връща информация за съставката според ид-то  */
             $ingrData = $prodDao->getIngrById($ingrId);
             $sizePrize = new SizeDao();
+
             
             /* взимаме информация за размера споерд настоящото му  ид */
             $size = $sizePrize->getPrizeById($_SESSION["cart"][$productId]["size_id"]);
+
+
+            $r = $sizePrize->getPrizeById($_SESSION["cart"][$productId]["size_id"]);
 
             $empty = true;
             $total = 0;
             foreach ($_SESSION["cart"][$productId]["extraIng"] as $inId) {
                 if ($ingrId == $inId) {
+
                     $total += ($_SESSION["cart"][$productId]["price"] *
                             $_SESSION["cart"][$productId]["quantity"] + 
                         $ingrData["price"] * $_SESSION["cart"][$productId]["quantity"]);
                     $total += ($size["cost"]);
+
+                    $total = $_SESSION["cart"][$productId]["price"] *
+                        $_SESSION["cart"][$productId]["quantity"] + $ingrData["price"];
+                    $total + ($r["cost"]);
+
                     $ingrData["total"] = $total;
                     $empty = false;
                     return json_encode($ingrData);
@@ -328,7 +311,6 @@ class ProductsController {
             $this->insertErr($exp);
         }
     }
-
     public function insertErr($exp) {
         $path = dirname(__DIR__);
         $path .= "/log/PDOExeption.txt";
@@ -341,20 +323,21 @@ class ProductsController {
         }
         header("Location: ../index.php?page=errpage");
     }
-
     public function getIngByCategory($categoryId) {
-
         try {
+
 
             $getIngByCat = new ProductsDao();
             return json_encode($getIngByCat->getIngredientsByCategory($categoryId));
+
+            $getIngredientsByCategory = new ProductsDao();
+            return json_encode($getIngredientsByCategory->getIngredientsByCategory($categoryId));
+
         } catch (PDOException $exp) {
             $this->insertErr($exp);
         }
     }
-
 }
-
 /* retrun jason with all pizzas */
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pizza"])) {
     $products = ProductsController::getInstance();
@@ -388,19 +371,16 @@ if (isset($_POST["cart"])) {
     $products = ProductsController::getInstance();
     echo $products->getCartContent();
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["prId"])) {
     $products = ProductsController::getInstance();
     $prId = trim(htmlentities($_GET["prId"]));
     echo $products->plusQuantity($prId);
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["minusId"])) {
     $products = ProductsController::getInstance();
     $minusId = trim(htmlentities($_GET["minusId"]));
     echo $products->minusQunatity($minusId);
 }
-
 if (isset($_POST["ingId"]) && isset($_POST["prdId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_POST["ingId"]));
@@ -408,27 +388,26 @@ if (isset($_POST["ingId"]) && isset($_POST["prdId"])) {
     echo $products->addExtraIngToProd($ingId, $prodId);
 }
 
+
+
+
 if (isset($_POST["minusIngId"]) && isset($_POST["minusPrdId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_POST["minusIngId"]));
     $prodId = trim(htmlentities($_POST["minusPrdId"]));
     echo $products->removeExtraIngFromProd($ingId, $prodId);
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["extraIngId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_GET["extraIngId"]));
     echo $products->getExtraIng($ingId);
 }
-
 if (isset($_GET["iId"]) && isset($_GET["proId"])) {
     $products = ProductsController::getInstance();
     $ingId = trim(htmlentities($_GET["iId"]));
     $proId = trim(htmlentities($_GET["proId"]));
     echo $products->isInExtraList($ingId, $proId);
 }
-
 if (isset($_GET["total"])) {
-
     echo $_SESSION[0];
 }

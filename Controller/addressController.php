@@ -23,15 +23,22 @@ function __autoload($class) {
     $entrance = $_POST['entrance'];
 
     if (checkEmptyFields($city, $hood, $blok, $entrance) && checkTextLength($city, $hood, $blok, $entrance)) {
-
+        $successfull=true;
         $userAddress = new\Model\User(null, null, null, null,null, $city, $hood, $blok, $entrance);
         $pdo = new\Model\Dao\UsersDao();
-        $lastId = $pdo->insertAddress($userAddress);
-        $userId = $_SESSION["userId"];
-        $userAddress->setId($userId);
-        $userAddress->setAddressId($lastId);
-        $pdo->insertIntoLinkTable($userAddress);
+        try {
+            $lastId = $pdo->insertAddress($userAddress);
+        }
+        catch (\PDOException $e){
+            $successfull=false;
+        }
+        if($successfull) {
+            $userId = $_SESSION["userId"];
+            $userAddress->setId($userId);
+            $userAddress->setAddressId($lastId);
 
+            $pdo->insertIntoLinkTable($userAddress);
+        }
         $addressSuccess = 'Вие успешно добавихте нов адрес.';
         echo json_encode($addressSuccess);
 

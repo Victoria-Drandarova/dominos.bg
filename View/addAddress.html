@@ -3,21 +3,21 @@
         <h2>Форма за добавяне на нов адрес</h2>
         <div class="input-container">
             <i class="fa fa-home icon"></i>
-            <input class="input-field" id="city" type="text" placeholder="Град" required>
+            <input class="input-field" id="city" maxlength="20" type="text" placeholder="Град" required>
         </div>
 
         <div class="input-container">
             <i class="fa fa-home icon"></i>
-            <input class="input-field" id="hood" type="text" placeholder="Квартал" required>
+            <input class="input-field" id="hood" type="text" maxlength="30" placeholder="Квартал" required>
         </div>
 
         <div class="input-container">
             <i class="fa fa-home icon"></i>
-            <input class="input-field" id="blok" type="text" placeholder="Блок" required>
+            <input class="input-field" id="blok" type="text" maxlength="3" placeholder="Блок" required>
         </div>
         <div class="input-container">
             <i class="fa fa-home icon"></i>
-            <input class="input-field" id="entrance" type="text" placeholder="Вход" required>
+            <input class="input-field" id="entrance" type="text" maxlength="2" placeholder="Вход" required>
         </div>
         <button type="submit" onclick="setValues()" name="addAddress" class="btn">Добави</button>
     <!--</form>-->
