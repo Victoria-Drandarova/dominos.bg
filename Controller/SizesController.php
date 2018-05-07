@@ -44,6 +44,8 @@ class SizesController {
         $productsDao = new ProductsDao();
         try {
             $productSizeId = $_SESSION["cart"][$prodId]["size_id"];
+            
+            /* връща информация за размера според ид-то му */
             $r = $sizeDao->getPrizeById($productSizeId);
 
             $total = 0;
@@ -56,10 +58,10 @@ class SizesController {
             }
 
             $total += $_SESSION["cart"][$prodId]["price"];
-            $total + ($r["cost"]);
+            $total += ($r["cost"]);
 
             $sizes = $sizeDao->getSizeList();
-            /* създаваме анонимен клас с цел по-лесна визуализация на продуктите */
+            
             $std = new \stdClass();
 
             $std->sizeList = $sizes;
@@ -80,10 +82,9 @@ class SizesController {
         }
 
         try {
-            /* цената  на  размера */
+            /* данни на  размера */
             $sizePrice = $sizeDao->getPrizeById($sizeId);
-            /* данни  за продукта по подразбиране */
-            $prodId = $singleProduct->getSingleProduct($productId);
+            
             /* настоящият размер  на  продукта */
             $productSizeId = $_SESSION["cart"][$productId]["size_id"];
             
@@ -97,61 +98,15 @@ class SizesController {
                 $proPr = $singleProduct->getIngrById($inId);
                 $total += $proPr["price"];
             }
-
+            $_SESSION["cart"][$productId]["size"] = $sizePrice["size"];
+            $_SESSION["cart"][$productId]["size_id"] = $sizePrice["id"];
             $total += ($sizePrice["cost"]);
-            $total = \number_format((float)$total, 2);
+            $total = number_format((float)$total, 2);
             if ($productSizeId == $sizeId) {
-                return json_encode($total);
+                return;
             }
-            
-            if ($prodId) {
-                if (in_array($prodId["id"], array_column($_SESSION["cart"], "id"))) {
+            return json_encode($total);
 
-                    switch ($sizePrice["id"]) {
-                        case self::SMAL && $productSizeId == self::MEDIUM :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::SMAL;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Small";
-                            return json_encode($total);
-
-                        case self::SMAL && $productSizeId == self::LARGE :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::SMAL;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Small";
-                            return json_encode($total);
-
-                        case self::MEDIUM && $productSizeId == self::SMAL :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::MEDIUM;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Medium";
-                            return json_encode($total);
-
-                        case self::MEDIUM && $productSizeId == self::LARGE :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::MEDIUM;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Medium";
-                            return json_encode($total);
-
-                        case self::LARGE && $productSizeId == self::MEDIUM :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::LARGE;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Large";
-                            return json_encode($total);
-
-                        case self::LARGE && $productSizeId == self::SMAL :
-
-                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::LARGE;
-                            $_SESSION["cart"][$prodId["id"]]["size"] = "Large";
-                            return json_encode($total);
-                        default :
-                            return;
-                    }
-                } else {
-                    //todo return err msg
-                }
-            } else {
-                //todo return err msg
-            }
         } catch (\PDOException $exp) {
             return $exp->getMessage();
         }
