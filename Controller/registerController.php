@@ -82,13 +82,14 @@ function checkTextLength($email, $pass, $firstName, $lastName) {
 }
 
 function checkEmail($email) {
-    if(strpos($email, "@") === false || strpos($email, ".") === false) {
-        $GLOBALS['error'] =  'Невалиден емайл адрес.';
-        return false;
-    }
-    else {
-        return true;
-    }
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $GLOBALS['error'] = 'Невалиден емайл адрес.';
+            return false;
+            }
+    //    if(strpos($email, "@") === false || strpos($email, ".") === false) {
+        else {
+            return true;
+        }
 }
 
 function checkPasswords($pass, $repeatPass)

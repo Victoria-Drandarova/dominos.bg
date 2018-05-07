@@ -200,11 +200,15 @@ class ProductsController {
                 }
                 
                 $sizePrice = $sizeDao->getPrizeById($product["size_id"]);
-                $total + ($sizePrice["cost"]);
+                $total += ($sizePrice["cost"]);
                 
             }
             $_SESSION["cart"]["cart_total"] = $total;
-            return json_encode($_SESSION["cart"]);
+
+            $obj = new \stdClass();
+            $obj->products = $_SESSION["cart"];
+            $obj->total = $total;
+            return json_encode($obj);
         }
         return false;
     }

@@ -57,9 +57,23 @@ class UsersDao {
             }
         }
         catch(\Exception $e) {
-
+           throw $e;
         }
     }
+
+    public function checkIfUserEmailExistsIsSame(User $user) {
+        try {
+            $query = $this->pdo->prepare("SELECT email as email FROM users WHERE id = ?");
+            $query->execute(array($user->getId()));
+            $result = $query->fetch(\PDO::FETCH_ASSOC);
+            return $result;
+
+            }
+        catch(\Exception $e) {
+            throw $e;;
+        }
+    }
+
 
     public function registerUser(User $user) {
             $query = $this->pdo->prepare("INSERT INTO users (first_name, last_name, email, password)
