@@ -45,22 +45,28 @@ class SizesController {
         try {
             $productSizeId = $_SESSION["cart"][$prodId]["size_id"];
             $r = $sizeDao->getPrizeById($productSizeId);
-            
+
             $total = 0;
-            
+            /* проверяваме дали  в продукта има допълнителни съставки за
+             * да добавим цената им в общата цена на продукта
+             */
             foreach ($_SESSION["cart"][$prodId]["extraIng"] as $inId) {
                 $prodPrice = $productsDao->getIngrById($inId);
                 $total += $prodPrice["price"];
             }
-            
-            $total += $_SESSION["cart"][$prodId]["price"] *
-            $_SESSION["cart"][$prodId]["quantity"];
+
+            $total += $_SESSION["cart"][$prodId]["price"];
             $total + ($r["cost"]);
-            
+
             $sizes = $sizeDao->getSizeList();
-            $sizes["total"] = $total;
-            $sizes["id"] = $r["id"];
-            return json_encode($sizes);
+            /* създаваме анонимен клас с цел по-лесна визуализация на продуктите */
+            $std = new \stdClass();
+
+            $std->sizeList = $sizes;
+            $std->total = $total;
+            $std->sizeId = $r["id"];
+
+            return json_encode($std);
         } catch (\PDOException $exp) {
             return $exp->getMessage();
         }
@@ -72,36 +78,72 @@ class SizesController {
         if ((integer) $sizeId > 3 || (integer) $sizeId < 1) {
             return;
         }
+
         try {
+            /* цената  на  размера */
+            $sizePrice = $sizeDao->getPrizeById($sizeId);
+            /* данни  за продукта по подразбиране */
+            $prodId = $singleProduct->getSingleProduct($productId);
+            /* настоящият размер  на  продукта */
+            $productSizeId = $_SESSION["cart"][$productId]["size_id"];
+            
+            $total = 0;
 
-            $price = $sizeDao->getPrizeById($sizeId);
+            $total += $_SESSION["cart"][$productId]["price"];
+            /* проверяваме дали  в продукта има допълнителни съставки за
+             * да добавим сената им в общата цена на продукта
+             */
+            foreach ($_SESSION["cart"][$productId]["extraIng"] as $inId) {
+                $proPr = $singleProduct->getIngrById($inId);
+                $total += $proPr["price"];
+            }
 
-            $success = $singleProduct->getSingleProduct($productId);
-            // взимаме оригиналната цена за да добавяма/премахваме от нея
-            $originalPrice = $success["price"];
-            if ($success) {
-                if (in_array($success["id"], array_column($_SESSION["cart"], "id"))) {
-                    /* set default quantity  to  1 */
-                    switch ($price["id"]) {
-                        case self::SMAL :
-                            $_SESSION["cart"][$success["id"]]["price"] = $originalPrice - 2;
-                            $_SESSION["cart"][$success["id"]]["size_id"] = self::SMAL;
-                            $_SESSION["cart"][$success["id"]]["size"] = "Small";
-                            return json_encode($_SESSION["cart"][$success["id"]]["price"]);
+            $total += ($sizePrice["cost"]);
+            $total = \number_format((float)$total, 2);
+            if ($productSizeId == $sizeId) {
+                return json_encode($total);
+            }
+            
+            if ($prodId) {
+                if (in_array($prodId["id"], array_column($_SESSION["cart"], "id"))) {
 
-                        case self::MEDIUM :
-                            $_SESSION["cart"][$success["id"]]["price"] = $originalPrice;
-                            $_SESSION["cart"][$success["id"]]["size_id"] = self::MEDIUM;
-                            $_SESSION["cart"][$success["id"]]["size"] = "Medium";
-                            return $_SESSION["cart"][$success["id"]]["price"];
+                    switch ($sizePrice["id"]) {
+                        case self::SMAL && $productSizeId == self::MEDIUM :
 
-                        case self::LARGE :
-                            $_SESSION["cart"][$success["id"]]["price"] = $originalPrice + 2;
-                            $_SESSION["cart"][$success["id"]]["size_id"] = self::LARGE;
-                            $_SESSION["cart"][$success["id"]]["size"] = "Large";
-                            return json_encode($_SESSION["cart"][$success["id"]]["price"]);
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::SMAL;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Small";
+                            return json_encode($total);
 
-                        default:
+                        case self::SMAL && $productSizeId == self::LARGE :
+
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::SMAL;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Small";
+                            return json_encode($total);
+
+                        case self::MEDIUM && $productSizeId == self::SMAL :
+
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::MEDIUM;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Medium";
+                            return json_encode($total);
+
+                        case self::MEDIUM && $productSizeId == self::LARGE :
+
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::MEDIUM;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Medium";
+                            return json_encode($total);
+
+                        case self::LARGE && $productSizeId == self::MEDIUM :
+
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::LARGE;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Large";
+                            return json_encode($total);
+
+                        case self::LARGE && $productSizeId == self::SMAL :
+
+                            $_SESSION["cart"][$prodId["id"]]["size_id"] = self::LARGE;
+                            $_SESSION["cart"][$prodId["id"]]["size"] = "Large";
+                            return json_encode($total);
+                        default :
                             return;
                     }
                 } else {

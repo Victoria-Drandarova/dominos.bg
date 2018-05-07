@@ -35,6 +35,7 @@ class SizeDao extends DbConnection{
         return $arrayOfSizes ? $arrayOfSizes : false;
     }
     
+    /* връща информация за размера според ид-то му */
     public function getPrizeById($id) {
         $query = "SELECT ps.id, ps.size, ps.cost 
                 FROM pizza_size as ps
@@ -43,9 +44,9 @@ class SizeDao extends DbConnection{
         $stmt = $this->getConnection()->prepare($query);
         $stmt->execute([$id]);
         
-        $size = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $sizeData = $stmt->fetch(\PDO::FETCH_ASSOC);
         
-        return  $size ? $size : false;
+        return  $sizeData ? $sizeData : false;
         
     }
 }
