@@ -33,7 +33,7 @@ class ProductsDao extends DbConnection {
         
         return $product ? $product : false;
     }
-
+    /* връща информация за съставката според ид-то  */
     public function getIngrById($ingredientId) {
         $query = "SELECT i.id, i.price, i.name
         FROM ingredients as i WHERE i.id = ?;";

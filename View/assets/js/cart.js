@@ -35,9 +35,9 @@ function generateCartList(response, containerId) {
         var productName = document.createElement('td');
         productName.setAttribute("id", "n-" + id);
         productName.innerHTML = response.pizzaList[i].name;
-
+        
         var productPrice = document.createElement('td');
-        productPrice.innerHTML = response.pizzaList[i].price + " lv.";
+        productPrice.innerHTML = response.singleTotal[i]+ " lv.";
         productPrice.setAttribute("class", "new-price-" + id);
         productPrice.setAttribute("id", "price-" + response.pizzaList[i].price);
 
@@ -100,8 +100,6 @@ function generateCartList(response, containerId) {
         tableData.appendChild(tr);
 
     }
-//    table.appendChild(tableData);
-//    basicContent.appendChild(table);
 
     var finishBtn = document.createElement("BUTTON");
     finishBtn.setAttribute("id", "finish");
@@ -117,6 +115,7 @@ function generateCartList(response, containerId) {
     }
 
     var divWrap = document.createElement("DIV");
+    divWrap.setAttribute("id", "btn-wrap");
     divWrap.appendChild(finishBtn);
 
     basicContent.appendChild(divWrap);
@@ -154,11 +153,11 @@ function plusQunatity(productId) {
                 return;
             }
             document.getElementsByClassName("new-price-" + productId)[0].innerHTML
-            = response.prodPrice + " lv.";
-            
+                    = response.prodPrice + " lv.";
+
             document.getElementById("total").innerHTML = "Total price: " +
-            response.total + " lv.";
-            
+                    response.total + " lv.";
+
             var quantity = document.getElementById("q-" + productId);
             quantity.innerHTML = response.quantity;
 
@@ -175,16 +174,22 @@ function minusQunatity(productId) {
         if (this.readyState === 4 && this.status === 200) {
             var response = JSON.parse(this.responseText);
             console.log(response);
+
+
             if (response == 0) {
+                var tab = document.getElementById("products_table");
+                if (tab.children.length < 2) {
+                    var finishBtn = document.getElementById("btn-wrap");
+                    finishBtn.style.display = "none";
+                }
                 location.reload();
             }
-            
-             document.getElementsByClassName("new-price-" + productId)[0].innerHTML
-            = response.prodPrice + " lv.";
-    
+            document.getElementsByClassName("new-price-" + productId)[0].innerHTML
+                    = response.prodPrice + " lv.";
+
             document.getElementById("total").innerHTML = "Total price: " +
-            response.total + " lv.";
-            
+                    response.total + " lv.";
+
             var price = document.getElementById("q-" + productId);
             price.innerHTML = response.quantity;
 
