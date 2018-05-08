@@ -497,6 +497,7 @@ td {
 }
 #pizza-wrap{
     width: 100%;
+    background-color: white;
 }
 #pizza-info{
     margin-left: 35%;

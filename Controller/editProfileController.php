@@ -18,7 +18,7 @@ function __autoload($class) {
     require_once str_replace("\\", "/", $class) . ".php";
 }
 
-
+//Инициализиране на променливите със стойностите дадени от Ajax заявката
 $firstName = trim(htmlentities($_POST['f_name']));
 $lastName = trim(htmlentities($_POST['l_name']));
 $email = trim(htmlentities($_POST['email']));
@@ -30,12 +30,15 @@ $resultEmail = $_SESSION["userDetails"]["email"];
 $pdo = new\Model\Dao\UsersDao();
 
 
+//Логиката е разделена на две части: в зависимост от това дали емайла е променен или не
 if($resultEmail == $email) {
 
     if (checkEmptyFields($firstName, $lastName, $email, $oldPass)
         && checkTextLength($email, $password, $firstName, $lastName)
         && checkEmail($email) && checkOldPass($oldPass)) {
         if (empty($_POST["password"]) && empty($_POST["rpassword"])) {
+            //И в двата случая се прави проверка ако потребителя не желае да променя паролата си,
+            // но иска да променя други данни
 
 
                 $userUpdate = new\Model\User($email, sha1($oldPass), $firstName, $lastName);
@@ -48,6 +51,7 @@ if($resultEmail == $email) {
 
         }else{
             if (checkPasswords($password, $rPassword)) {
+
                 $userUpdate = new\Model\User($email, sha1($password), $firstName, $lastName);
                 $userUpdate->setId($id);
                 $pdo->editUserProfile($userUpdate);
@@ -62,7 +66,7 @@ if($resultEmail == $email) {
     } else {
         echo json_encode($GLOBALS['error']);
     }
-   
+
 }
 
 else if($resultEmail != $email) {
@@ -119,7 +123,7 @@ function checkEmptyFields($firstName, $lastName, $email, $oldPass) {
     }
 }
 
-function checkTextLength($email, $password, $firstName, $lastName) {
+function checkTextLength($email, $firstName, $lastName) {
     if(strlen($email) > 50 || strlen($firstName) > 50 || strlen($lastName) > 50
         || strlen($firstName) < 2 || strlen($lastName) < 5) {
         $GLOBALS['error'] =  'Въведените данни са твърде дълги или твърде къси!';

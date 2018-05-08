@@ -25,15 +25,13 @@ function __autoload($class) {
     require_once str_replace("\\", "/", $class) .".php";
 }
 
-
-//if(isset($_POST['register'])); {
-
-
-    $firstName =trim(htmlentities( $_POST['f_name']));
+//Дефиниране на променливите
+    $firstName = trim(htmlentities( $_POST['f_name']));
     $lastName = trim(htmlentities($_POST['l_name']));
     $email = trim(htmlentities($_POST['email']));
     $pass = trim(htmlentities($_POST['password']));
     $repeatPass = trim(htmlentities($_POST['rpassword']));
+
 
     if(checkEmptyFields($firstName, $lastName, $email, $pass, $repeatPass)
         && checkTextLength($email, $pass, $firstName, $lastName)
@@ -58,6 +56,7 @@ function __autoload($class) {
         echo json_encode($GLOBALS['error']);
 
 }
+
 
 function checkEmptyFields($firstName, $lastName, $email, $pass, $repeatPass){
     if(empty($firstName) || empty($lastName) || empty($email) || empty($pass) || empty($repeatPass)) {
@@ -86,7 +85,6 @@ function checkEmail($email) {
             $GLOBALS['error'] = 'Невалиден емайл адрес.';
             return false;
             }
-    //    if(strpos($email, "@") === false || strpos($email, ".") === false) {
         else {
             return true;
         }
